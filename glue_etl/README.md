@@ -32,7 +32,10 @@ In the query editor, we can then see the top 10 rows of the table 'delays' in th
 
 
 We can now create a glue job for the ETL which uses the catalog table 'delays' as source, performs a few transformation steps (.e.g drop fields, cast types and drop duplicate fields) and finally loads to S3 in parquet format (which can be partitioned by specified key). 
+Some handy instructions here https://docs.aws.amazon.com/glue/latest/dg/start-console-overview.html
 
+If building the workflow from glue studio, it automatically generates pyspark code as in glue_etl/script.py. We can use this for debugging purposes if we need to experiment with some custom transforms.
+this can be done by setting up a development endpoint https://docs.aws.amazon.com/glue/latest/dg/start-development-endpoint.html and attaching sagemaker notebook to the endpoint.
 
 <img width="450" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/flights_glue_job.png">
 
