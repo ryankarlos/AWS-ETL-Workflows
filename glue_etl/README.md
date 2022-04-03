@@ -51,7 +51,7 @@ Once the job is finished we should see the final table in the catalog
 <img width="1299" alt="image" src="https://user-images.githubusercontent.com/16509490/161405155-860b55a3-b5ce-4e1b-9259-4b4e69dbb138.png">
 
 
-We can also use Redshift spectrum to copy external table in redshift from catalog and query in there if required.
+We can also use Redshift spectrum to copy external table in redshift from catalog and query in there if required (see sample queries in create_external_tables.sql)
 
 
 
