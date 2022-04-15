@@ -1,0 +1,87 @@
+{
+    "objects": [
+        {
+            "id": "DDBDestinationTable",
+            "name": "DDBDestinationTable",
+            "writeThroughputPercent": "#{myDDBWriteThroughputRatio}",
+            "type": "DynamoDBDataNode",
+            "tableName": "#{myDDBTableName}"
+        },
+        {
+            "id": "EmrClusterForLoad",
+            "name": "EmrClusterForLoad",
+            "bootstrapAction": "s3://datapipeline-#{myDDBRegion}/#{myDDBRegion}/bootstrap-actions/latest/TaskRunner/copy-jars-to-hadoop-classpath.sh,#{myDDBRegion},s3://dynamodb-dpl-us-east-1/emr-ddb-storage-handler/4.14.0/emr-dynamodb-tools-4.14.0-jar-with-dependencies.jar",
+            "coreInstanceCount": "1",
+            "coreInstanceType": "m3.xlarge",
+            "releaseLabel": "emr-6.1.0",
+            "masterInstanceType": "m3.xlarge",
+            "region": "#{myDDBRegion}",
+            "type": "EmrCluster",
+            "terminateAfter": "60 Minutes"
+        },
+        {
+            "id": "TableLoadActivity",
+            "name": "TableLoadActivity",
+            "output": {
+                "ref": "DDBDestinationTable"
+            },
+            "input": {
+                "ref": "S3InputDataNode"
+            },
+            "maximumRetries": "0",
+            "step": "s3://dynamodb-dpl-#{myDDBRegion}/emr-ddb-storage-handler/4.14.0/emr-dynamodb-tools-4.14.0-jar-with-dependencies.jar,org.apache.hadoop.dynamodb.tools.DynamoDBImport,#{input.directoryPath},#{output.tableName},#{output.writeThroughputPercent}\n",
+            "runsOn": {
+                "ref": "EmrClusterForLoad"
+            },
+            "type": "EmrActivity",
+            "resizeClusterBeforeRunning": "true"
+        },
+        {
+            "id": "S3InputDataNode",
+            "name": "S3InputDataNode",
+            "directoryPath": "#{myInputS3Loc}",
+            "type": "S3DataNode"
+        },
+        {
+            "id": "Default",
+            "name": "Default",
+            "failureAndRerunMode": "CASCADE",
+            "resourceRole": "MyEC2forDataPipelineRole",
+            "role": "MyDataPipelineRole",
+            "pipelineLogUri": "s3://data-pipeline-logs1/logs/",
+            "scheduleType": "ONDEMAND"
+        }
+    ],
+    "parameters": [
+        {
+            "id": "myInputS3Loc",
+            "description": "Input S3 folder",
+            "type": "AWS::S3::ObjectKey"
+        },
+        {
+            "id": "myDDBTableName",
+            "description": "Target DynamoDB table name",
+            "type": "String"
+        },
+        {
+            "id": "myDDBWriteThroughputRatio",
+            "default": "0.25",
+            "watermark": "Enter value between 0.1-1.0",
+            "description": "DynamoDB write throughput ratio",
+            "type": "Double"
+        },
+        {
+            "id": "myDDBRegion",
+            "default": "us-east-1",
+            "watermark": "us-east-1",
+            "description": "Region of the DynamoDB table",
+            "type": "String"
+        }
+    ],
+    "values": {
+        "myDDBRegion": "us-east-1",
+        "myDDBTableName": "flights",
+        "myDDBWriteThroughputRatio": "0.25",
+        "myInputS3Loc": "s3://flight-delays-2008/delays/"
+    }
+}
