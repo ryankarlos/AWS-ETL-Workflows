@@ -6,8 +6,6 @@ import json
 logger = logging.getLogger("create_table")
 logger.setLevel(logging.ERROR)
 
-client = boto3.client("dynamodb")
-
 
 class Movies:
     """
@@ -28,12 +26,18 @@ class Movies:
             response = self.dyn_resource.create_table(
                 TableName=table_name,
                 KeySchema=[
-                    {"AttributeName": "year", "KeyType": "HASH"},  # Partition key
-                    {"AttributeName": "title", "KeyType": "RANGE"},  # Sort key
+                    {
+                        "AttributeName": "year",
+                        "KeyType": "HASH",
+                    },  # Partition key
+                    {
+                        "AttributeName": "title",
+                        "KeyType": "RANGE",
+                    },  # SORT key
                 ],
                 AttributeDefinitions=[
-                    {"AttributeName": "year", "AttributeType": "N"},
                     {"AttributeName": "title", "AttributeType": "S"},
+                    {"AttributeName": "year", "AttributeType": "N"},
                 ],
                 ProvisionedThroughput={
                     "ReadCapacityUnits": 10,
@@ -42,6 +46,7 @@ class Movies:
             )
             result = json.dumps(response, indent=4, sort_keys=True, default=str)
             print(result)
+            ddb_waiter(self.dyn_resource, table_name)
         except ClientError as err:
             logger.error(
                 "Couldn't create table %s. Here's why: %s: %s",
@@ -55,8 +60,8 @@ class Movies:
         """
         Deletes existing dynamodb table
         """
-
         try:
+            logger.info(f"Deleting table {table_name}")
             client.delete_table(TableName=table_name)
         except ClientError as err:
             logger.error(
@@ -67,17 +72,17 @@ class Movies:
             )
 
 
-if __name__ == "__main__":
-    table_name = "movies"
-    movies = Movies(client)
-    try:
-        movies.create_table(table_name)
-    except ClientError as e:
-        if str(e).endswith(f"Table already exists: {table_name}"):
-            response = client.describe_table(TableName="movies")
-            result = json.dumps(response, indent=4,sort_keys=True, default=str)
-            print(result)
-
-
-
-
+def ddb_waiter(resource, table_name):
+    """
+    Retrieve waiter instance that will wait till a specified
+    # S3 bucket exists
+    :param resource: dynamo db resource
+    :param table_name: table to wait for
+    :return:
+    """
+    # obtain waiter for table exists
+    table_exists_waiter = resource.get_waiter("table_exists")
+    # List the waiter for ddb client
+    print(f"Dynamo db waiters:{resource.waiter_names}")
+    # Begin waiting for the table creation
+    table_exists_waiter.wait(TableName=table_name)
