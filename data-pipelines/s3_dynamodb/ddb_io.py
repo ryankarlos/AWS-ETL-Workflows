@@ -19,22 +19,12 @@ def format_json_for_dynamo_db(file_path="datasets/moviedata.json"):
                     # batch writing to table
                     "year": data[i]["year"],
                     "title": data[i]["title"],
-                    "genres": {
-                        "L": [{"S": genre} for genre in data[i]["info"]["genres"]]
-                    },
-                    "directors": {
-                        "L": [
-                            {"S": director} for director in data[i]["info"]["directors"]
-                        ]
-                    },
-                    "actors": {
-                        "L": [{"S": actor} for actor in data[i]["info"]["actors"]]
-                    },
-                    "rank": {"N": data[i]["info"]["rank"]},
-                    "running_time_secs": {
-                        "N": data[i]["info"].get("running_time_secs", -1)
-                    },
-                    "plot": {"S": data[i]["info"].get("plot", "Unknown")},
+                    "genres": [genre for genre in data[i]["info"]["genres"]],
+                    "directors": [director for director in data[i]["info"]["directors"]],
+                    "actors": [actor for actor in data[i]["info"]["actors"]],
+                    "rank": data[i]["info"]["rank"],
+                    "running_time_secs": data[i]["info"].get("running_time_secs", -1),
+                    "plot": data[i]["info"].get("plot", "Unknown")
                 }
             )
         return json_dict
