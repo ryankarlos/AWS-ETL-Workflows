@@ -1,7 +1,12 @@
 import json
 import boto3
-from boto3.dynamodb.conditions import Key, Attr
-from decimal import Decimal
+import logging
+
+logger = logging.getLogger("io")
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+logger.addHandler(ch)
 
 
 def format_json_for_dynamo_db(file_path="datasets/moviedata.json"):
@@ -56,4 +61,5 @@ def batch_write_items_to_dynamo(
         for item in data_dict["movies"]:
             item_to_put: dict = json.loads(json.dumps(item))
             batch.put_item(Item=item_to_put)
-            print(f"Written item: {item_to_put}")
+
+    logger.info(f"Finished writing {len(data_dict['movies'])} items")

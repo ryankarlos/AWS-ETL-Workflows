@@ -1,10 +1,13 @@
 import logging
 from botocore.exceptions import ClientError
-import boto3
 import json
 
-logger = logging.getLogger("create_table")
-logger.setLevel(logging.ERROR)
+logger = logging.getLogger("schema")
+logger.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+logger.addHandler(ch)
+
 
 
 class Movies:
@@ -45,8 +48,9 @@ class Movies:
                 },
             )
             result = json.dumps(response, indent=4, sort_keys=True, default=str)
+            logger.info("Creating Table: \n")
             print(result)
-            ddb_waiter(self.dyn_resource, table_name)
+            ddb_waiter(self.dyn_resource, "table_exists", table_name)
         except ClientError as err:
             logger.error(
                 "Couldn't create table %s. Here's why: %s: %s",
@@ -62,7 +66,8 @@ class Movies:
         """
         try:
             logger.info(f"Deleting table {table_name}")
-            client.delete_table(TableName=table_name)
+            self.dyn_resource.delete_table(TableName=table_name)
+            ddb_waiter(self.dyn_resource, "table_not_exists", table_name)
         except ClientError as err:
             logger.error(
                 "Couldn't delete table %s. Here's why: %s: %s",
@@ -72,17 +77,17 @@ class Movies:
             )
 
 
-def ddb_waiter(resource, table_name):
+def ddb_waiter(resource, waiter, table_name):
     """
     Retrieve waiter instance that will wait till a specified
     # S3 bucket exists
     :param resource: dynamo db resource
+    :param waiter: name of waiter e.g. "table_exists", "table_not_exists"
     :param table_name: table to wait for
     :return:
     """
     # obtain waiter for table exists
-    table_exists_waiter = resource.get_waiter("table_exists")
-    # List the waiter for ddb client
-    print(f"Dynamo db waiters:{resource.waiter_names}")
+    table_waiter = resource.get_waiter(waiter)
     # Begin waiting for the table creation
-    table_exists_waiter.wait(TableName=table_name)
+    logger.info(f"Waiting for Table waiter {waiter} .....")
+    table_waiter.wait(TableName=table_name)

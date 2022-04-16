@@ -1,7 +1,6 @@
 import json
 import boto3
-from boto3.dynamodb.conditions import Key, Attr
-from decimal import Decimal
+from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 from schema import Movies
 from ddb_io import format_json_for_dynamo_db, write_to_json, batch_write_items_to_dynamo
