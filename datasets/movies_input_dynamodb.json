@@ -1,0 +1,3452 @@
+{
+    "movies": [
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Rush"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Biography"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Sport"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Ron Howard"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Daniel Bruhl"
+                    },
+                    {
+                        "s": "Chris Hemsworth"
+                    },
+                    {
+                        "s": "Olivia Wilde"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 2
+            },
+            "rating": {
+                "n": 8.3
+            },
+            "running_time_secs": {
+                "n": 7380
+            },
+            "plot": {
+                "s": "A re-creation of the merciless 1970s rivalry between Formula One rivals James Hunt and Niki Lauda."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Prisoners"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Denis Villeneuve"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Hugh Jackman"
+                    },
+                    {
+                        "s": "Jake Gyllenhaal"
+                    },
+                    {
+                        "s": "Viola Davis"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 3
+            },
+            "rating": {
+                "n": 8.2
+            },
+            "running_time_secs": {
+                "n": 9180
+            },
+            "plot": {
+                "s": "When Keller Dover's daughter and her friend go missing, he takes matters into his own hands as the police pursue multiple leads and the pressure mounts. But just how far will this desperate father go to protect his family?"
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "The Hunger Games: Catching Fire"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Francis Lawrence"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Jennifer Lawrence"
+                    },
+                    {
+                        "s": "Josh Hutcherson"
+                    },
+                    {
+                        "s": "Liam Hemsworth"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 4
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": 8760
+            },
+            "plot": {
+                "s": "Katniss Everdeen and Peeta Mellark become targets of the Capitol after their victory in the 74th Hunger Games sparks a rebellion in the Districts of Panem."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Thor: The Dark World"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Fantasy"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Alan Taylor"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Chris Hemsworth"
+                    },
+                    {
+                        "s": "Natalie Portman"
+                    },
+                    {
+                        "s": "Tom Hiddleston"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 5
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "Faced with an enemy that even Odin and Asgard cannot withstand, Thor must embark on his most perilous and personal journey yet, one that will reunite him with Jane Foster and force him to sacrifice everything to save us all."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "This Is the End"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Fantasy"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Evan Goldberg"
+                    },
+                    {
+                        "s": "Seth Rogen"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "James Franco"
+                    },
+                    {
+                        "s": "Jonah Hill"
+                    },
+                    {
+                        "s": "Seth Rogen"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 6
+            },
+            "rating": {
+                "n": 7.2
+            },
+            "running_time_secs": {
+                "n": 6420
+            },
+            "plot": {
+                "s": "While attending a party at James Franco's house, Seth Rogen, Jay Baruchel and many other celebrities are faced with the apocalypse."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Insidious: Chapter 2"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Horror"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "James Wan"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Patrick Wilson"
+                    },
+                    {
+                        "s": "Rose Byrne"
+                    },
+                    {
+                        "s": "Barbara Hershey"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 7
+            },
+            "rating": {
+                "n": 7.1
+            },
+            "running_time_secs": {
+                "n": 6360
+            },
+            "plot": {
+                "s": "The haunted Lambert family seeks to uncover the mysterious childhood secret that has left them dangerously connected to the spirit world."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "World War Z"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Horror"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Marc Forster"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Brad Pitt"
+                    },
+                    {
+                        "s": "Mireille Enos"
+                    },
+                    {
+                        "s": "Daniella Kertesz"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 8
+            },
+            "rating": {
+                "n": 7.1
+            },
+            "running_time_secs": {
+                "n": 6960
+            },
+            "plot": {
+                "s": "United Nations employee Gerry Lane traverses the world in a race against time to stop the Zombie pandemic that is toppling armies and governments, and threatening to destroy humanity itself."
+            }
+        },
+        {
+            "year": {
+                "n": 2014
+            },
+            "title": {
+                "s": "X-Men: Days of Future Past"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Fantasy"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Bryan Singer"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Jennifer Lawrence"
+                    },
+                    {
+                        "s": "Hugh Jackman"
+                    },
+                    {
+                        "s": "Michael Fassbender"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 9
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "The X-Men send Wolverine to the past to change a major historical event that could globally impact man and mutant kind."
+            }
+        },
+        {
+            "year": {
+                "n": 2014
+            },
+            "title": {
+                "s": "Transformers: Age of Extinction"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Michael Bay"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Mark Wahlberg"
+                    },
+                    {
+                        "s": "Nicola Peltz"
+                    },
+                    {
+                        "s": "Jack Reynor"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 10
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "A mechanic and his daughter make a discovery that brings down Autobots and Decepticons - and a paranoid government official - on them."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Now You See Me"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Mystery"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Louis Leterrier"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Jesse Eisenberg"
+                    },
+                    {
+                        "s": "Common"
+                    },
+                    {
+                        "s": "Mark Ruffalo"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 11
+            },
+            "rating": {
+                "n": 7.3
+            },
+            "running_time_secs": {
+                "n": 6900
+            },
+            "plot": {
+                "s": "An FBI agent and an Interpol detective track a team of illusionists who pull off bank heists during their performances and reward their audiences with the money."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Gravity"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Alfonso Cuaron"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Sandra Bullock"
+                    },
+                    {
+                        "s": "George Clooney"
+                    },
+                    {
+                        "s": "Ed Harris"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 12
+            },
+            "rating": {
+                "n": 8.2
+            },
+            "running_time_secs": {
+                "n": 5400
+            },
+            "plot": {
+                "s": "A medical engineer and an astronaut work together to survive after an accident leaves them adrift in space."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "We're the Millers"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Crime"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Rawson Marshall Thurber"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Jason Sudeikis"
+                    },
+                    {
+                        "s": "Jennifer Aniston"
+                    },
+                    {
+                        "s": "Emma Roberts"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 13
+            },
+            "rating": {
+                "n": 7.2
+            },
+            "running_time_secs": {
+                "n": 6600
+            },
+            "plot": {
+                "s": "A veteran pot dealer creates a fake family as part of his plan to move a huge shipment of weed into the U.S. from Mexico."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Riddick"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "David Twohy"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Vin Diesel"
+                    },
+                    {
+                        "s": "Karl Urban"
+                    },
+                    {
+                        "s": "Katee Sackhoff"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 14
+            },
+            "rating": {
+                "n": 6.8
+            },
+            "running_time_secs": {
+                "n": 7140
+            },
+            "plot": {
+                "s": "Left for dead on a sun-scorched planet, Riddick finds himself up against an alien race of predators. Activating an emergency beacon alerts two ships: one carrying a new breed of mercenary, the other captained by a man from Riddick's past."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "The Family"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Crime"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Luc Besson"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Robert De Niro"
+                    },
+                    {
+                        "s": "Michelle Pfeiffer"
+                    },
+                    {
+                        "s": "Dianna Agron"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 15
+            },
+            "rating": {
+                "n": 6.5
+            },
+            "running_time_secs": {
+                "n": 6660
+            },
+            "plot": {
+                "s": "The Manzoni family, a notorious mafia clan, is relocated to Normandy, France under the witness protection program, where fitting in soon becomes challenging as their old habits die hard."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Star Trek Into Darkness"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "J.J. Abrams"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Chris Pine"
+                    },
+                    {
+                        "s": "Zachary Quinto"
+                    },
+                    {
+                        "s": "Zoe Saldana"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 16
+            },
+            "rating": {
+                "n": 7.9
+            },
+            "running_time_secs": {
+                "n": 7920
+            },
+            "plot": {
+                "s": "After the crew of the Enterprise find an unstoppable force of terror from within their own organization, Captain Kirk leads a manhunt to a war-zone world to capture a one man weapon of mass destruction."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "After Earth"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "M. Night Shyamalan"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Jaden Smith"
+                    },
+                    {
+                        "s": "David Denman"
+                    },
+                    {
+                        "s": "Will Smith"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 17
+            },
+            "rating": {
+                "n": 4.9
+            },
+            "running_time_secs": {
+                "n": 6000
+            },
+            "plot": {
+                "s": "A crash landing leaves Kitai Raige and his father Cypher stranded on Earth, a millennium after events forced humanity's escape. With Cypher injured, Kitai must embark on a perilous journey to signal for help."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "The Great Gatsby"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Romance"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Baz Luhrmann"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Leonardo DiCaprio"
+                    },
+                    {
+                        "s": "Carey Mulligan"
+                    },
+                    {
+                        "s": "Joel Edgerton"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 18
+            },
+            "rating": {
+                "n": 7.3
+            },
+            "running_time_secs": {
+                "n": 8580
+            },
+            "plot": {
+                "s": "A Midwestern war veteran finds himself drawn to the past and lifestyle of his millionaire neighbor."
+            }
+        },
+        {
+            "year": {
+                "n": 2014
+            },
+            "title": {
+                "s": "Divergent"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Romance"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Neil Burger"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Shailene Woodley"
+                    },
+                    {
+                        "s": "Kate Winslet"
+                    },
+                    {
+                        "s": "Zoe Kravitz"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 20
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "Beatrice Prior, a teenager with a special mind, finds her life threatened when an authoritarian leader seeks to exterminate her kind in her effort to seize control of their divided society."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "We Are What We Are"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Horror"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Jim Mickle"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Bill Sage"
+                    },
+                    {
+                        "s": "Ambyr Childers"
+                    },
+                    {
+                        "s": "Julia Garner"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 21
+            },
+            "rating": {
+                "n": 6.2
+            },
+            "running_time_secs": {
+                "n": 6300
+            },
+            "plot": {
+                "s": "The Parkers, a reclusive family who follow ancient customs, find their secret existence threatened as a torrential downpour moves into their area, forcing daughters Iris and Rose to assume responsibilities beyond those of a typical family."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Iron Man 3"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Shane Black"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Robert Downey Jr."
+                    },
+                    {
+                        "s": "Guy Pearce"
+                    },
+                    {
+                        "s": "Gwyneth Paltrow"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 22
+            },
+            "rating": {
+                "n": 7.4
+            },
+            "running_time_secs": {
+                "n": 7800
+            },
+            "plot": {
+                "s": "When Tony Stark's world is torn apart by a formidable terrorist called the Mandarin, he starts an odyssey of rebuilding and retribution."
+            }
+        },
+        {
+            "year": {
+                "n": 2014
+            },
+            "title": {
+                "s": "The Amazing Spider-Man 2"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Fantasy"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Marc Webb"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Andrew Garfield"
+                    },
+                    {
+                        "s": "Emma Stone"
+                    },
+                    {
+                        "s": "Jamie Foxx"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 23
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "Spider-Man squares off against the Rhino and the powerful Electro while struggling to keep his promise to leave Gwen Stacey out of his dangerous life."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Curse of Chucky"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Horror"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Don Mancini"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Chantal Quesnelle"
+                    },
+                    {
+                        "s": "Fiona Dourif"
+                    },
+                    {
+                        "s": "Danielle Bisutti"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 24
+            },
+            "rating": {
+                "n": 5.7
+            },
+            "running_time_secs": {
+                "n": 5820
+            },
+            "plot": {
+                "s": "After her mother's mysterious death, Nica begins to suspect that the talking, red-haired doll her visiting niece has been playing with may be the key to recent bloodshed and chaos."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "The Conjuring"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Horror"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "James Wan"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Patrick Wilson"
+                    },
+                    {
+                        "s": "Vera Farmiga"
+                    },
+                    {
+                        "s": "Ron Livingston"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 25
+            },
+            "rating": {
+                "n": 7.7
+            },
+            "running_time_secs": {
+                "n": 6720
+            },
+            "plot": {
+                "s": "Paranormal investigators Ed and Lorraine Warren work to help a family terrorized by a dark presence in their farmhouse."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Oldboy"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Mystery"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Spike Lee"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Josh Brolin"
+                    },
+                    {
+                        "s": "Elizabeth Olsen"
+                    },
+                    {
+                        "s": "Samuel L. Jackson"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 26
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "Obsessed with vengeance, a man sets out to find out why he was kidnapped and locked up into solitary confinement for 20 years without reason."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Escape Plan"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Mystery"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Mikael Hafstrom"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Sylvester Stallone"
+                    },
+                    {
+                        "s": "Arnold Schwarzenegger"
+                    },
+                    {
+                        "s": "50 Cent"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 27
+            },
+            "rating": {
+                "n": 7.6
+            },
+            "running_time_secs": {
+                "n": 6960
+            },
+            "plot": {
+                "s": "When a structural-security authority finds himself incarcerated in a prison he designed, he has to put his skills to escape and find out who framed him."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Elysium"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Neill Blomkamp"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Matt Damon"
+                    },
+                    {
+                        "s": "Jodie Foster"
+                    },
+                    {
+                        "s": "Sharlto Copley"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 28
+            },
+            "rating": {
+                "n": 7
+            },
+            "running_time_secs": {
+                "n": 6540
+            },
+            "plot": {
+                "s": "Set in the year 2154, where the very wealthy live on a man-made space station while the rest of the population resides on a ruined Earth, a man takes on a mission that could bring equality to the polarized worlds."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Cloudy with a Chance of Meatballs 2"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Animation"
+                    },
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Family"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Cody Cameron"
+                    },
+                    {
+                        "s": "Kris Pearn"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Bill Hader"
+                    },
+                    {
+                        "s": "Anna Faris"
+                    },
+                    {
+                        "s": "Will Forte"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 29
+            },
+            "rating": {
+                "n": 6.7
+            },
+            "running_time_secs": {
+                "n": 5700
+            },
+            "plot": {
+                "s": "Flint Lockwood now works at The Live Corp Company for his idol Chester V. But he's forced to leave his post when he learns that his most infamous machine is still operational and is churning out menacing food-animal hybrids."
+            }
+        },
+        {
+            "year": {
+                "n": 2014
+            },
+            "title": {
+                "s": "RoboCop"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Jose Padilha"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Joel Kinnaman"
+                    },
+                    {
+                        "s": "Douglas Urbanski"
+                    },
+                    {
+                        "s": "Abbie Cornish"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 30
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "In 2028 Detroit, when Alex Murphy (Joel Kinnaman) - a loving husband, father and good cop - is critically injured in the line of duty, the multinational conglomerate OmniCorp sees their chance for a part-man, part-robot police officer."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Carrie"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Horror"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Kimberly Peirce"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Chloe Grace Moretz"
+                    },
+                    {
+                        "s": "Julianne Moore"
+                    },
+                    {
+                        "s": "Judy Greer"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 31
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "A reimagining of the classic horror tale about Carrie White, a shy girl outcast by her peers and sheltered by her deeply religious mother, who unleashes telekinetic terror on her small town after being pushed too far at her senior prom."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "The Mortal Instruments: City of Bones"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Fantasy"
+                    },
+                    {
+                        "s": "Mystery"
+                    },
+                    {
+                        "s": "Romance"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Harald Zwart"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Lily Collins"
+                    },
+                    {
+                        "s": "Jamie Campbell Bower"
+                    },
+                    {
+                        "s": "Robert Sheehan"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 32
+            },
+            "rating": {
+                "n": 6.6
+            },
+            "running_time_secs": {
+                "n": 7800
+            },
+            "plot": {
+                "s": "When her mother disappears, Clary Fray learns that she descends from a line of warriors who protect our world from demons. She joins forces with others like her and heads into a dangerous alternate New York called Downworld."
+            }
+        },
+        {
+            "year": {
+                "n": 2014
+            },
+            "title": {
+                "s": "Captain America: The Winter Soldier"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Anthony Russo"
+                    },
+                    {
+                        "s": "Joe Russo"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Chris Evans"
+                    },
+                    {
+                        "s": "Frank Grillo"
+                    },
+                    {
+                        "s": "Sebastian Stan"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 33
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "Steve Rogers struggles to embrace his role in the modern world and teams up with Natasha Romanoff, aka Black Widow, to battle a powerful yet shadowy enemy in present-day Washington, D.C."
+            }
+        },
+        {
+            "year": {
+                "n": 2014
+            },
+            "title": {
+                "s": "Need for Speed"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Scott Waugh"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Aaron Paul"
+                    },
+                    {
+                        "s": "Chillie Mo"
+                    },
+                    {
+                        "s": "Dominic Cooper"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 34
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "Fresh from prison, a street racer who was framed by a wealthy business associate joins a cross country race with revenge in mind. His ex-partner, learning of the plan, places a massive bounty on his head as the race begins."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Runner Runner"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Brad Furman"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Ben Affleck"
+                    },
+                    {
+                        "s": "Justin Timberlake"
+                    },
+                    {
+                        "s": "Gemma Arterton"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 35
+            },
+            "rating": {
+                "n": 5.4
+            },
+            "running_time_secs": {
+                "n": 5460
+            },
+            "plot": {
+                "s": "When a poor college student who cracks an online poker game goes bust, he arranges a face-to-face with the man he thinks cheated him, a sly offshore entrepreneur."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "I Spit on Your Grave 2"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Horror"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Steven R. Monroe"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Jemma Dallender"
+                    },
+                    {
+                        "s": "Yavor Baharov"
+                    },
+                    {
+                        "s": "Joe Absolom"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 36
+            },
+            "rating": {
+                "n": 5.5
+            },
+            "running_time_secs": {
+                "n": 6360
+            },
+            "plot": {
+                "s": "Unknown"
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Battle of the Year"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Music"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Benson Lee"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Josh Holloway"
+                    },
+                    {
+                        "s": "Laz Alonso"
+                    },
+                    {
+                        "s": "Josh Peck"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 37
+            },
+            "rating": {
+                "n": 3.5
+            },
+            "running_time_secs": {
+                "n": 6600
+            },
+            "plot": {
+                "s": "Battle of the Year attracts all the best teams from around the world, but the Americans haven't won in fifteen years. Dante enlists Blake to assemble a team of the best dancers and bring the Trophy back to America where it started."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Behind the Candelabra"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Biography"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Romance"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Steven Soderbergh"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Matt Damon"
+                    },
+                    {
+                        "s": "Scott Bakula"
+                    },
+                    {
+                        "s": "Eric Zuckerman"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 38
+            },
+            "rating": {
+                "n": 7
+            },
+            "running_time_secs": {
+                "n": 7080
+            },
+            "plot": {
+                "s": "Based on the autobiographical novel, the tempestuous 6-year relationship between Liberace and his (much younger) lover, Scott Thorson, is recounted."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "No se Aceptan Devoluciones"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Drama"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Eugenio Derbez"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Eugenio Derbez"
+                    },
+                    {
+                        "s": "Karla Souza"
+                    },
+                    {
+                        "s": "Jessica Lindsey"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 39
+            },
+            "rating": {
+                "n": 6.9
+            },
+            "running_time_secs": {
+                "n": 6900
+            },
+            "plot": {
+                "s": "A man who has made a new life for himself and the daughter left on his doorstep 6 years ago finds his family threatened when the birth mother resurfaces."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "The Bling Ring"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Drama"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Sofia Coppola"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Katie Chang"
+                    },
+                    {
+                        "s": "Israel Broussard"
+                    },
+                    {
+                        "s": "Emma Watson"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 41
+            },
+            "rating": {
+                "n": 5.8
+            },
+            "running_time_secs": {
+                "n": 5400
+            },
+            "plot": {
+                "s": "Inspired by actual events, a group of fame-obsessed teenagers use the internet to track celebrities' whereabouts in order to rob their homes."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Furious 6"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Justin Lin"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Vin Diesel"
+                    },
+                    {
+                        "s": "Paul Walker"
+                    },
+                    {
+                        "s": "Dwayne Johnson"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 42
+            },
+            "rating": {
+                "n": 7.2
+            },
+            "running_time_secs": {
+                "n": 7800
+            },
+            "plot": {
+                "s": "Hobbs has Dom and Brian reassemble their crew in order to take down a mastermind who commands an organization of mercenary drivers across 12 countries. Payment? Full pardons for them all."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Machete Kills"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Robert Rodriguez"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Danny Trejo"
+                    },
+                    {
+                        "s": "Alexa Vega"
+                    },
+                    {
+                        "s": "Mel Gibson"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 43
+            },
+            "rating": {
+                "n": 6.3
+            },
+            "running_time_secs": {
+                "n": 6420
+            },
+            "plot": {
+                "s": "The U.S. government recruits Machete to battle his way through Mexico in order to take down an arms dealer who looks to launch a weapon into space."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "12 Years a Slave"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Biography"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "History"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Steve McQueen"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Chiwetel Ejiofor"
+                    },
+                    {
+                        "s": "Michael K. Williams"
+                    },
+                    {
+                        "s": "Michael Fassbender"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 44
+            },
+            "rating": {
+                "n": 7.7
+            },
+            "running_time_secs": {
+                "n": 7980
+            },
+            "plot": {
+                "s": "In the antebellum United States, Solomon Northup, a free black man from upstate New York, is abducted and sold into slavery."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "The World's End"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Edgar Wright"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Simon Pegg"
+                    },
+                    {
+                        "s": "Nick Frost"
+                    },
+                    {
+                        "s": "Martin Freeman"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 45
+            },
+            "rating": {
+                "n": 7.5
+            },
+            "running_time_secs": {
+                "n": 6540
+            },
+            "plot": {
+                "s": "Five friends who reunite in an attempt to top their epic pub crawl from 20 years earlier unwittingly become humankind's only hope for survival."
+            }
+        },
+        {
+            "year": {
+                "n": 2012
+            },
+            "title": {
+                "s": "Pitch Perfect"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Music"
+                    },
+                    {
+                        "s": "Romance"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Jason Moore"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Anna Kendrick"
+                    },
+                    {
+                        "s": "Brittany Snow"
+                    },
+                    {
+                        "s": "Rebel Wilson"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 46
+            },
+            "rating": {
+                "n": 7.1
+            },
+            "running_time_secs": {
+                "n": 6720
+            },
+            "plot": {
+                "s": "Beca, a freshman at Barden University, is cajoled into joining The Bellas, her school's all-girls singing group. Injecting some much needed energy into their repertoire, The Bellas take on their male rivals in a campus competition."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Epic"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Animation"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Family"
+                    },
+                    {
+                        "s": "Fantasy"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Chris Wedge"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Amanda Seyfried"
+                    },
+                    {
+                        "s": "Josh Hutcherson"
+                    },
+                    {
+                        "s": "Beyonce Knowles"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 47
+            },
+            "rating": {
+                "n": 6.6
+            },
+            "running_time_secs": {
+                "n": 6120
+            },
+            "plot": {
+                "s": "A teenager finds herself transported to a deep forest setting where a battle between the forces of good and the forces of evil is taking place. She bands together with a rag-tag group characters in order to save their world -- and ours."
+            }
+        },
+        {
+            "year": {
+                "n": 2012
+            },
+            "title": {
+                "s": "The Avengers"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Fantasy"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Joss Whedon"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Robert Downey Jr."
+                    },
+                    {
+                        "s": "Chris Evans"
+                    },
+                    {
+                        "s": "Scarlett Johansson"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 48
+            },
+            "rating": {
+                "n": 8.2
+            },
+            "running_time_secs": {
+                "n": 8580
+            },
+            "plot": {
+                "s": "Nick Fury of S.H.I.E.L.D. assembles a team of superhumans to save the planet from Loki and his army."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Metallica Through the Never"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Music"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Nimrod Antal"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Dane DeHaan"
+                    },
+                    {
+                        "s": "James Hetfield"
+                    },
+                    {
+                        "s": "Lars Ulrich"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 49
+            },
+            "rating": {
+                "n": 7.8
+            },
+            "running_time_secs": {
+                "n": 5640
+            },
+            "plot": {
+                "s": "Trip, a young roadie for Metallica, is sent on an urgent mission during the band's show. But what seems like a simple assignment turns into a surreal adventure."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Oblivion"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Mystery"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Joseph Kosinski"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Tom Cruise"
+                    },
+                    {
+                        "s": "Morgan Freeman"
+                    },
+                    {
+                        "s": "Andrea Riseborough"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 50
+            },
+            "rating": {
+                "n": 7
+            },
+            "running_time_secs": {
+                "n": 7440
+            },
+            "plot": {
+                "s": "A veteran assigned to extract Earth's remaining resources begins to question what he knows about his mission and himself."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Dom Hemingway"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Drama"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Richard Shepard"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Jude Law"
+                    },
+                    {
+                        "s": "Richard E. Grant"
+                    },
+                    {
+                        "s": "Demian Bichir"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 51
+            },
+            "rating": {
+                "n": 6.9
+            },
+            "running_time_secs": {
+                "n": 5580
+            },
+            "plot": {
+                "s": "After spending 12 years in prison for keeping his mouth shut, notorious safe-cracker Dom Hemingway is back on the streets of London looking to collect what he's owed."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "The Hangover Part III"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Todd Phillips"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Bradley Cooper"
+                    },
+                    {
+                        "s": "Zach Galifianakis"
+                    },
+                    {
+                        "s": "Ed Helms"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 52
+            },
+            "rating": {
+                "n": 5.9
+            },
+            "running_time_secs": {
+                "n": 6000
+            },
+            "plot": {
+                "s": "When one of their own is kidnapped by an angry gangster, the Wolf Pack must track down Mr. Chow, who has escaped from prison and is on the lam."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Despicable Me 2"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Animation"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Family"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Pierre Coffin"
+                    },
+                    {
+                        "s": "Chris Renaud"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Steve Carell"
+                    },
+                    {
+                        "s": "Kristen Wiig"
+                    },
+                    {
+                        "s": "Benjamin Bratt"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 55
+            },
+            "rating": {
+                "n": 7.7
+            },
+            "running_time_secs": {
+                "n": 5880
+            },
+            "plot": {
+                "s": "Gru is recruited by the Anti-Villain League to help deal with a powerful new super criminal."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "The Butler"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Biography"
+                    },
+                    {
+                        "s": "Drama"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Lee Daniels"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Forest Whitaker"
+                    },
+                    {
+                        "s": "Oprah Winfrey"
+                    },
+                    {
+                        "s": "John Cusack"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 56
+            },
+            "rating": {
+                "n": 6.6
+            },
+            "running_time_secs": {
+                "n": 7920
+            },
+            "plot": {
+                "s": "As Cecil Gaines serves eight presidents during his tenure as a butler at the White House, the civil rights movement, Vietnam, and other major events affect this man's life, family, and American society."
+            }
+        },
+        {
+            "year": {
+                "n": 2014
+            },
+            "title": {
+                "s": "Dumb and Dumber To"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Bobby Farrelly"
+                    },
+                    {
+                        "s": "Peter Farrelly"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Jennifer Lawrence"
+                    },
+                    {
+                        "s": "Jim Carrey"
+                    },
+                    {
+                        "s": "Jeff Daniels"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 57
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "20 years after the dimwits set out on their first adventure, they head out in search of one of their long lost children in the hope of gaining a new kidney."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Blue Jasmine"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Drama"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Woody Allen"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Cate Blanchett"
+                    },
+                    {
+                        "s": "Alec Baldwin"
+                    },
+                    {
+                        "s": "Peter Sarsgaard"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 58
+            },
+            "rating": {
+                "n": 7.8
+            },
+            "running_time_secs": {
+                "n": 5880
+            },
+            "plot": {
+                "s": "A New York socialite, deeply troubled and in denial, arrives in San Francisco to impose upon her sister. She looks a million, but isn't bringing money, peace, or love..."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Ender's Game"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Gavin Hood"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Harrison Ford"
+                    },
+                    {
+                        "s": "Asa Butterfield"
+                    },
+                    {
+                        "s": "Hailee Steinfeld"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 59
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": 6840
+            },
+            "plot": {
+                "s": "70 years after a horrific alien war, an unusually gifted child is sent to an advanced military school in space to prepare for a future invasion."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "White House Down"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Roland Emmerich"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Channing Tatum"
+                    },
+                    {
+                        "s": "Jamie Foxx"
+                    },
+                    {
+                        "s": "Maggie Gyllenhaal"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 60
+            },
+            "rating": {
+                "n": 6.4
+            },
+            "running_time_secs": {
+                "n": 7860
+            },
+            "plot": {
+                "s": "While on a tour of the White House with his young daughter, a Capitol policeman springs into action to save his child and protect the president from a heavily armed group of paramilitary invaders."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Pain & Gain"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Drama"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Michael Bay"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Mark Wahlberg"
+                    },
+                    {
+                        "s": "Dwayne Johnson"
+                    },
+                    {
+                        "s": "Anthony Mackie"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 61
+            },
+            "rating": {
+                "n": 6.5
+            },
+            "running_time_secs": {
+                "n": 7740
+            },
+            "plot": {
+                "s": "A trio of bodybuilders in Florida get caught up in an extortion ring and a kidnapping scheme that goes terribly wrong."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "2 Guns"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Baltasar Kormakur"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Denzel Washington"
+                    },
+                    {
+                        "s": "Mark Wahlberg"
+                    },
+                    {
+                        "s": "Paula Patton"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 62
+            },
+            "rating": {
+                "n": 7
+            },
+            "running_time_secs": {
+                "n": 6540
+            },
+            "plot": {
+                "s": "A DEA agent and a naval intelligence officer find themselves on the run after a botched attempt to infiltrate a drug cartel. While fleeing, they learn the secret of their shaky alliance: Neither knew that the other was an undercover agent."
+            }
+        },
+        {
+            "year": {
+                "n": 2012
+            },
+            "title": {
+                "s": "The Dark Knight Rises"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Christopher Nolan"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Christian Bale"
+                    },
+                    {
+                        "s": "Tom Hardy"
+                    },
+                    {
+                        "s": "Anne Hathaway"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 63
+            },
+            "rating": {
+                "n": 8.6
+            },
+            "running_time_secs": {
+                "n": 9900
+            },
+            "plot": {
+                "s": "Eight years on, a new evil rises from where the Batman and Commissioner Gordon tried to bury it, causing the Batman to resurface and fight to protect Gotham City... the very city which brands him an enemy."
+            }
+        },
+        {
+            "year": {
+                "n": 2012
+            },
+            "title": {
+                "s": "The Place Beyond the Pines"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Drama"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Derek Cianfrance"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Ryan Gosling"
+                    },
+                    {
+                        "s": "Bradley Cooper"
+                    },
+                    {
+                        "s": "Eva Mendes"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 64
+            },
+            "rating": {
+                "n": 7.4
+            },
+            "running_time_secs": {
+                "n": 8400
+            },
+            "plot": {
+                "s": "A motorcycle stunt rider turns to robbing banks as a way to provide for his lover and their newborn child, a decision that puts him on a collision course with an ambitious rookie cop navigating a department ruled by a corrupt detective."
+            }
+        },
+        {
+            "year": {
+                "n": 2014
+            },
+            "title": {
+                "s": "Fast & Furious 7"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Crime"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "James Wan"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Vin Diesel"
+                    },
+                    {
+                        "s": "Paul Walker"
+                    },
+                    {
+                        "s": "Dwayne Johnson"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 65
+            },
+            "rating": {
+                "n": -1
+            },
+            "running_time_secs": {
+                "n": -1
+            },
+            "plot": {
+                "s": "After Dominic Toretto and his crew helped take down Owen Shaw, his brother Ian Shaw now wants revenge."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "jOBS"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Biography"
+                    },
+                    {
+                        "s": "Drama"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Joshua Michael Stern"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Ashton Kutcher"
+                    },
+                    {
+                        "s": "Dermot Mulroney"
+                    },
+                    {
+                        "s": "Josh Gad"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 66
+            },
+            "rating": {
+                "n": 5.6
+            },
+            "running_time_secs": {
+                "n": 7680
+            },
+            "plot": {
+                "s": "The story of Steve Jobs' ascension from college dropout into one of the most revered creative entrepreneurs of the 20th century."
+            }
+        },
+        {
+            "year": {
+                "n": 2012
+            },
+            "title": {
+                "s": "Disconnect"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Drama"
+                    },
+                    {
+                        "s": "Thriller"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Henry Alex Rubin"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Jason Bateman"
+                    },
+                    {
+                        "s": "Jonah Bobo"
+                    },
+                    {
+                        "s": "Haley Ramm"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 67
+            },
+            "rating": {
+                "n": 7.5
+            },
+            "running_time_secs": {
+                "n": 6900
+            },
+            "plot": {
+                "s": "A drama centered on a group of people searching for human connections in today's wired world."
+            }
+        },
+        {
+            "year": {
+                "n": 2011
+            },
+            "title": {
+                "s": "Bridesmaids"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Romance"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Paul Feig"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Kristen Wiig"
+                    },
+                    {
+                        "s": "Maya Rudolph"
+                    },
+                    {
+                        "s": "Rose Byrne"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 68
+            },
+            "rating": {
+                "n": 6.8
+            },
+            "running_time_secs": {
+                "n": 7500
+            },
+            "plot": {
+                "s": "Competition between the maid of honor and a bridesmaid, over who is the bride's best friend, threatens to upend the life of an out-of-work pastry chef."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Man of Steel"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Action"
+                    },
+                    {
+                        "s": "Adventure"
+                    },
+                    {
+                        "s": "Fantasy"
+                    },
+                    {
+                        "s": "Sci-Fi"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Zack Snyder"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Henry Cavill"
+                    },
+                    {
+                        "s": "Amy Adams"
+                    },
+                    {
+                        "s": "Michael Shannon"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 69
+            },
+            "rating": {
+                "n": 7.6
+            },
+            "running_time_secs": {
+                "n": 8580
+            },
+            "plot": {
+                "s": "A young itinerant worker is forced to confront his secret extraterrestrial heritage when Earth is invaded by members of his race."
+            }
+        },
+        {
+            "year": {
+                "n": 2013
+            },
+            "title": {
+                "s": "Ghost Team One"
+            },
+            "genres": {
+                "L": [
+                    {
+                        "s": "Comedy"
+                    },
+                    {
+                        "s": "Horror"
+                    }
+                ]
+            },
+            "directors": {
+                "L": [
+                    {
+                        "s": "Ben Peyser"
+                    },
+                    {
+                        "s": "Scott Rutherford"
+                    }
+                ]
+            },
+            "actors": {
+                "L": [
+                    {
+                        "s": "Carlos Santos"
+                    },
+                    {
+                        "s": "J.R. Villarreal"
+                    },
+                    {
+                        "s": "Tony Cavalero"
+                    }
+                ]
+            },
+            "rank": {
+                "n": 70
+            },
+            "rating": {
+                "n": 4.3
+            },
+            "running_time_secs": {
+                "n": 6420
+            },
+            "plot": {
+                "s": "Two roommates deathly afraid of ghosts both fall in love with a girl who believes their home is haunted."
+            }
+        }
+    ]
+}

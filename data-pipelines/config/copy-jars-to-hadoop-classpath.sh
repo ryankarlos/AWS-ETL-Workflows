@@ -1,6 +1,8 @@
 #!/bin/bash
 
-#
+# --------- Downloaded from aws shared S3 directory:  s3://dynamodb-dpl-us-west-2/copy-jars-to-haddoop-classpath.sh ---------------------------------
+
+
 # Downloads jars and adds them to Hadoop's classpath on EMR release emr-6.1.0 and above.
 # Add a bootstrapAction on EmrCluster resource in Datapipeline: https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-emrcluster.html
 # and use this script to download jar files that are needed to be present on Hadoop's classpath for successful execution
