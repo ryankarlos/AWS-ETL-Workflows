@@ -1,3 +1,12 @@
+
+# Streaming tweets using AWS kinesis data streams and firehose
+
+
+
+
+
+
+
 ## Configuring kinesis streams
 
 Creating new kinesis source stream and delivery stream. The script fetches the 
@@ -46,6 +55,8 @@ creating new delivery stream Firehose-S3-twitter
 ```
 
 ## Lambda transform function for firehose
+
+
 
 
 
