@@ -1,0 +1,7 @@
+{
+    "StreamName": "kinesis-twitter-stream",
+    "StreamModeDetails": {
+        "StreamMode": "ON_DEMAND"
+    },
+    "ShardCount": 1
+}
