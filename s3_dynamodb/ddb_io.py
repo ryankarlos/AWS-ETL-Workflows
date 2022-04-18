@@ -20,11 +20,13 @@ def format_json_for_dynamo_db(file_path="datasets/moviedata.json"):
                     "year": data[i]["year"],
                     "title": data[i]["title"],
                     "genres": [genre for genre in data[i]["info"]["genres"]],
-                    "directors": [director for director in data[i]["info"]["directors"]],
+                    "directors": [
+                        director for director in data[i]["info"]["directors"]
+                    ],
                     "actors": [actor for actor in data[i]["info"]["actors"]],
                     "rank": data[i]["info"]["rank"],
                     "running_time_secs": data[i]["info"].get("running_time_secs", -1),
-                    "plot": data[i]["info"].get("plot", "Unknown")
+                    "plot": data[i]["info"].get("plot", "Unknown"),
                 }
             )
         return json_dict

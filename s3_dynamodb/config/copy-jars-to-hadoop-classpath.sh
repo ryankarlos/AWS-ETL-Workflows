@@ -58,7 +58,7 @@ check_or_create_dictory() {
 
 create_hadoop_shell_profile_script() {
   echo "Creating hadoop shell profile script: $DATAPIPELINE_JARS_SHELLPROFILE_FILE_PATH to add jar files under: $DATAPIPELINE_JARS_DOWNLOAD_DIRECTORY to hadoop classpath."
-  # Need to break formatting here, so that the formatting on output file seems correct.
+  # Need to break formatting here, so that the formatting on outputs file seems correct.
   cat <<< '#!/usr/bin/env bash
 hadoop_add_profile datapipelinejars
 

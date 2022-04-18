@@ -9,7 +9,6 @@ ch.setLevel(logging.DEBUG)
 logger.addHandler(ch)
 
 
-
 class Movies:
     """
     Example from https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.CreateTable.html"""

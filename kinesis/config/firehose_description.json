@@ -1,0 +1,64 @@
+    {
+    "DeliveryStreamName": "Firehose-S3-twitter",
+    "DeliveryStreamType": "KinesisStreamAsSource",
+    "KinesisStreamSourceConfiguration":
+            {
+                        "KinesisStreamARN": "arn:aws:kinesis:us-east-1:376337229415:stream/kinesis-twitter-stream",
+                "RoleARN": "arn:aws:iam::376337229415:role/service-role/KinesisFirehoseServiceRole-Firehose-S3-t-us-east-1-1649708476428"
+            },
+
+    "ExtendedS3DestinationConfiguration":
+            {
+                "RoleARN": "arn:aws:iam::376337229415:role/service-role/KinesisFirehoseServiceRole-Firehose-S3-t-us-east-1-1649708476428",
+                "BucketARN": "arn:aws:s3:::kinesis-firehose-twitter-output",
+                "Prefix": "",
+                "ErrorOutputPrefix": "",
+                "BufferingHints": {
+                    "SizeInMBs": 5,
+                    "IntervalInSeconds": 300
+                },
+                "CompressionFormat": "UNCOMPRESSED",
+                "EncryptionConfiguration": {
+                    "NoEncryptionConfig": "NoEncryption"
+                },
+                "CloudWatchLoggingOptions": {
+                    "Enabled": true,
+                    "LogGroupName": "/aws/kinesisfirehose/Firehose-S3-twitter",
+                    "LogStreamName": "DestinationDelivery"
+                },
+                "ProcessingConfiguration": {
+                    "Enabled": true,
+                    "Processors": [
+                        {
+                            "Type": "Lambda",
+                            "Parameters": [
+                                {
+                                    "ParameterName": "LambdaArn",
+                                    "ParameterValue": "arn:aws:lambda:us-east-1:376337229415:function:transform-firehouse-b64-json:$LATEST"
+                                },
+                                {
+                                    "ParameterName": "NumberOfRetries",
+                                    "ParameterValue": "3"
+                                },
+                                {
+                                    "ParameterName": "RoleArn",
+                                    "ParameterValue": "arn:aws:iam::376337229415:role/service-role/KinesisFirehoseServiceRole-Firehose-S3-t-us-east-1-1649708476428"
+                                },
+                                {
+                                    "ParameterName": "BufferSizeInMBs",
+                                    "ParameterValue": "3"
+                                },
+                                {
+                                    "ParameterName": "BufferIntervalInSeconds",
+                                    "ParameterValue": "60"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "S3BackupMode": "Disabled",
+                "DataFormatConversionConfiguration": {
+                    "Enabled": false
+                }
+            }
+    }

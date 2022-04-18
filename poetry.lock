@@ -1059,7 +1059,7 @@ notebook = ">=4.4.1"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "6a9793eeaaf162315714f27e44ebefd9085971773c5b8c4b3023532ff38b57f4"
+content-hash = "77b1307857cbb9fbe09df3691df0a35e57dfedc44f30ba753085fa8c4538efae"
 
 [metadata.files]
 appnope = [
