@@ -10,12 +10,13 @@ Examples of architecture using AWS ETL and DB services:
 
 ## Dependencies
 
-For running some of the scripts locally, first install poetry https://python-poetry.org/docs/basic-usage/#installing-dependencies
+For running some of the scripts locally, first install poetry https://python-poetry.org/docs/
 
 ```
 pip install poetry
 ```
-and then install the dependencies from the poetry.lock file in the repo
+and then install the dependencies from the poetry.lock file in the repo  
+https://python-poetry.org/docs/basic-usage/#installing-with-poetrylock
 
 ```
 poetry install
@@ -26,6 +27,7 @@ Installing dependencies from lock file
 
 
 The command below  will spawn a new shell with a virtual env containing the newly installed dependencies
+https://python-poetry.org/docs/basic-usage/#activating-the-virtual-environment
 
 ```
 $ poetry shell
