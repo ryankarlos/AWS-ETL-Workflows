@@ -63,11 +63,22 @@ $ aws lambda update-function-code --function-name batch_write_s3_dynamodb --zip-
 ```
 
 To run both the above and also put json object into S3 to trigger lambda function, run the 
-bash script below
+bash script below with the params : raw data path, lambda function name, S3 bucket name, object key
+e.g. 
 
 ```
-$ chmod +x bash_scripts/update_lambda_and_trigger.sh
-$ sh bash_scripts/update_lambda_and_trigger.sh
+$ chmod +x data-pipelines/s3_dynamodb/bash_scripts/update_lambda_and_trigger.sh
+$ sh data-pipelines/s3_dynamodb/bash_scripts/update_lambda_and_trigger.sh \
+datasets/moviedata.json \
+batch_write_s3_dynamodb \
+movies-data-json \
+transformed/moviedata.json 
+```
+
+or without any params defaults to the param values above
+
+```
+$ sh data-pipelines/s3_dynamodb/bash_scripts/update_lambda_and_trigger.sh
 ```
 
 In the cloudwatch console you can see the lamda function execution logs 
