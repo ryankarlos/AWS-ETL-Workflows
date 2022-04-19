@@ -1,3 +1,4 @@
+# Step Functions for ETL tasks
 
 This directory contains state machine definitions used to execute tasks for the following
 use cases:
