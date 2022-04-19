@@ -4,8 +4,17 @@
 <img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/s3_to_dynamodb.png">
 
 
-Zip the lambda function script and required modules into package
+Create a lambda function with the following configurations from console or cli
 
+"FunctionName": "batch_write_s3_dynamodb",
+"Timeout": 40,
+"MemorySize": 1024
+"Runtime": "python3.9",
+
+create role and modify with permissions for accessing S3 and dynamodb as in roles/batch_write_s3_dynamodb/
+Note: for simplicity, Ive added all read options for S3 and all write options for dynamo but you could further limit this to adhere to least privilege principle.
+
+Zip the lambda function script and required modules into package by running the following commands
 
 ```
 $ zip batch_write_dynamodb.zip lambda_function.py
@@ -19,6 +28,7 @@ $ zip batch_write_dynamodb.zip ddb_io.py
 $ zip batch_write_dynamodb.zip schema.py 
 
   adding: schema.py (deflated 68%)
+ 
 ```
 
 Update function with code 
@@ -52,10 +62,15 @@ $ aws lambda update-function-code --function-name batch_write_s3_dynamodb --zip-
 }
 ```
 
-To run both the above and also trigger lambda but oput object into S3 run the 
+To run both the above and also put json object into S3 to trigger lambda function, run the 
 bash script below
 
 ```
 $ chmod +x bash_scripts/update_lambda_and_trigger.sh
 $ sh bash_scripts/update_lambda_and_trigger.sh
 ```
+
+In the cloudwatch console you can see the lamda function execution logs 
+
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/cloudwatch_lambda_ddb1.png">
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/cloudwatch_lambda_ddb2.png">
