@@ -1,0 +1,81 @@
+{
+  "Comment": "Glue ETL flights pipeline execution",
+  "StartAt": "Athena DropExistingTable",
+  "States": {
+    "Athena DropExistingTable": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::athena:startQueryExecution.sync",
+      "Parameters": {
+        "QueryString": "DROP TABLE IF EXISTS flights_summary.fl_delays_with_codes",
+        "WorkGroup": "athena_query_flights"
+      },
+      "ResultPath": null,
+      "Next": "Glue StartJobRun"
+    },
+    "Glue StartJobRun": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun",
+      "Parameters": {
+        "JobName.$": "$.JobName",
+        "MaxCapacity": 2
+      },
+      "ResultPath": "$.gluejobresults",
+      "Next": "Wait"
+    },
+    "Wait": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Get Glue Job status"
+    },
+    "Get Glue Job status": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:glue:getJobRun",
+      "Parameters": {
+        "JobName.$": "$.gluejobresults.JobName",
+        "RunId.$": "$.gluejobresults.JobRunId"
+      },
+      "ResultPath": "$.gluejobresults.status",
+      "Next": "Check Glue Job status"
+    },
+    "Check Glue Job status": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.gluejobresults.status.JobRun.JobRunState",
+          "StringEquals": "SUCCEEDED",
+          "Next": "Athena QueryTargetTable"
+        }
+      ],
+      "Default": "Wait"
+    },
+    "Athena QueryTargetTable": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::athena:startQueryExecution.sync",
+      "Parameters": {
+        "QueryString": "SELECT * FROM flights_summary.fl_delays_with_codes LIMIT 10",
+        "WorkGroup": "athena_query_flights"
+      },
+      "Next": "Athena QueryOutputTable"
+    },
+    "Athena QueryOutputTable": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::athena:getQueryResults",
+      "Parameters": {
+        "QueryExecutionId.$": "$.QueryExecution.QueryExecutionId"
+      },
+      "Next": "PublishResultstoSNS"
+    },
+    "PublishResultstoSNS": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "arn:aws:sns:*:etl",
+        "Message": {
+          "Input.$": "$.ResultSet.Rows"
+        }
+      },
+      "ResultPath": "$.SNS",
+      "End": true
+    }
+  }
+}
