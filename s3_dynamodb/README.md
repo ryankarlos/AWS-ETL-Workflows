@@ -6,10 +6,10 @@
 
 Create a lambda function with the following configurations from console or cli
 
-"FunctionName": "batch_write_s3_dynamodb",
-"Timeout": 40,
-"MemorySize": 1024
-"Runtime": "python3.9",
+* "FunctionName": "batch_write_s3_dynamodb",
+* "Timeout": 40,
+* "MemorySize": 1024
+* "Runtime": "python3.9",
 
 create role and modify with permissions for accessing S3 and dynamodb as in roles/batch_write_s3_dynamodb/
 Note: for simplicity, Ive added all read options for S3 and all write options for dynamo but you could further limit this to adhere to least privilege principle.
