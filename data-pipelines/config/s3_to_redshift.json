@@ -1,0 +1,157 @@
+{
+    "objects": [
+        {
+            "id": "RedshiftCluster",
+            "name": "RedshiftCluster",
+            "connectionString": "#{myRedshiftJdbcConnectStr}",
+            "databaseName": "#{myRedshiftDbName}",
+            "*password": "#{*myRedshiftPassword}",
+            "type": "RedshiftDatabase",
+            "username": "#{myRedshiftUsername}"
+        },
+        {
+            "id": "RedshiftLoadActivity",
+            "name": "RedshiftLoadActivity",
+            "output": {
+                "ref": "DestRedshiftTable"
+            },
+            "input": {
+                "ref": "S3InputDataNode"
+            },
+            "commandOptions": "#{myRedshiftCopyOpts}",
+            "runsOn": {
+                "ref": "Ec2Instance"
+            },
+            "type": "RedshiftCopyActivity",
+            "insertMode": "#{myInsertMode}"
+        },
+        {
+            "id": "S3InputDataNode",
+            "name": "S3InputDataNode",
+            "directoryPath": "#{myInputS3Loc}",
+            "type": "S3DataNode"
+        },
+        {
+            "id": "DestRedshiftTable",
+            "name": "DestRedshiftTable",
+            "database": {
+                "ref": "RedshiftCluster"
+            },
+            "createTableSql": "#{myRedshiftCreateTableSql}",
+            "primaryKeys": "#{myPrimaryKeys}",
+            "type": "RedshiftDataNode",
+            "tableName": "#{myRedshiftTableName}"
+        },
+        {
+            "id": "Ec2Instance",
+            "name": "Ec2Instance",
+            "instanceType": "t1.micro",
+            "securityGroups": "#{myRedshiftSecurityGrps}",
+            "type": "Ec2Resource",
+            "terminateAfter": "2 Hours"
+        },
+        {
+            "id": "Default",
+            "name": "Default",
+            "failureAndRerunMode": "CASCADE",
+            "resourceRole": "MyEC2forDataPipelineRole",
+            "role": "MyDataPipelineRole",
+            "pipelineLogUri": "s3://data-pipeline-logs1/logs/",
+            "scheduleType": "ONDEMAND"
+        }
+    ],
+    "parameters": [
+        {
+            "id": "*myRedshiftPassword",
+            "description": "Redshift password",
+            "type": "String"
+        },
+        {
+            "id": "myRedshiftSecurityGrps",
+            "default": "default",
+            "watermark": "security group name",
+            "helpText": "The names of one or more security groups that are assigned to the Redshift cluster.",
+            "description": "Redshift security group(s)",
+            "isArray": "true",
+            "type": "String"
+        },
+        {
+            "id": "myRedshiftDbName",
+            "description": "Redshift database name",
+            "type": "String"
+        },
+        {
+            "id": "myRedshiftUsername",
+            "description": "Redshift username",
+            "type": "String"
+        },
+        {
+            "id": "myRedshiftCreateTableSql",
+            "watermark": "CREATE TABLE IF NOT EXISTS #{tableName} (id varchar(255), name varchar(255), address varchar(255), primary key(id)) distkey(id) sortkey(id);",
+            "helpText": "The SQL statement to create the Redshift table if it does not already exist.",
+            "description": "Create table SQL query",
+            "optional": "true",
+            "type": "String"
+        },
+        {
+            "id": "myInsertMode",
+            "default": "OVERWRITE_EXISTING",
+            "helpLink": "https://docs.aws.amazon.com/console/datapipeline/redshiftcopyactivity",
+            "helpText": "Determines how to handle pre-existing data in the target table that overlaps with rows in the data to be loaded.",
+            "description": "Table insert mode",
+            "type": "String"
+        },
+        {
+            "id": "myRedshiftTableName",
+            "helpText": "The name of an existing table or a new table that will be created based on the create table SQL query parameter below.",
+            "description": "Redshift table name",
+            "type": "String"
+        },
+        {
+            "id": "myInputS3Loc",
+            "helpText": "The S3 folder where one or more input files are located.",
+            "description": "Input S3 folder",
+            "type": "AWS::S3::ObjectKey"
+        },
+        {
+            "id": "myRedshiftJdbcConnectStr",
+            "watermark": "jdbc:postgresql://endpoint:port/database?tcpKeepAlive=true",
+            "description": "Redshift JDBC connection string",
+            "type": "String"
+        },
+        {
+            "id": "myRedshiftCopyOpts",
+            "helpLink": "https://docs.aws.amazon.com/console/datapipeline/redshiftcopyactivity",
+            "watermark": "IGNOREHEADER AS 1",
+            "helpText": "COPY parameters to pass to Redshift",
+            "description": "Copy options",
+            "isArray": "true",
+            "optional": "true",
+            "type": "String"
+        },
+        {
+            "id": "myPrimaryKeys",
+            "helpLink": "https://docs.aws.amazon.com/console/datapipeline/dp_object_redshiftdatanode",
+            "helpText": "The names of all primary key columns in the Redshift table used to merge existing data with new data.",
+            "description": "Primary keys",
+            "isArray": "true",
+            "optional": "true",
+            "type": "String"
+        }
+    ],
+    "values": {
+        "myRedshiftUsername": "<USERNAME>",
+        "myRedshiftCreateTableSql": "CREATE TABLE IF NOT EXISTS public.delays (\n    year bigint ENCODE az64,\n    month bigint ENCODE az64,\n    dayofmonth bigint ENCODE az64,\n    dayofweek bigint ENCODE az64,\n    deptime bigint ENCODE az64,\n    crsdeptime bigint ENCODE az64,\n    arrtime bigint ENCODE az64,\n    crsarrtime bigint ENCODE az64,\n    uniquecarrier character varying(256) ENCODE lzo,\n    flightnum bigint ENCODE az64,\n    tailnum character varying(256) ENCODE lzo,\n    actualelapsedtime bigint ENCODE az64,\n    crselapsedtime bigint ENCODE az64,\n    airtime bigint ENCODE az64,\n    arrdelay bigint ENCODE az64,\n    depdelay bigint ENCODE az64,\n    origin character varying(256) ENCODE lzo,\n    dest character varying(256) ENCODE lzo,\n    distance bigint ENCODE az64,\n    taxiin bigint ENCODE az64,\n    taxiout bigint ENCODE az64,\n    cancelled bigint ENCODE az64,\n    cancellationcode character varying(256) ENCODE lzo,\n    diverted bigint ENCODE az64,\n    carrierdelay bigint ENCODE az64,\n    weatherdelay bigint ENCODE az64,\n    nasdelay bigint ENCODE az64,\n    securitydelay bigint ENCODE az64,\n    lateaircraftdelay bigint ENCODE az64\n)\nDISTSTYLE AUTO;",
+        "myRedshiftDbName": "flights",
+        "myRedshiftJdbcConnectStr": "jdbc:redshift://redshift-cluster.cv8l11rpedjv.us-east-1.redshift.amazonaws.com:5439/flights",
+        "*myRedshiftPassword": "<PASSWORD>",
+        "myInsertMode": "TRUNCATE",
+        "myRedshiftSecurityGrps": "default",
+        "myRedshiftTableName": "delays",
+        "myInputS3Loc": "s3://flight-delays-2008/delays/",
+        "myRedshiftCopyOpts": [
+            "IGNOREHEADER AS 1",
+            "CSV"
+        ]
+    }
+}
