@@ -69,7 +69,6 @@ creating new delivery stream Firehose-S3-twitter
 
 we will create a lambda function to decode the binary data to text, retrieve sentiment and add as new key value for each record (via calls to Comprehend API), add a new line at the end of each data record (as by default firehose dumps the json records into S3 in one line) and then return a list of base64 encoded records.
 
-
 The package that needs to be deployed is kinesis/transform-firehose and has the following structure.
 
 ```
@@ -82,6 +81,7 @@ No additional dependencies need to be installed before deployment, so we can run
 ```
 $ zip transform-firehose.zip lambda_function.py
 ```
+and then update the function with the zip file 
 
 ```
 $ aws lambda update-function-code --function-name transform-firehose --zip-file fileb://transform-firehose.zip

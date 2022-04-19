@@ -66,6 +66,8 @@ aws datapipeline put-pipeline-definition \
 --pipeline-definition file://data-pipelines/config/s3_to_redshift.json
 ```
 
+<img width="1000" alt="data-pipeline-nodes" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-nodes.png">
+
 
 ## Activating pipeline and monitoring 
 
@@ -77,3 +79,9 @@ To activate your pipeline, use the following activate-pipeline command.
 aws datapipeline activate-pipeline --pipeline-id df-002827213FORRFRNA4AT
 
 ```
+
+Monitor the pipeline run on the console or from the data pipeline logs folder in S3. These are partitioned by
+pipeline-id --> Activity_Type ----> Runtime ---> Attempt_number e.g≥
+
+
+<img width="1000" alt="redshift_pipelines_console" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/redshift_pipelines_console.png">
