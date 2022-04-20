@@ -51,7 +51,7 @@ class Movies:
             print(result)
             ddb_waiter(self.dyn_resource, "table_exists", table_name)
         except ClientError as err:
-            logger.error(
+            logger.info(
                 "Couldn't create table %s. Here's why: %s: %s",
                 table_name,
                 err.response["Error"]["Code"],
@@ -68,7 +68,7 @@ class Movies:
             self.dyn_resource.delete_table(TableName=table_name)
             ddb_waiter(self.dyn_resource, "table_not_exists", table_name)
         except ClientError as err:
-            logger.error(
+            logger.info(
                 "Couldn't delete table %s. Here's why: %s: %s",
                 table_name,
                 err.response["Error"]["Code"],

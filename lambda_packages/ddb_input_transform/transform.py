@@ -13,8 +13,6 @@ logger.addHandler(ch)
 def format_json_for_dynamo_db(data):
     json_dict = {"movies": []}
     for i in range(len(data)):
-        print(i)
-        print(data[i])
         json_dict["movies"].append(
             {  # must not specify the type of key attributes otherwise throws validation errors when
                 # batch writing to table
@@ -40,8 +38,7 @@ def get_s3_object(event):
     response = s3.get_object(Bucket=bucket, Key=key)
     print(response)
     data = json.loads(response["Body"].read().decode())
-    print(data)
-    print(f"Data has {len(data)} items")
+    print(f"Raw data in S3 {bucket}/{key} has {len(data)} items: {data}")
     return data, bucket
 
 
