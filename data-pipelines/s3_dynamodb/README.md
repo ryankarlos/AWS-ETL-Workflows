@@ -1,7 +1,7 @@
 # Copy data from S3 to dynamodb
 
 
-<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/s3_to_dynamodb_workflow.png">
+<img width="1000" alt="s3_to_dynamo" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/s3_to_dynamodb_workflow.png">
 
 
 Zip the lambda function script and required modules into package by running the following commands
@@ -76,11 +76,20 @@ In this example, I have broadened it to allow a number of services to publish to
 be using same policy for other uses cases) but best to adapt to adhere to least privilege principle.
 Will also allow any SQS or email protocol to subscribe to SNS.
 
-
 Create standard SQS queue as in https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-create-queue.html
+Adjust max retention period to determine after what period, messages are purged from the queue. 
+Click edit queue and attach resource policy as in  data-pipelines/s3_dynamodb/iam_permissions/sqs
+This should allow SNS resources to publish to SQS.
 
-Attach resource policy as in  data-pipelines/s3_dynamodb/iam_permissions/sqs  
-This should allow SNS resources to publish to SQS
+In SNS console, create subscription for SNS topic arn created and add protocol 'sqs' and endpoint for the queue created previously. 
+Tick 'enable raw message delivery box' so  all SNS metadata is stripped from message
+https://docs.aws.amazon.com/sns/latest/dg/sns-large-payload-raw-message-delivery.html)
+
+
+Test that SNS receives messages from SNS by publishing test message in SNS topic console.
+
+<img width="1000" alt="sqs_cpnsole" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/SQS_queue_console.png">
+
 
 ### Running end to end with bash script
 
@@ -177,14 +186,35 @@ In the cloudwatch console you can see the lamda function execution logs
 
 first Lambda function performs data transformations and triggered by raw data load into S3
 
-<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/ddb_lambda_function1_logs.png">
+<img width="1000" alt="lambda1" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/ddb_lambda_function1_logs.png">
 
 * /aws/lambda/batch_write_s3_dynamodb log group
 
 Second lambda function triggered by S3 put event and batch writing data to DynamoDB and publish to SNS topic 'etl'
 
-<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/ddb_lambda_function2_logs.png">
+<img width="1000" alt="lambda2" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/ddb_lambda_function2_logs.png">
 
 
 ## SQS message delivery
 
+Polls one or more messages (up to 10), from the specified queue https://docs.aws.amazon.com/cli/latest/reference/sqs/receive-message.html
+
+```
+$aws sqs receive-message --queue-url <sqs-queue-url> --attribute-names All --message-attribute-names All --max-number-of-messages 10
+{
+    "Messages": [
+        {
+            "MessageId": "4be01ca7-888e-461f-9500-4fc1ae4337b6",
+            "ReceiptHandle": "AQEBU3PtDASje/SBVMr/oHrRMkY/bPJIq09ERfgJWnlGirMEY6iyqgLs7Z7pHzBK6L0DbuGwY6I10TtbhHOs/NAhdgGRNL9gspHk5tvBlk7ejuAQ0NhxvjvgwVKq60pntdTt6bIlPLblBL54yqAiqRPp4t8gz58S6JdeIU2Oagrda9yuzUzpb83o/UZoAaohD2b6t1RfnQgGBldqcuti7RYH1u4yEIY9rWW5LjKDvUiCkConphOQTFuBAi27QJHdAcwVHh1tEmLTLhe6HXN5TSX+V2M0LlFLDvY8FGVCDZ4MfHrG/JjD2s8Z/6xcPXaXmCCX8cb/iJ4aBQKkssYlrUWS7fCHy7/4sTNqdNzDvF+6z3qQTYFhPwf+51Tioe30QS6k",
+            "MD5OfBody": "19a34c72a8de23921a228b8a7f93be51",
+            "Body": "Successfully written 65 items to dynamo db movies",
+            "Attributes": {
+                "SenderId": "AIDAIT2UOQQY3AUEKVGXU",
+                "ApproximateFirstReceiveTimestamp": "1650497744806",
+                "ApproximateReceiveCount": "1",
+                "SentTimestamp": "1650497725499"
+            }
+        }
+    ]
+}
+```

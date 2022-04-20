@@ -1,7 +1,7 @@
 
 # Streaming tweets using AWS kinesis data streams and firehose
 
-<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/kinesis_workflow.png">
+<img width="1000" alt="kinesis_workflow" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/kinesis_workflow.png">
 
 In this workflow, we will invoke lambda function created from container image with the twitter streaming application code built in https://github.com/ryankarlos/codepipeline to publish records into kinesis stream. Kinesis Firehose will acts as a consumer to read the records from shards, transform the records (including call AWS Comprehend api to retrieve sentiment results) and ingest them into S3 bucket. 
 
