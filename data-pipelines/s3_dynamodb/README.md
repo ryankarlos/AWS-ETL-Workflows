@@ -33,9 +33,7 @@ Create two lambda functions 'ddb_input_transform' and "batch_write_s3_dynamodb" 
     --timeout 40 --memory-size 1024 --handler lambda_function.lambda_handler
 ```
 
-create role and modify with permissions for accessing S3 and dynamodb as in roles/batch_write_s3_dynamodb/
-Note: for simplicity, Ive added all read options for S3 and all write options for dynamo but you could further limit this to adhere to least privilege principle.
-
+create role and modify with permissions for accessing S3, dynamodb and publishing to SNS as in data-pipelines/s3_dynamodb/iam_permissions/lambda
 
 if you update the source code, you will need to update the lambda function with new zip 
 
@@ -67,20 +65,39 @@ $ aws lambda update-function-code --function-name batch_write_s3_dynamodb --zip-
     "PackageType": "Zip"
 }
 ```
-### Running end to end with bash script
 
+
+## SNS and SQS
+
+Create SNS topic as in https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html
+
+Attach resource policy to the SNS as in data-pipelines/s3_dynamodb/iam_permissions/sns
+In this example, I have broadened it to allow a number of services to publish to SNS (as will
+be using same policy for other uses cases) but best to adapt to adhere to least privilege principle.
+Will also allow any SQS or email protocol to subscribe to SNS.
+
+
+Create standard SQS queue as in https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-create-queue.html
+
+Attach resource policy as in  data-pipelines/s3_dynamodb/iam_permissions/sqs  
+This should allow SNS resources to publish to SQS
+
+### Running end to end with bash script
 
 To run all the above and also put json object into S3 to trigger lambda function, run the 
 bash script below with the params : raw data path, lambda function name, S3 bucket name, object key
+The script assumes the two lambda functions are named 'ddb_input_transform' and 'batch_write_s3_dynamodb'
+and S3 buckets exists with name 'movies-data-json' and subfolders with paths 's3://movies-data-json/raw/' and
+'s3://movies-data-json/transformed/'
+
+SNS topic would also need to be created beforehand and named 'etl'
+
 e.g. 
 
 ```
 $ chmod +x data-pipelines/s3_dynamodb/bash_scripts/update_lambda_and_trigger.sh
 $ sh data-pipelines/s3_dynamodb/bash_scripts/update_lambda_and_trigger.sh \
 datasets/moviedata.json \
-batch_write_s3_dynamodb \
-movies-data-json \
-transformed/moviedata.json 
 ```
 
 or without any params defaults to the param values above
@@ -164,6 +181,10 @@ first Lambda function performs data transformations and triggered by raw data lo
 
 * /aws/lambda/batch_write_s3_dynamodb log group
 
-Second lambda function triggered by S3 put event and batch writing data to DynamoDB and publish to SNS
+Second lambda function triggered by S3 put event and batch writing data to DynamoDB and publish to SNS topic 'etl'
 
 <img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/ddb_lambda_function2_logs.png">
+
+
+## SQS message delivery
+
