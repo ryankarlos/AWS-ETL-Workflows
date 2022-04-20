@@ -16,8 +16,10 @@ def create_kinesis_stream(config_path="kinesis_stream.json"):
         time.sleep(10)
 
     print(f"Creating new stream {stream_name}: \n")
-    if request["StreamModeDetails"]["StreamMode"] == 'ON_DEMAND':
-        request.pop("ShardCount") # if on demand param passed, shard count will throw error
+    if request["StreamModeDetails"]["StreamMode"] == "ON_DEMAND":
+        request.pop(
+            "ShardCount"
+        )  # if on demand param passed, shard count will throw error
     response = kinesis.create_stream(**request)
     res_str = json.dumps(response, sort_keys=True, indent=4)
     print(res_str)
