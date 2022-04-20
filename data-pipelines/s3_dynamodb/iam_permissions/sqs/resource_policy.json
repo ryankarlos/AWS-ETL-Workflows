@@ -1,0 +1,19 @@
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Sid": "Allow-SNS-SendMessage",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "sns.amazonaws.com"
+      },
+      "Action": "sqs:*",
+      "Resource": "*",
+      "Condition": {
+        "ArnEquals": {
+          "aws:SourceArn": "arn:aws:sns:us-east-1:376337229415:*"
+        }
+      }
+    }
+  ]
+}

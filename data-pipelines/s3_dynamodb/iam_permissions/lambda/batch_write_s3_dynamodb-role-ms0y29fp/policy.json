@@ -1,0 +1,68 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "logs:CreateLogGroup",
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "VisualEditor2",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:DeleteItem",
+                "s3:ListBucketVersions",
+                "dynamodb:RestoreTableToPointInTime",
+                "dynamodb:PurchaseReservedCapacityOfferings",
+                "dynamodb:CreateTableReplica",
+                "s3:ListBucket",
+                "dynamodb:UpdateContributorInsights",
+                "dynamodb:UpdateGlobalTable",
+                "dynamodb:CreateBackup",
+                "dynamodb:DeleteTable",
+                "dynamodb:UpdateTableReplicaAutoScaling",
+                "dynamodb:UpdateContinuousBackups",
+                "dynamodb:DescribeTable",
+                "dynamodb:PartiQLInsert",
+                "dynamodb:CreateGlobalTable",
+                "dynamodb:EnableKinesisStreamingDestination",
+                "dynamodb:DisableKinesisStreamingDestination",
+                "dynamodb:UpdateTimeToLive",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "s3:ListJobs",
+                "dynamodb:PartiQLUpdate",
+                "dynamodb:StartAwsBackupJob",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteTableReplica",
+                "dynamodb:CreateTable",
+                "dynamodb:UpdateGlobalTableSettings",
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListAllMyBuckets",
+                "dynamodb:RestoreTableFromAwsBackup",
+                "s3:DescribeJob",
+                "dynamodb:RestoreTableFromBackup",
+                "dynamodb:ExportTableToPointInTime",
+                "s3:GetBucketLocation",
+                "dynamodb:DeleteBackup",
+                "s3:GetObjectVersion",
+                "dynamodb:UpdateTable",
+                "dynamodb:PartiQLDelete",
+                "sns:Publish",
+                "sns:ListTopics"
+            ],
+            "Resource": "*"
+        }
+    ]
+}

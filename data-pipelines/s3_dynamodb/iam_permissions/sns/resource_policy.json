@@ -1,0 +1,50 @@
+{
+  "Version": "2008-10-17",
+  "Id": "__default_policy_ID",
+  "Statement": [
+    {
+      "Sid": "Publish to SNS",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "datapipeline.amazonaws.com",
+          "dynamodb.amazonaws.com",
+          "ec2.amazonaws.com",
+          "lambda.amazonaws.com",
+          "athena.amazonaws.com",
+          "redshift.amazonaws.com"
+        ]
+      },
+      "Action": [
+        "SNS:GetTopicAttributes",
+        "SNS:SetTopicAttributes",
+        "SNS:AddPermission",
+        "SNS:RemovePermission",
+        "SNS:DeleteTopic",
+        "SNS:ListSubscriptionsByTopic",
+        "SNS:Publish"
+      ],
+      "Resource": "arn:aws:sns:us-east-1:376337229415:etl",
+      "Condition": {
+        "ArnEquals": {
+          "aws:SourceArn": "arn:aws:*:us-east-1:376337229415:*"
+        }
+      }
+    },
+    {
+      "Sid": "Subscribe to SNS",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "SNS:Subscribe",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "sns:Protocol": [
+            "email",
+            "sqs"
+          ]
+        }
+      }
+    }
+  ]
+}
