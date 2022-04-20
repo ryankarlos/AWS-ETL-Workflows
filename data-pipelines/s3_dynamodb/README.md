@@ -90,6 +90,8 @@ Test that SNS receives messages from SNS by publishing test message in SNS topic
 
 <img width="1000" alt="sqs_cpnsole" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/SQS_queue_console.png">
 
+If this is working, then we should see the messages published from `lambda_packages/batch_write_s3_dynamodb/lambda_function.py` 
+into SNS appear in the queue in SQS 
 
 ### Running end to end with bash script
 
