@@ -1,7 +1,7 @@
 # Copy data from S3 to dynamodb
 
 
-<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/s3_to_dynamodb.png">
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/s3_to_dynamodb_workflow.png">
 
 
 Zip the lambda function script and required modules into package by running the following commands
@@ -156,8 +156,14 @@ updating: schema.py (deflated 68%)
 ## Cloudwatch Execution logs 
 In the cloudwatch console you can see the lamda function execution logs
 
-* first Lambda function performation data transformations and triggered by raw data load into S3
-<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/cloudwatch_lambda_ddb1.png">
+* /aws/lambda/ddb_input_transform log group
 
-* Second lambda function triggered by S3 put event and batch writing data to DynamoDB
+first Lambda function performs data transformations and triggered by raw data load into S3
+
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/ddb_lambda_function1_logs.png">
+
+* /aws/lambda/batch_write_s3_dynamodb log group
+
+Second lambda function triggered by S3 put event and batch writing data to DynamoDB and publish to SNS
+
 <img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/ddb_lambda_function2_logs.png">
