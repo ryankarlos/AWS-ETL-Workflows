@@ -9,7 +9,6 @@ FIRST_FUNCTION_NAME=ddb_input_transform
 LAMBDA_SOURCE_CODE=lambda_packages
 S3_BUCKET=movies-data-json
 OBJECT_KEY=raw/moviedata.json
-LAMBDA_ZIP_PATH=data-pipelines/s3_dynamodb/lambdas
 CMD_S3_PUT="aws s3api put-object --bucket ${S3_BUCKET} --key ${OBJECT_KEY} --body ${DATA}"
 
 create_update_lambda() {

@@ -1,12 +1,16 @@
 import json
 import boto3
 import time
+from pathlib import Path
+import os
 
 firehose = boto3.client("firehose")
 kinesis = boto3.client("kinesis")
+path = Path(os.path.realpath(__file__))
 
 
-def create_kinesis_stream(config_path="kinesis_stream.json"):
+def create_kinesis_stream(file_name="kinesis_stream.json"):
+    config_path = os.path.join(path.parent, "config", file_name)
     with open(config_path) as f:
         request = json.load(f)
         stream_name = request["StreamName"]
@@ -26,11 +30,12 @@ def create_kinesis_stream(config_path="kinesis_stream.json"):
     return response
 
 
-def create_firehose_delivery_stream(config_path="firehose_description.json"):
+def create_firehose_delivery_stream(file_name="firehose_description.json"):
     """
     Creates firehose delivery stream. If this already exists, then deletes and
     creates new one with same name. Needs json config file, with stream name specified
     """
+    config_path = os.path.join(path.parent, "config", file_name)
     with open(config_path) as f:
         request = json.load(f)
         stream_name = request["DeliveryStreamName"]
