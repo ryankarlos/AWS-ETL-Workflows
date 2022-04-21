@@ -61,9 +61,14 @@ The pipeline definition config json file is stored in data-pipelines/config/s3_t
 using the get-pipeline-definition command
 
 ```
-aws datapipeline put-pipeline-definition \
---pipeline-id df-002827213FORRFRNA4AT \
+aws datapipeline put-pipeline-definition --pipeline-id df-002827213FORRFRNA4AT \
 --pipeline-definition file://data-pipelines/config/s3_to_redshift.json
+
+{
+    "validationErrors": [],
+    "validationWarnings": [],
+    "errored": false
+}
 ```
 
 <img width="1000" alt="data-pipeline-nodes" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-nodes.png">
@@ -77,7 +82,6 @@ To activate your pipeline, use the following activate-pipeline command.
 
 ```
 aws datapipeline activate-pipeline --pipeline-id df-002827213FORRFRNA4AT
-
 ```
 
 Monitor the pipeline run on the console or from the data pipeline logs folder in S3. These are partitioned by
