@@ -6,15 +6,6 @@
 In this workflow, we will invoke lambda function created from container image with the twitter streaming application code built in https://github.com/ryankarlos/codepipeline to publish records into kinesis stream. Kinesis Firehose will acts as a consumer to read the records from shards, transform the records (including call AWS Comprehend api to retrieve sentiment results) and ingest them into S3 bucket. 
 
 
-## Producer
-
-
-if instructions in https://github.com/ryankarlos/codepipeline are followed, the Lamda function should already be avaiolable with the latest image attached.
-If the source code is rebuilt again and published to ECR, the existing lambda function would need to be updated with the URI of the latest image tag
-
-```
-$ aws lambda update-function-code --function-name LambdaTwitter --image-uri <image-uri>
-```
 
 image tag would need to be updated in
 
@@ -95,9 +86,10 @@ $ aws lambda update-function-code --function-name transform-firehose --zip-file 
 ```
 
 
-Run entire pipeline end to end. The example below runs the pipeline to create new
-kinesis and firehose resources and update the lambda transform function used in
-firehose. If the `--create_kinesis` arg is excluded, then existing kinesis resources
+## Run entire pipeline end to end. 
+
+The example below executes a bash script to run most of the steps described above; create new kinesis and firehose resources 
+and update the lambda transform function used in  firehose. If the `--create_kinesis` arg is excluded, then existing kinesis resources
 are used. If the lambda container image used by the lambda function producing the tweets
 needs to be updated, then pass `--image_uri` with the new docker image uri to update
 the function with.
@@ -194,4 +186,33 @@ image_uri  Lambda container image (optional)
 create_kinesis  Creates new kinesis stream and firehose and deletes exiting (optional) 
 h          Print this Help.
 
+```
+
+
+## Producer 
+
+We can now start streaming tweets using the application code in a lambda which is 
+described in more detail in https://github.com/ryankarlos/codepipeline. 
+
+
+We can invoke the function using the command below to produce tweets which can be 
+streamed into kinesis data stream created above and then subsequently ingested by firehose
+
+```
+$ aws lambda invoke --function-name LambdaTwitter --payload '{ "keyword": "machine learning", "delivery": "search", "duration": 15 }' --cli-binary-format 'raw-in-base64-out'  datasets/outputs/raw_tweets/outfile.json 
+ 
+
+{
+    "StatusCode": 200,
+    "ExecutedVersion": "$LATEST"
+}
+
+```
+
+If the source code in https://github.com/ryankarlos/codepipeline is rebuilt again and published to ECR, 
+the existing lambda function would need to be updated with the URI of the latest image tag.
+
+
+```
+$ aws lambda update-function-code --function-name LambdaTwitter --image-uri <image-uri>
 ```

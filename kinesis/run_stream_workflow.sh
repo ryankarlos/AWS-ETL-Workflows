@@ -40,7 +40,7 @@ while [[ "$#" -gt 0 ]]
 do case $1 in
     --image_uri) IMAGE_URI="$2"
     shift;;
-    --role) LAMBDA_ROLE="$2"
+    --role) LAMBDA_FIREHOSE_ROLE="$2"
     shift;;
     --create_kinesis) CREATE_KINESIS_STREAM=true ;;
     *) echo "Unknown parameter passed: $1"
@@ -49,7 +49,7 @@ esac
 shift
 done
 
-if [[ -z $LAMBDA_ROLE ]];
+if [[ -z $LAMBDA_FIREHOSE_ROLE ]];
 then
   echo "--role argument for lambda firehose arn role needs to be passed"
   exit 1
@@ -86,7 +86,7 @@ create_update_firehose_lambda_zip() {
       else
         printf '\n Creating new function %s with zip \n' "${1}"
         aws lambda create-function --function-name "${1}" --runtime python3.9 --zip-file fileb://../"${1}.zip" \
-        --role "$LAMBDA_ROLE" --timeout 40 --memory-size 1024 --handler lambda_function.lambda_handler
+        --role "$LAMBDA_FIREHOSE_ROLE" --timeout 40 --memory-size 1024 --handler lambda_function.lambda_handler
       fi;
   fi;
   )
