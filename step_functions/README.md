@@ -19,6 +19,7 @@ and supplying definition value as json
 
 To execute statemachine, execute following command and pass arn for state machine created.
 To get arn - you can use the `aws stepfunctions list-state-machines` command
+https://docs.aws.amazon.com/cli/latest/reference/stepfunctions/start-execution.html
 
 ```
 $ aws stepfunctions start-execution --state-machine-arn <arn>
@@ -28,7 +29,7 @@ $ aws stepfunctions start-execution --state-machine-arn <arn>
 }
 ```
 
-We can check status of the execution
+We can check status of the execution https://docs.aws.amazon.com/cli/latest/reference/stepfunctions/describe-execution.html
 
 
 ```
@@ -65,7 +66,8 @@ $ aws stepfunctions get-execution-history  --execution-arn <enter-arn> --no-incl
             "previousEventId": 0,
             "executionFailedEventDetails": {
                 "error": "States.Runtime",
-                "cause": "An error occurred while executing the state 'Glue StartJobRun' (entered at the event id #8). The JSONPath '$.JobName' specified for the field 'JobName.$' could not be found in the input '{}'"
+                "cause": "An error occurred while executing the state 'Glue StartJobRun' (entered at the event id #8). 
+                The JSONPath '$.JobName' specified for the field 'JobName.$' could not be found in the input '{}'"
             }
         },
         {
@@ -82,3 +84,6 @@ $ aws stepfunctions get-execution-history  --execution-arn <enter-arn> --no-incl
 }
 
 ```
+
+This error is because the input json `{"JobName": "flights_s3_to_s3"}` was not passed via `--input` argument.
+The GlueStartJob  task requires JSONPath '$.JobName' from the input as defined in the state-machine definition.
