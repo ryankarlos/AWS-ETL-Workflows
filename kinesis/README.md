@@ -3,11 +3,10 @@
 
 <img width="1000" alt="kinesis_workflow" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/kinesis_workflow.png">
 
-In this workflow, we will invoke lambda function created from container image with the twitter streaming application code built in https://github.com/ryankarlos/codepipeline to publish records into kinesis stream. Kinesis Firehose will acts as a consumer to read the records from shards, transform the records (including call AWS Comprehend api to retrieve sentiment results) and ingest them into S3 bucket. 
-
-
-
-image tag would need to be updated in
+In this workflow, we will invoke lambda function created from container image with the twitter streaming application 
+code built in https://github.com/ryankarlos/codepipeline to publish records into kinesis stream. Kinesis Firehose 
+will acts as a consumer to read the records from shards, transform the records (including call AWS Comprehend api to 
+retrieve sentiment results) and ingest them into S3 bucket. 
 
 ## Kinesis stream and firehose
 
@@ -65,26 +64,42 @@ aws iam get-role --role-name <arn>
 
 ## Lambda transform function for firehose
 
-we will create a lambda function to decode the binary data to text, retrieve sentiment and add as new key value for each record (via calls to Comprehend API), add a new line at the end of each data record (as by default firehose dumps the json records into S3 in one line) and then return a list of base64 encoded records.
+An example of operation of the transform is shown in notebooks/lambda-firehose-test.ipynb
+The function carries out the following tasks:
 
-The package that needs to be deployed is kinesis/transform-firehose and has the following structure.
+* decode the binary data to text 
+* translate the text (AWS Translate)
+* analyse sentiment  and detect entities (AWS Comprehend) 
+  and add as new key value for each 
+* Add a new line at the end of each data record. By default firehose dumps the json records into S3 in one line
+* base64 encode the records
+* return the data in the format required by Firehose
+
+The lambda_packages/transform-firehouse-b64-json package with the modules then need to be added in a 
+zip. No additional dependencies need to be installed before deployment as the modules use basic python packages,
+so we can run the following command to create a new zip and add all modules to it
 
 ```
-transform-firehose$
-| lambda_function.py
+$ cd lambda_packages/transform-firehouse-b64-json
+$ zip ../transform-firehouse-b64-json.zip *
 ```
 
-No additional dependencies need to be installed before deployment, so we can run the following command to add the python script to root of the zip package
+Create the lambda function using the following command passing in the path to
+the newly created zip, lambda role arn and adapt configurations (timeout, memory etc)
+as required
 
 ```
-$ zip transform-firehose.zip lambda_function.py
-```
-and then update the function with the zip file 
-
-```
-$ aws lambda update-function-code --function-name transform-firehose --zip-file fileb://transform-firehose.zip
+$ aws lambda create-function --function-name transform-firehouse-b64-json --runtime python3.9 \ 
+--zip-file fileb://../transform-firehouse-b64-json.zip \
+--role <lambda-role-arn> --timeout 40 --memory-size 1024 --handler lambda_function.lambda_handler
 ```
 
+
+or if the lambda function is already created, then update it with the following:
+
+```
+$ aws lambda update-function-code --function-name transform-firehose --zip-file fileb://../transform-firehouse-b64-json.zip
+```
 
 ## Run entire pipeline end to end. 
 
