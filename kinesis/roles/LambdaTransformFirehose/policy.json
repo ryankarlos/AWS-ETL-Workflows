@@ -12,14 +12,14 @@
                 "logs:CreateLogStream",
                 "logs:PutLogEvents"
             ],
-            "Resource": [
-                "arn:aws:logs:us-east-1:376337229415:log-group:/aws/lambda/transform-firehouse-b64-json:*"
-            ]
+            "Resource": "*"
         },
         {
             "Effect": "Allow",
             "Action": [
-                "firehose:*"
+                "firehose:*",
+                "translate:*",
+                "comprehend:*"
             ],
             "Resource": [
                 "*"
