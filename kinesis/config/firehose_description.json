@@ -56,7 +56,26 @@
                         }
                     ]
                 },
-                "S3BackupMode": "Disabled",
+                "S3BackupMode": "Enabled",
+                "S3BackupDescription": {
+                    "RoleARN": "arn:aws:iam::376337229415:role/service-role/KinesisFirehoseServiceRole-Firehose-S3-t-us-east-1-1649708476428",
+                    "BucketARN": "arn:aws:s3:::kinesis-firehose-backup-bucket",
+                    "Prefix": "",
+                    "ErrorOutputPrefix": "!{firehose:error-output-type}",
+                    "BufferingHints": {
+                        "SizeInMBs": 5,
+                        "IntervalInSeconds": 300
+                    },
+                    "CompressionFormat": "UNCOMPRESSED",
+                    "EncryptionConfiguration": {
+                        "NoEncryptionConfig": "NoEncryption"
+                    },
+                    "CloudWatchLoggingOptions": {
+                        "Enabled": true,
+                        "LogGroupName": "/aws/kinesisfirehose/Firehose-S3-twitter",
+                        "LogStreamName": "BackupDelivery"
+                    }
+                },
                 "DataFormatConversionConfiguration": {
                     "Enabled": false
                 }
