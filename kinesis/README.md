@@ -199,7 +199,7 @@ We can invoke the function using the command below to produce tweets which can b
 streamed into kinesis data stream created above and then subsequently ingested by firehose
 
 ```
-$ aws lambda invoke --function-name LambdaTwitter --payload '{ "keyword": "machine learning", "delivery": "search", "duration": 15 }' --cli-binary-format 'raw-in-base64-out'  datasets/outputs/raw_tweets/outfile.json 
+$ aws lambda invoke --function-name LambdaTwitter --payload '{ "keyword": "CNN+", "delivery": "realtime", "duration": 200 , "kinesis_stream_name":"kinesis-twitter-stream"}' --cli-binary-format 'raw-in-base64-out'  datasets/outputs/raw_tweets/outfile.json 
  
 
 {
