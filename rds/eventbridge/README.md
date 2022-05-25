@@ -1,6 +1,6 @@
 ## Scheduling starting and stopping RDS instances
 
-<img width="500" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/stop-start-db-instance-workflow.png">
+<img src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/stop-start-db-instance-workflow.png">
 
 This implements an automated solution for stopping/starting a RDS Postgres DB instance in a single AZ, on schedule using the 
 combination of Amazon EventBridge and AWS Lambda. This could also be extended to multiple instances but beyond the 
@@ -32,7 +32,7 @@ https://aws.amazon.com/premiumsupport/knowledge-center/rds-stop-seven-days/#:~:t
    25-31 May 2022, we set it to  "00 17 25-31 5 ? 2022". In eventbridge the cron job is in UTC, so needs to be set at 
   12 PM. Click Next.
 
-<img width="500" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/eventbridge_schedule_cron.png">
+<img src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/eventbridge_schedule_cron.png">
 
 * Specify the 'rds_on_off' Lambda function as a target. We will also configure target input - in additional 
   settings > configure target input, select Constant (JSON text) from drop-down and insert 
@@ -63,11 +63,11 @@ the cloudwatch logs.
 
 * Navigate to the logstreams for the lambda function. 
 
-<img width="500" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/rds_on_off_logstream.png">
+<img src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/rds_on_off_logstream.png">
 
 * investigate the logstream corresponding to the event time 
 
-<img width="500" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/rds_lambda_logs_off_event.png">
+<img src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/rds_lambda_logs_off_event.png">
 
 * we can also check the SQS dead queue (if event bridge was configured to send any unprocessed events) in cases
   where the lamdba function was not invoked. EventBridge publishes an event to Amazon CloudWatch metrics 
