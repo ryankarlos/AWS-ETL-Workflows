@@ -6,7 +6,9 @@ This implements an automated solution for stopping/starting a RDS Postgres DB in
 combination of Amazon EventBridge and AWS Lambda. This could also be extended to multiple instances but beyond the 
 scope of this example. We will assume the db instance needs to be made available from 1-5pm 
 from 25-31 May 2022.
-
+Furthermore, this example could also be modified to tackle this issue of rds restarting automatically 7 days
+after it was last stopped (for maintenance jobs)
+https://aws.amazon.com/premiumsupport/knowledge-center/rds-stop-seven-days/#:~:text=If%20you%20don't%20manually,system%2C%20or%20database%20engine%20version.
 
 ### Creating lambda function
 
