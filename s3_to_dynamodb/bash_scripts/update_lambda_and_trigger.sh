@@ -3,9 +3,9 @@
 printf '\n Running s3 to dynamo batch write script'
 
 # use default values if not passed in via command args
-DATA=${1-datasets/moviedata.json}
-SECOND_FUNCTION_NAME=batch_write_s3_dynamodb
-FIRST_FUNCTION_NAME=ddb_input_transform
+FIRST_FUNCTION_NAME=${1-ddb_input_transform}
+SECOND_FUNCTION_NAME=${2-batch_write_s3_dynamodb}
+DATA=${3-datasets/moviedata.json}
 LAMBDA_SOURCE_CODE=lambda_packages
 S3_BUCKET=movies-data-json
 OBJECT_KEY=raw/moviedata.json

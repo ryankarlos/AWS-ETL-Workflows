@@ -106,15 +106,15 @@ SNS topic would also need to be created beforehand and named 'etl'
 e.g. 
 
 ```
-$ chmod +x data-pipelines/s3_dynamodb/bash_scripts/update_lambda_and_trigger.sh
-$ sh data-pipelines/s3_dynamodb/bash_scripts/update_lambda_and_trigger.sh \
-datasets/moviedata.json \
+$ chmod +x s3_to_dynamodb/bash_scripts/update_lambda_and_trigger.sh
+$ sh s3_to_dynamodb/bash_scripts/update_lambda_and_trigger.sh \
+ddb_input_transform batch_write_s3_dynamodb datasets/moviedata.json
 ```
 
 or without any params defaults to the param values above
 
 ```
-$ sh data-pipelines/s3_dynamodb/bash_scripts/update_lambda_and_trigger.sh 
+$ sh s3_to_dynamodb/bash_scripts/update_lambda_and_trigger.sh 
 
  Running s3 to dynamo batch write script
 Zipping lambda package for ddb_input_transform
