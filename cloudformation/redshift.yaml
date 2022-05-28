@@ -1,0 +1,34 @@
+Description: "This example template creates a single node cluster with requested node type"
+Parameters:
+  NodeType:
+    Description: "Type of node in redshift cluster. Only allow nodes whose pricing < $1/hr in US-east region"
+    Default: dc2.large
+    AllowedValues:
+      - ds2.xlarge
+      - dc1.large
+      - dc2.large
+    Type: "String"
+  DB:
+    Description: "Name of db"
+    Default: dev
+    Type: "String"
+  Username:
+    Description: "Master username"
+    Type: "String"
+  Password:
+    Description: "Master password"
+    Type: "String"
+Resources:
+  RedshiftCluster:
+    Type: "AWS::Redshift::Cluster"
+    Properties:
+      DBName:
+        Ref: "DB"
+      MasterUsername:
+        Ref: "Username"
+      MasterUserPassword:
+        Ref: "Password"
+      NodeType:
+        Ref: "NodeType"
+      ClusterType: "single-node"
+      ClusterIdentifier: "default-cluster"

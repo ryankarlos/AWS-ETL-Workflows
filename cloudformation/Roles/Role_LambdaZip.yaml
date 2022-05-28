@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  S3Dynamo:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: "LambdaS3Dynamo"
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: LambdaS3Dynamo
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'dynamodb:*'
+                  - 's3:*'
+                  - 'sns:*'
+                  - 'logs:*'
+                Resource: '*'
+  FirehoseNLP:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: "LambdaFirehoseNLP"
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: LambdaFirehoseNLPPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'firehose:*'
+                  - 'translate:*'
+                  - 'comprehend:*'
+                  - 'translate:*'
+                  - 'logs:*'
+                Resource: '*'
+  RDSSchedule:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: "LambdaRDSScheduleOnOff"
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: LambdaRDSScheduleOnOffPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'rds:*'
+                  - 'logs:*'
+                Resource: '*'
+Outputs:
+  S3DynamoArn:
+    Value: !GetAtt S3Dynamo.Arn
+  FirehoseNLPArn:
+    Value: !GetAtt FirehoseNLP.Arn
+  RDSScheduleArn:
+    Value: !GetAtt RDSSchedule.Arn

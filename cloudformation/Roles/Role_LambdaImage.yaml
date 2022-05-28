@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  Twitter:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: "ImageLambdaTwitter"
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: TweepyStreamPolicy
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'kinesis:PutRecord'
+                  - 'secretsmanager:*'
+                  - 'kms:*'
+                  - 'logs:*'
+                Resource: '*'
+Outputs:
+  TwitterArn:
+    Value: !GetAtt Twitter.Arn

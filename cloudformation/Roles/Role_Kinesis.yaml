@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  Firehose:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: "FirehoseFullAccessRole"
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - firehose.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      "ManagedPolicyArns": [ "arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess" ]
+  Kinesis:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: "KinesisStreamsandAnalyticsRole"
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - kinesis.amazonaws.com
+                - kinesisanalytics.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      "ManagedPolicyArns": [ "arn:aws:iam::aws:policy/AmazonKinesisFullAccess", "arn:aws:iam::aws:policy/AmazonKinesisAnalyticsFullAccess"]
+Outputs:
+  FirehoseRoleArn:
+    Value: !GetAtt Firehose.Arn
+  StreamRoleArn:
+    Value: !GetAtt Kinesis.Arn
+

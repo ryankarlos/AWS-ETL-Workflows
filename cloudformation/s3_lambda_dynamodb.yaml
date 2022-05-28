@@ -1,17 +1,32 @@
 AWSTemplateFormatVersion: 2010-09-09
 Parameters:
-  LambdaRoleArn:
-    Type: String
-    Description: Enter iam role arn to be assumed by lambda functions
   BucketName:
-    Default: ''
+    Default: None
     Type: String
 Conditions:
   CreateBucket: !Not 
     - !Equals 
       - !Ref BucketName
-      - ''
+      - None
 Resources:
+  SNS:
+    Type: "AWS::CloudFormation::Stack"
+    DeletionPolicy: Retain
+    Properties:
+      TemplateURL: >-
+        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022147jpx-sns_topic.yaml
+  SQS:
+    Type: "AWS::CloudFormation::Stack"
+    DeletionPolicy: Retain
+    Properties:
+      TemplateURL: >-
+        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022147rdO-sqs.yaml
+  LambdaRole:
+    Type: "AWS::CloudFormation::Stack"
+    DeletionPolicy: Retain
+    Properties:
+      TemplateURL: >-
+        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022148kmD-Role_LambdaZip.yaml
   DDBTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
@@ -29,22 +44,16 @@ Resources:
         ReadCapacityUnits: 10
         WriteCapacityUnits: 10
       TableName: "movies"
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: f92dc356-d35a-495d-8d17-60eea151e477
   S3fordynamo:
     Type: 'AWS::S3::Bucket'
     Condition: CreateBucket
     DeletionPolicy: Retain
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: fb5042bd-c898-46ae-bee4-0268d432c7f1
   ddbinputtransform:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: "ddb_input_transform"
       Handler: index.lambda_handler
-      Role: !Ref LambdaRoleArn
+      Role: !GetAtt LambdaRole.Outputs.S3DynamoArn
       Architectures:
         - x86_64
       Runtime: python3.9
@@ -54,9 +63,6 @@ Resources:
         ZipFile: |
           def lambda_handler(event, context):
             print('hello from lambda')
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: 090b179d-5a60-4568-aacc-7975d90c239f
     DependsOn:
       - "S3fordynamo"
       - "DDBTable"
@@ -65,7 +71,7 @@ Resources:
     Properties:
       FunctionName: "batch_write_s3_dynamodb"
       Handler: index.lambda_handler
-      Role: !Ref LambdaRoleArn
+      Role: !GetAtt LambdaRole.Outputs.S3DynamoArn
       Architectures:
         - x86_64
       Runtime: python3.9
@@ -75,69 +81,13 @@ Resources:
         ZipFile: |
           def lambda_handler(event, context):
             print('hello from lambda')
-    Metadata:
-      'AWS::CloudFormation::Designer':
-        id: d7fef784-80f9-48eb-89c2-0145f04966ec
     DependsOn:
       - "DDBTable"
       - "S3fordynamo"
-Metadata:
-  'AWS::CloudFormation::Designer':
-    0927af9f-929a-4070-bec8-b555659fdbbf:
-      size:
-        width: 60
-        height: 60
-      position:
-        x: 180
-        'y': 20
-      z: 1
-      embeds: []
-    fb5042bd-c898-46ae-bee4-0268d432c7f1:
-      size:
-        width: 60
-        height: 60
-      position:
-        x: 100
-        'y': 210
-      z: 1
-      embeds: []
-    f92dc356-d35a-495d-8d17-60eea151e477:
-      size:
-        width: 60
-        height: 60
-      position:
-        x: 270
-        'y': 280
-      z: 1
-      embeds: []
-    d7fef784-80f9-48eb-89c2-0145f04966ec:
-      size:
-        width: 60
-        height: 60
-      position:
-        x: -70
-        'y': 100
-      z: 1
-      embeds: []
-      dependson:
-        - f92dc356-d35a-495d-8d17-60eea151e477
-        - fb5042bd-c898-46ae-bee4-0268d432c7f1
-    090b179d-5a60-4568-aacc-7975d90c239f:
-      size:
-        width: 60
-        height: 60
-      position:
-        x: 350
-        'y': 110
-      z: 1
-      embeds: []
-      dependson:
-        - fb5042bd-c898-46ae-bee4-0268d432c7f1
-        - f92dc356-d35a-495d-8d17-60eea151e477
-        - 0927af9f-929a-4070-bec8-b555659fdbbf
-    c2e64753-a9fb-409e-962d-5adf8ccaba71:
-      source:
-        id: 090b179d-5a60-4568-aacc-7975d90c239f
-      target:
-        id: 0927af9f-929a-4070-bec8-b555659fdbbf
-      z: 11
+  SNSSubscriptionQueue:
+    Type: 'AWS::SNS::Subscription'
+    Properties:
+      TopicArn: !GetAtt SNS.Outputs.SNSETLArn
+      Endpoint: !GetAtt SQS.Outputs.QueueARN
+      Protocol: sqs
+      RawMessageDelivery: 'true'

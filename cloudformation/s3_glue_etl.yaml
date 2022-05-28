@@ -1,0 +1,34 @@
+Parameters:
+  S3ScriptLocation:
+    Description: s3 path to glue script
+    Type: String
+Resources:
+  GlueRole:
+    Type: "AWS::CloudFormation::Stack"
+    DeletionPolicy: Retain
+    Properties:
+      TemplateURL: >-
+        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022148kmD-Role_GlueETL.yaml
+  GlueCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Role: !GetAtt GlueRole.Outputs.GlueETLRole
+      Description: crawler config
+      Targets:
+        S3Targets:
+          - Path: !Ref S3ScriptLocation
+      Name: demo-crawler
+      Configuration: "{\"Version\":1.0,\"CrawlerOutput\":{\"Partitions\":{\"AddOrUpdateBehavior\":\"InheritFromTable\"},\"Tables\":{\"AddOrUpdateBehavior\":\"MergeNewColumns\"}}}"
+  DemoGlueJob:
+      Type: AWS::Glue::Job
+      Properties:
+        Command:
+          Name: glueetl
+          ScriptLocation: !Ref S3ScriptLocation
+        DefaultArguments:
+          "--job-bookmark-option": "job-bookmark-disable"
+        ExecutionProperty:
+          MaxConcurrentRuns: 2
+        MaxRetries: 0
+        Name: demo-glue-etl-job
+        Role: !GetAtt GlueRole.Outputs.GlueETLRole

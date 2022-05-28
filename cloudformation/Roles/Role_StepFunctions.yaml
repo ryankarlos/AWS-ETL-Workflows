@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  StepFunctionNLP:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: "StepFunctionAWSNLPServices"
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - states.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+        - "arn:aws:iam::aws:policy/TranslateFullAccess"
+        - "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonTranscribeFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonPollyFullAccess"
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
+  StepFunctionGlue:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: "StepFunctionGlueAthenaRedshift"
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - states.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonAthenaFullAccess"
+        - "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess"
+        - "arn:aws:iam::aws:policy/AmazonRedshiftFullAccess"
+Outputs:
+  StepFunctionNLPRole:
+    Value: !GetAtt StepFunctionNLP.RoleName
+  StepFunctionGlueRole:
+    Value: !GetAtt StepFunctionGlue.RoleName

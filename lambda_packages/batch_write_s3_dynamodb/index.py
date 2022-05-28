@@ -40,7 +40,7 @@ def lambda_handler(event, context):
             for topic in topic_list
             if topic["TopicArn"].split(":")[-1] == "etl"
         ][0]
-        subject = "s3 to dynamodb etl jon"
+        subject = "s3 to dynamodb etl"
         default_message = (
             f"Successfully written {len(data)} items to dynamo db {table_name}"
         )

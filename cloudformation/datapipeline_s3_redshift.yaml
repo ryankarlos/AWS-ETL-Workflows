@@ -1,0 +1,325 @@
+Parameters:
+  RedshiftUsername:
+    Type: String
+  RedshiftPassword:
+    Type: String
+  S3ObjectKey:
+    Type: String
+Resources:
+  S3InputRedshiftOutputEC2:
+    Type: AWS::DataPipeline::Pipeline
+    Properties:
+      Name: S3InputRedshiftOutputEC2
+      Description: "Pipeline to loads S3 data into Redshift"
+      Activate: true
+      ParameterObjects:
+        -
+          Id: "*myRedshiftPassword"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Redshift password"
+            -
+              Key: "type"
+              StringValue: "String"
+        -
+          Id: "myRedshiftSecurityGrps"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Redshift security group(s)"
+            -
+              Key: "type"
+              StringValue: "String"
+            -
+              Key: "default"
+              StringValue: "default"
+            -
+              Key: "watermark"
+              StringValue: "security group name"
+            -
+              Key: "helpText"
+              StringValue: "The names of one or more security groups that are assigned to the Redshift cluster."
+            -
+              Key: "isArray"
+              StringValue: "true"
+        -
+          Id: "myRedshiftDbName"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Redshift database name"
+            -
+              Key: "type"
+              StringValue: "String"
+        -
+          Id: "myRedshiftUsername"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Redshift username"
+            -
+              Key: "type"
+              StringValue: "String"
+        -
+          Id: "myRedshiftCreateTableSql"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Create table SQL query"
+            -
+              Key: "type"
+              StringValue: "String"
+            -
+              Key: "optional"
+              StringValue: "true"
+            -
+              Key: "helpText"
+              StringValue: "The SQL statement to create the Redshift table if it does not already exist."
+            -
+              Key: "watermark"
+              StringValue: "CREATE TABLE IF NOT EXISTS #{tableName} (id varchar(255), name varchar(255), address varchar(255), primary key(id)) distkey(id) sortkey(id);"
+        -
+          Id: "myInsertMode"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Table insert mode"
+            -
+              Key: "type"
+              StringValue: "String"
+            -
+              Key: "default"
+              StringValue: "OVERWRITE_EXISTING"
+        -
+          Id: "myRedshiftTableName"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Redshift table name"
+            -
+              Key: "type"
+              StringValue: "String"
+        -
+          Id: "myInputS3Loc"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Input S3 folder"
+            -
+              Key: "type"
+              StringValue: "AWS::S3::ObjectKey"
+        -
+          Id: "myRedshiftJdbcConnectStr"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Redshift JDBC connection string"
+            -
+              Key: "type"
+              StringValue: "String"
+            -
+              Key: "watermark"
+              StringValue: "jdbc:postgresql://endpoint:port/database?tcpKeepAlive=true"
+        -
+          Id: "myRedshiftCopyOpts"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Copy options"
+            -
+              Key: "type"
+              StringValue: "String"
+            -
+              Key: "watermark"
+              StringValue: "IGNOREHEADER AS 1"
+            -
+              Key: "isArray"
+              StringValue: "true"
+            -
+              Key: "optional"
+              StringValue: "true"
+        -
+          Id: "myPrimaryKeys"
+          Attributes:
+            -
+              Key: "description"
+              StringValue: "Primary Keys"
+            -
+              Key: "type"
+              StringValue: "String"
+            -
+              Key: "isArray"
+              StringValue: "true"
+            -
+              Key: "optional"
+              StringValue: "true"
+      ParameterValues:
+        -
+          Id: "myRedshiftCreateTableSql"
+          StringValue: "DROP TABLE IF EXISTS public.datapipeline;
+                        CREATE TABLE public.datapipeline (
+                            year bigint ENCODE az64,
+                            month bigint ENCODE az64,
+                            dayofmonth bigint ENCODE az64,
+                            dayofweek bigint ENCODE az64,
+                            deptime bigint ENCODE az64,
+                            crsdeptime bigint ENCODE az64,
+                            arrtime bigint ENCODE az64,
+                            crsarrtime bigint ENCODE az64,
+                            uniquecarrier character varying(256) ENCODE lzo,
+                            flightnum bigint ENCODE az64,
+                            tailnum character varying(256) ENCODE lzo,
+                            actualelapsedtime bigint ENCODE az64,
+                            crselapsedtime bigint ENCODE az64,
+                            airtime bigint ENCODE az64,
+                            arrdelay bigint ENCODE az64,
+                            depdelay bigint ENCODE az64,
+                            origin character varying(256) ENCODE lzo,
+                            dest character varying(256) ENCODE lzo,
+                            distance bigint ENCODE az64,
+                            taxiin bigint ENCODE az64,
+                            taxiout bigint ENCODE az64,
+                            cancelled bigint ENCODE az64,
+                            cancellationcode character varying(256) ENCODE lzo,
+                            diverted bigint ENCODE az64,
+                            carrierdelay bigint ENCODE az64,
+                            weatherdelay bigint ENCODE az64,
+                            nasdelay bigint ENCODE az64,
+                            securitydelay bigint ENCODE az64,
+                            lateaircraftdelay bigint ENCODE az64
+                        )
+                        DISTSTYLE AUTO;"
+        -
+          Id: "myRedshiftDbName"
+          StringValue: "default"
+        -
+          Id: "myRedshiftUsername"
+          StringValue: !Ref RedshiftUsername
+        -
+          Id: "*myRedshiftPassword"
+          StringValue: !Ref RedshiftPassword
+        -
+          Id: "myRedshiftJdbcConnectStr"
+          StringValue: "jdbc:redshift://default-cluster.cv8l11rpedjv.us-east-1.redshift.amazonaws.com:5439/dev"
+        -
+          Id: "myInsertMode"
+          StringValue: "TRUNCATE"
+        -
+          Id: "myRedshiftSecurityGrps"
+          StringValue: "default"
+        -
+          Id: "myRedshiftTableName"
+          StringValue: "datapipeline"
+        -
+          Id: "myRedshiftCopyOpts"
+          StringValue: "['IGNOREHEADER AS 1','CSV']"
+        -
+          Id: "myInputS3Loc"
+          StringValue: !Ref S3ObjectKey
+      PipelineObjects:
+        -
+          Id: "S3InputDataNode"
+          Name: "S3 bucket with data"
+          Fields:
+            -
+              Key: "type"
+              StringValue: "S3DataNode"
+            -
+              Key: "directoryPath"
+              StringValue: "#{myInputS3Loc}"
+        -
+          Id: "RedshiftCluster"
+          Name: "RedshiftCluster"
+          Fields:
+            -
+              Key: "type"
+              StringValue: "RedshiftDatabase"
+            -
+              Key: "databaseName"
+              RefValue: "#{myRedshiftDbName}"
+            -
+              Key: "connectionString"
+              StringValue: "#{myRedshiftJdbcConnectStr}"
+            -
+              Key: "username"
+              StringValue: "#{myRedshiftUsername}"
+            -
+              Key: "*password"
+              StringValue: "#{*myRedshiftPassword}"
+        -
+          Id: "RedshiftLoadActivity"
+          Name: "RedshiftLoadActivity"
+          Fields:
+            -
+              Key: "insertMode"
+              StringValue: "#{myInsertMode"
+            -
+              Key: "type"
+              StringValue: "RedshiftCopyActivity"
+            -
+              Key: "input"
+              RefValue: "S3InputDataNode"
+            -
+              Key: "runsOn"
+              RefValue: "Ec2Instance"
+            -
+              Key: "output"
+              RefValue: "DestRedshiftTable"
+            -
+              Key: "commandOptions"
+              RefValue: "#{myRedshiftCopyOpts}"
+        -
+          Id: "DestRedshiftTable"
+          Name: "DestRedshiftTable"
+          Fields:
+            -
+              Key: "type"
+              StringValue: "RedshiftDataNode"
+            -
+              Key: "database"
+              RefValue: "RedshiftCluster"
+            -
+              Key: "tableName"
+              StringValue: "#{myRedshiftTableName}"
+            -
+              Key: "primaryKeys"
+              StringValue: "#{myPrimaryKeys}"
+            -
+              Key: "createTableSql"
+              StringValue: "#{myRedshiftCreateTableSql}"
+        -
+          Id: "Default"
+          Name: "Default"
+          Fields:
+            -
+              Key: "scheduleType"
+              StringValue: "ONDEMAND"
+            -
+              Key: "failureAndRerunMode"
+              StringValue: "CASCADE"
+            -
+              Key: "role"
+              StringValue: "MyDataPipelineRole"
+            -
+              Key: "resourceRole"
+              StringValue: "MyEC2forDataPipelineRole"
+            -
+              Key: "pipelineLogUri"
+              StringValue: "s3://data-pipeline-logs1/logs/"
+        -
+          Id: "Ec2Instance"
+          Name: "Ec2Instance"
+          Fields:
+            -
+              Key: "terminateAfter"
+              StringValue: "2 Hours"
+            -
+              Key: "securityGroups"
+              StringValue: "#{myRedshiftSecurityGrps}"
+            -
+              Key: "instanceType"
+              StringValue: "t1.micro"
+            -
+              Key: "type"
+              StringValue: "Ec2Resource"

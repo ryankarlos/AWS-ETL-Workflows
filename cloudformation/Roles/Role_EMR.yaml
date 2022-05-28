@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  emrRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "EMRDefaultRole"
+      AssumeRolePolicyDocument:
+        Version: 2008-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service:
+                - elasticmapreduce.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceRole'
+  emrEc2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "EMREC2Role"
+      AssumeRolePolicyDocument:
+        Version: 2008-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role'
+  emrAutoScalingRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "EMRAutoScalingRole"
+      AssumeRolePolicyDocument:
+        Version: 2008-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service:
+                - elasticmapreduce.amazonaws.com
+                - application-autoscaling.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role'
+  emrNotebookRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "EMRNotebookRole"
+      AssumeRolePolicyDocument:
+        Version: 2008-10-17
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service:
+                - elasticmapreduce.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AmazonElasticMapReduceforEC2Role'
+  emrEc2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: /
+      Roles:
+        - !Ref emrEc2Role
+Outputs:
+  emrRole:
+    Value: !GetAtt emrRole.RoleName
+  emrEc2Role:
+    Value: !GetAtt emrEc2Role.RoleName
+  emrAutoScalingRole:
+    Value: !GetAtt emrAutoScalingRole.RoleName
+  emrNotebookRole:
+    Value: !GetAtt emrNotebookRole.RoleName

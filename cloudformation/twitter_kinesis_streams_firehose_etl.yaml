@@ -1,0 +1,100 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  LambdaImageUri:
+    Description: ECR image URI
+    Type: String
+  LambdaZipBucket:
+    Description: S3 Bucket where the zip for firehose lambda is stored
+    Type: String
+  LambdaZipS3Key:
+    Description: The Amazon S3 key of the deployment package.
+    Type: String
+  DestBucketArn:
+    Description: Arn for destination bucket to output from firehose
+    Type: String
+Resources:
+  LambdaZipRole:
+    Type: "AWS::CloudFormation::Stack"
+    DeletionPolicy: Retain
+    Properties:
+      TemplateURL: >-
+        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022148kmD-Role_LambdaZip.yaml
+  LambdaImageRole:
+    Type: "AWS::CloudFormation::Stack"
+    DeletionPolicy: Retain
+    Properties:
+      TemplateURL: >-
+        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022148kmD-Role_LambdaImage.yaml
+  KinesisRole:
+    Type: "AWS::CloudFormation::Stack"
+    DeletionPolicy: Retain
+    Properties:
+      TemplateURL: >-
+        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022148kmD-Role_Kinesis.yaml
+  KinesisStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: TwitterStream
+      RetentionPeriodHours: 10
+      ShardCount: 3
+    DependsOn:
+      - "TweetsStreamImage"
+  Deliverystream:
+    Type: AWS::KinesisFirehose::DeliveryStream
+    Properties:
+      DeliveryStreamName: TweetsDeliveryFirehose
+      DeliveryStreamType: KinesisStreamAsSource
+      KinesisStreamSourceConfiguration:
+        KinesisStreamARN: !GetAtt KinesisStream.Arn
+        RoleARN: !GetAtt KinesisRole.Outputs.StreamRoleArn
+      S3DestinationConfiguration:
+        BucketARN: !Ref DestBucketArn
+        BufferingHints:
+          IntervalInSeconds: 60
+          SizeInMBs: 50
+        CompressionFormat: UNCOMPRESSED
+        Prefix: firehose/
+        RoleARN: !GetAtt KinesisRole.Outputs.FirehoseRoleArn
+        CloudWatchLoggingOptions:
+          Enabled: true
+          LogGroupName: "deliverystream"
+          LogStreamName: "s3Backup"
+      ProcessingConfiguration:
+        Enabled: True
+        Processors:
+          - Processor:
+              Parameters:
+                - ProcessorParameter:
+                    ParameterName: "LambdaArn"
+                    ParameterValue: !GetAtt FirehoseLambda.Arn
+              Type: String
+    DependsOn:
+      - "KinesisStream"
+      - "FirehoseLambda"
+  TweetsStreamImage:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      PackageType: Image
+      FunctionName: "TweetsStreamImage"
+      Code:
+        ImageUri: !Ref 'LambdaImageUri'
+      Role: !GetAtt LambdaImageRole.Outputs.TwitterArn
+      Architectures:
+        - x86_64
+      Runtime: python3.9
+      Timeout: 300
+      MemorySize: 1024
+  FirehoseLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: "transform-firehouse-b64-json"
+      Handler: index.lambda_handler
+      Role: !GetAtt LambdaZipRole.Outputs.FirehoseNLPArn
+      Architectures:
+        - x86_64
+      Runtime: python3.9
+      Timeout: 300
+      MemorySize: 1024
+      Code:
+        S3Bucket: !Ref LambdaZipBucket
+        S3Key: !Ref LambdaZipS3Key

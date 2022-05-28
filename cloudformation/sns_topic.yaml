@@ -1,0 +1,13 @@
+Parameters:
+      Name:
+        Description: "Name of the topic"
+        Type: "String"
+Resources:
+  SNSETL:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName:
+         Ref: "Name"
+Outputs:
+  SNSETLArn:
+    Value: !GetAtt SNSETL.Arn
