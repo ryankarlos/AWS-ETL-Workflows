@@ -31,8 +31,8 @@ Resources:
       KinesisStreamSourceConfiguration:
         KinesisStreamARN: !GetAtt KinesisStream.Arn
         RoleARN:
-          Fn::ImportValue: RoleKinesis-StreamArn
-      S3DestinationConfiguration:
+          Fn::ImportValue: RoleKinesis-FirehoseArn
+      ExtendedS3DestinationConfiguration:
         BucketARN: !Ref DestBucketArn
         BufferingHints:
           IntervalInSeconds: 60
@@ -45,15 +45,13 @@ Resources:
           Enabled: true
           LogGroupName: "deliverystream"
           LogStreamName: "s3Backup"
-    ProcessingConfiguration:
-      Enabled: True
-      Processors:
-        - Processor:
-            Parameters:
-              - ProcessorParameter:
-                  ParameterName: "LambdaArn"
-                  ParameterValue: !GetAtt FirehoseLambda.Arn
-            Type: String
+        ProcessingConfiguration:
+          Enabled: true
+          Processors:
+            - Type: "Lambda"
+              Parameters:
+              - ParameterName: "LambdaArn"
+                ParameterValue: !GetAtt FirehoseLambda.Arn
     DependsOn:
       - "KinesisStream"
       - "FirehoseLambda"

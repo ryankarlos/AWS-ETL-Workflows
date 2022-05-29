@@ -14,7 +14,8 @@ Resources:
             Action:
               - 'sts:AssumeRole'
       Path: /
-      "ManagedPolicyArns": [ "arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess" ]
+      "ManagedPolicyArns": [ "arn:aws:iam::aws:policy/AmazonKinesisFirehoseFullAccess",
+                            "arn:aws:iam::aws:policy/AmazonKinesisFullAccess"]
   Kinesis:
     Type: 'AWS::IAM::Role'
     Properties:
