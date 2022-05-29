@@ -19,12 +19,12 @@ Parameters:
     Type: String
     ConstraintDescription: Must select a valid DB instance type.
   DBAllocatedStorage:
-    Default: '50'
+    Default: '20'
     Description: The size of the database (GiB)
     Type: Number
     MinValue: '20'
-    MaxValue: '65536'
-    ConstraintDescription: must be between 20 and 65536 GiB.
+    MaxValue: '50'
+    ConstraintDescription: Can be from 20 to 50 GiB
   DBUsername:
     Description: Username for database access
     Type: String
@@ -39,11 +39,19 @@ Parameters:
     ConstraintDescription: must contain only alphanumeric characters.
   DBEngine:
     Default: postgres
-    Description: db engine e.g. postgres, mysql
+    Description: db engine e.g. postgres, mysql, mariadb, sqlserver, oracle
     Type: String
+    AllowedValues:
+      - mariadb
+      - mysql
+      - postgres
+      - oracle-se
+      - oracle-ee
+      - sqlserver-se
+      - sqlserver-ee
   EngineVersion:
      Default: 13.4
-     Description: Engine version
+     Description: Engine version. May need to change this if selecting different engine from default (postgres).
      Type: String
 Resources:
   MyDBInstance:
@@ -57,3 +65,4 @@ Resources:
       EngineVersion: !Ref EngineVersion
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
+      StorageType: "gp2"

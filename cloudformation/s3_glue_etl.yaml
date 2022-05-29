@@ -1,22 +1,32 @@
 Parameters:
-  S3ScriptLocation:
+  S3DataPath:
+    Default: "s3://flight-delays-2008/delays/"
+    Description: s3 path to data
+    Type: String
+  SparkScriptLocation:
+    Default: "s3://flight-delays-2008/script.py"
     Description: s3 path to glue script
     Type: String
+  AthenaQueryOutputPath:
+    Default: "s3://aws-athena-query-results-us-east-1-376337229415"
+    Type: String
+  StateMachineDefinitionBucket:
+    Default: "flight-delays-2008"
+    Type: String
+  StateMachineDefinitionKey:
+    Default: "glue_athena_sf.json"
+    Type: String
 Resources:
-  GlueRole:
-    Type: "AWS::CloudFormation::Stack"
-    DeletionPolicy: Retain
-    Properties:
-      TemplateURL: >-
-        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022148kmD-Role_GlueETL.yaml
   GlueCrawler:
     Type: AWS::Glue::Crawler
     Properties:
-      Role: !GetAtt GlueRole.Outputs.GlueETLRole
+      Role:
+         Fn::ImportValue: RoleGlue-Arn
       Description: crawler config
       Targets:
         S3Targets:
-          - Path: !Ref S3ScriptLocation
+          - Path: !Ref S3DataPath
+      DatabaseName: default
       Name: demo-crawler
       Configuration: "{\"Version\":1.0,\"CrawlerOutput\":{\"Partitions\":{\"AddOrUpdateBehavior\":\"InheritFromTable\"},\"Tables\":{\"AddOrUpdateBehavior\":\"MergeNewColumns\"}}}"
   DemoGlueJob:
@@ -24,11 +34,34 @@ Resources:
       Properties:
         Command:
           Name: glueetl
-          ScriptLocation: !Ref S3ScriptLocation
+          ScriptLocation: !Ref SparkScriptLocation
         DefaultArguments:
           "--job-bookmark-option": "job-bookmark-disable"
         ExecutionProperty:
           MaxConcurrentRuns: 2
+        GlueVersion: "3.0"
+        NumberOfWorkers: 5
+        WorkerType: "Standard"
+        Timeout: 6
         MaxRetries: 0
         Name: demo-glue-etl-job
-        Role: !GetAtt GlueRole.Outputs.GlueETLRole
+        Role:
+          Fn::ImportValue: RoleGlue-Arn
+  MyStateMachine:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: s3-glue-athena
+      DefinitionS3Location:
+        Bucket: !Ref StateMachineDefinitionBucket
+        Key: !Ref StateMachineDefinitionKey
+      DefinitionSubstitutions:
+        SNSTopicArn:
+          Fn::ImportValue: SNSTopics-etl
+        JobName: !Ref DemoGlueJob
+        CrawlerName: !Ref GlueCrawler
+        AthenaOutputPath: !Ref AthenaQueryOutputPath
+      RoleArn:
+        Fn::ImportValue: RoleStepFunctions-GlueArn
+    DependsOn:
+      - "DemoGlueJob"
+      - "GlueCrawler"

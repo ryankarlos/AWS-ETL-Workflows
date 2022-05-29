@@ -80,7 +80,13 @@ Resources:
 Outputs:
   S3DynamoArn:
     Value: !GetAtt S3Dynamo.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-S3DynamoArn"
   FirehoseNLPArn:
     Value: !GetAtt FirehoseNLP.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-FirehoseNLPArn"
   RDSScheduleArn:
     Value: !GetAtt RDSSchedule.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-RDSScheduleArn"

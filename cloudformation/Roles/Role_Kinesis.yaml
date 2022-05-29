@@ -34,6 +34,10 @@ Resources:
 Outputs:
   FirehoseRoleArn:
     Value: !GetAtt Firehose.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-FirehoseArn"
   StreamRoleArn:
     Value: !GetAtt Kinesis.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-StreamArn"
 

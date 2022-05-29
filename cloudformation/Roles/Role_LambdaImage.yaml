@@ -29,3 +29,5 @@ Resources:
 Outputs:
   TwitterArn:
     Value: !GetAtt Twitter.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-TwitterArn"

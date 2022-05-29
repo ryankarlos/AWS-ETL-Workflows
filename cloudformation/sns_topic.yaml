@@ -1,13 +1,21 @@
-Parameters:
-      Name:
-        Description: "Name of the topic"
-        Type: "String"
 Resources:
   SNSETL:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName:
-         Ref: "Name"
+      TopicName: "etl"
+  SNSML:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: "ML"
 Outputs:
   SNSETLArn:
-    Value: !GetAtt SNSETL.Arn
+    Value:
+      Ref: SNSETL
+    Export:
+      Name: !Sub "${AWS::StackName}-etl"
+  SNSMLArn:
+    Value:
+      Ref: SNSML
+    Export:
+      Name: !Sub "${AWS::StackName}-ML"
+

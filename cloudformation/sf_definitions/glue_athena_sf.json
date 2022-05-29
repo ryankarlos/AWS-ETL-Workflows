@@ -1,0 +1,114 @@
+{
+  "Comment": "Glue ETL flights pipeline execution",
+  "StartAt": "Parallel",
+  "States": {
+    "Parallel": {
+      "Type": "Parallel",
+      "Next": "Glue StartJobRun",
+      "Branches": [
+        {
+          "StartAt": "Athena DropExistingTable",
+          "States": {
+            "Athena DropExistingTable": {
+              "Type": "Task",
+              "Resource": "arn:aws:states:::athena:startQueryExecution.sync",
+              "Parameters": {
+                "QueryString": "DROP TABLE IF EXISTS default.fl_delays_with_codes",
+                "WorkGroup": "primary",
+                "ResultConfiguration": {
+                  "OutputLocation": "${AthenaOutputPath}"
+                }
+              },
+              "ResultPath": null,
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "StartCrawler",
+          "States": {
+            "StartCrawler": {
+              "Type": "Task",
+              "Parameters": {
+                "Name": "${CrawlerName}"
+              },
+              "Resource": "arn:aws:states:::aws-sdk:glue:startCrawler",
+              "Next": "Wait for crawler to complete"
+            },
+            "Wait for crawler to complete": {
+              "Type": "Wait",
+              "Seconds": 70,
+              "End": true
+            }
+          }
+        }
+      ],
+      "ResultPath": "$.Results"
+    },
+    "Glue StartJobRun": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::glue:startJobRun",
+      "Parameters": {
+        "JobName": "${JobName}",
+        "MaxCapacity": 2
+      },
+      "ResultPath": "$.gluejobresults",
+      "Next": "Wait"
+    },
+    "Wait": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "Get Glue Job status"
+    },
+    "Get Glue Job status": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::aws-sdk:glue:getJobRun",
+      "Parameters": {
+        "JobName.$": "$.gluejobresults.JobName",
+        "RunId.$": "$.gluejobresults.JobRunId"
+      },
+      "ResultPath": "$.gluejobresults.status",
+      "Next": "Check Glue Job status"
+    },
+    "Check Glue Job status": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.gluejobresults.status.JobRun.JobRunState",
+          "StringEquals": "SUCCEEDED",
+          "Next": "Athena QueryTargetTable"
+        }
+      ],
+      "Default": "Wait"
+    },
+    "Athena QueryTargetTable": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::athena:startQueryExecution.sync",
+      "Parameters": {
+        "QueryString": "SELECT * FROM default.fl_delays_with_codes LIMIT 10",
+        "WorkGroup": "primary"
+      },
+      "Next": "Athena QueryOutputTable"
+    },
+    "Athena QueryOutputTable": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::athena:getQueryResults",
+      "Parameters": {
+        "QueryExecutionId.$": "$.QueryExecution.QueryExecutionId"
+      },
+      "Next": "PublishResultstoSNS"
+    },
+    "PublishResultstoSNS": {
+      "Type": "Task",
+      "Resource": "arn:aws:states:::sns:publish",
+      "Parameters": {
+        "TopicArn": "${SNSTopicArn}",
+        "Message": {
+          "Input.$": "$.ResultSet.Rows"
+        }
+      },
+      "ResultPath": "$.SNS",
+      "End": true
+    }
+  }
+}

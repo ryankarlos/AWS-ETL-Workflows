@@ -5,12 +5,15 @@
 <img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/example_etl_workflow.png">
 
 
-
-
 First need to create a database in the glue catalog to store the raw and transformed table schemas. Ive called this flights_summary
 The raw CSV files in S3 bucket are crawled using populate the schema and data in the glue data catalog which can be queried with athena. (reference https://docs.aws.amazon.com/glue/latest/ug/tutorial-add-crawler.html)
 The properties of crawler created can be accessed via console cli as below. The path to the raw csv data "s3://flight-delays-2008/delays", has been provided,  "DatabaseName": "flights_summary" (created in glue data catalog)
-
+Note: So that athena can query tables successfully:
+* The path to csv should only include the path upto parent folder csv is in
+* There should not be multiple csv in a given folder (no issue for crawler as it
+  will create separate tables in catalog but athena will not like it when querying)
+https://docs.aws.amazon.com/athena/latest/ug/tables-location-format.html
+https://aws.amazon.com/premiumsupport/knowledge-center/athena-empty-results/
 
 ``aws glue get-crawler --name flights``
 

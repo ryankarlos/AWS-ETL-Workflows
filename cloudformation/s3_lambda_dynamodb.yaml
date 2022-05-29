@@ -1,32 +1,14 @@
 AWSTemplateFormatVersion: 2010-09-09
 Parameters:
   BucketName:
-    Default: None
+    Default: ""
     Type: String
 Conditions:
   CreateBucket: !Not 
     - !Equals 
       - !Ref BucketName
-      - None
+      - ""
 Resources:
-  SNS:
-    Type: "AWS::CloudFormation::Stack"
-    DeletionPolicy: Retain
-    Properties:
-      TemplateURL: >-
-        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022147jpx-sns_topic.yaml
-  SQS:
-    Type: "AWS::CloudFormation::Stack"
-    DeletionPolicy: Retain
-    Properties:
-      TemplateURL: >-
-        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022147rdO-sqs.yaml
-  LambdaRole:
-    Type: "AWS::CloudFormation::Stack"
-    DeletionPolicy: Retain
-    Properties:
-      TemplateURL: >-
-        https://cf-templates-wnxns0c4jjl4-us-east-1.s3.amazonaws.com/2022148kmD-Role_LambdaZip.yaml
   DDBTable:
     Type: 'AWS::DynamoDB::Table'
     Properties:
@@ -48,12 +30,15 @@ Resources:
     Type: 'AWS::S3::Bucket'
     Condition: CreateBucket
     DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref BucketName
   ddbinputtransform:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: "ddb_input_transform"
       Handler: index.lambda_handler
-      Role: !GetAtt LambdaRole.Outputs.S3DynamoArn
+      Role:
+        Fn::ImportValue: S3DynamoArn
       Architectures:
         - x86_64
       Runtime: python3.9
@@ -64,14 +49,14 @@ Resources:
           def lambda_handler(event, context):
             print('hello from lambda')
     DependsOn:
-      - "S3fordynamo"
       - "DDBTable"
   batchwrites3dynamo:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: "batch_write_s3_dynamodb"
       Handler: index.lambda_handler
-      Role: !GetAtt LambdaRole.Outputs.S3DynamoArn
+      Role:
+        Fn::ImportValue: S3DynamoArn
       Architectures:
         - x86_64
       Runtime: python3.9
@@ -83,11 +68,12 @@ Resources:
             print('hello from lambda')
     DependsOn:
       - "DDBTable"
-      - "S3fordynamo"
   SNSSubscriptionQueue:
     Type: 'AWS::SNS::Subscription'
     Properties:
-      TopicArn: !GetAtt SNS.Outputs.SNSETLArn
-      Endpoint: !GetAtt SQS.Outputs.QueueARN
+      TopicArn:
+        Fn::ImportValue: SNSTopics-etl
+      Endpoint:
+        Fn::ImportValue: SQS-etl
       Protocol: sqs
       RawMessageDelivery: 'true'

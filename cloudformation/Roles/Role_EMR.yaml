@@ -72,11 +72,19 @@ Resources:
       Roles:
         - !Ref emrEc2Role
 Outputs:
-  emrRole:
-    Value: !GetAtt emrRole.RoleName
-  emrEc2Role:
-    Value: !GetAtt emrEc2Role.RoleName
-  emrAutoScalingRole:
-    Value: !GetAtt emrAutoScalingRole.RoleName
-  emrNotebookRole:
-    Value: !GetAtt emrNotebookRole.RoleName
+  emrRoleArn:
+    Value: !GetAtt emrRole.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-EmrArn"
+  emrEc2RoleArn:
+    Value: !GetAtt emrEc2Role.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-emrEc2Arn"
+  emrAutoScalingRoleArn:
+    Value: !GetAtt emrAutoScalingRole.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-emrAutoScalingRoleArn"
+  emrNotebookRoleArn:
+    Value: !GetAtt emrNotebookRole.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-emrNotebookRoleArn"

@@ -14,7 +14,10 @@ Resources:
             Action:
               - 'sts:AssumeRole'
       Path: /
-      "ManagedPolicyArns": ["arn:aws:iam::aws:policy/AmazonS3FullAccess",  "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess"]
+      "ManagedPolicyArns": ["arn:aws:iam::aws:policy/AmazonS3FullAccess",  "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess",
+                            "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"]
 Outputs:
-  GlueETLRole:
-    Value: !GetAtt GlueETL.RoleName
+  GlueETLRoleArn:
+    Value: !GetAtt GlueETL.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-Arn"

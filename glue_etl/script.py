@@ -16,7 +16,7 @@ job.init(args["JOB_NAME"], args)
 
 # Script generated for node Amazon S3
 AmazonS3_node1648261615433 = glueContext.create_dynamic_frame.from_catalog(
-    database="flights_summary",
+    database="default",
     table_name="delays",
     transformation_ctx="AmazonS3_node1648261615433",
 )
@@ -84,7 +84,7 @@ AmazonS3_node1648261656864 = glueContext.getSink(
     transformation_ctx="AmazonS3_node1648261656864",
 )
 AmazonS3_node1648261656864.setCatalogInfo(
-    catalogDatabase="flights_summary", catalogTableName="fl_delays_with_codes"
+    catalogDatabase="default", catalogTableName="fl_delays_with_codes"
 )
 AmazonS3_node1648261656864.setFormat("glueparquet")
 AmazonS3_node1648261656864.writeFrame(DropDuplicates_node1648261649257)
