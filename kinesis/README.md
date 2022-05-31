@@ -3,10 +3,121 @@
 
 <img width="1000" alt="kinesis_workflow" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/kinesis_workflow.png">
 
-In this workflow, we will invoke lambda function created from container image with the twitter streaming application 
-code built in https://github.com/ryankarlos/codepipeline to publish records into kinesis stream. Kinesis Firehose 
+In this workflow, we will create a lambda container image `lambda_packages/tweets-image` which contains twitter 
+streaming application code. When invoked, it will publish records into kinesis stream. Kinesis Firehose 
 will acts as a consumer to read the records from shards, transform the records (including call AWS Comprehend api to 
 retrieve sentiment results) and ingest them into S3 bucket. 
+
+## Create or Updating the Lambda Container Image
+
+This AWS doc https://docs.aws.amazon.com/lambda/latest/dg/images-create.html provides good instructions
+on building a container image for a new Lambda function, tagging the image and 
+pushing to AWS ECR Registry. 
+
+The bash script `kinesis/create_lambda_container_image.sh` takes in IMAGE_REPO_NAME, FUNCTION_NAME, 
+AWS_ACCOUNT_ID and ROLE_NAME as required positional args, with the option of also creating a new ECR repo and 
+function by setting an extra two final args to true (see below)
+
+```
+$ sh kinesis/create_lambda_container_image.sh test-ecr-repo test-lambda <AWS-ACCOUNT-ID> ImageLambdaTwitter true true 
+
+Docker build path set as /Users/rk1103/Documents/AWS-ETL-Workflows/lambda_packages/tweets-image
+Authenticating the Docker CLI to Amazon ECR registry
+Login Succeeded
+
+Creating repository in Amazon ECR
+{
+    "repository": {
+        "repositoryArn": "arn:aws:ecr:us-east-1:376337229415:repository/test-ecr-repo",
+        "registryId": "376337229415",
+        "repositoryName": "test-ecr-repo",
+        "repositoryUri": "376337229415.dkr.ecr.us-east-1.amazonaws.com/test-ecr-repo",
+        "createdAt": "2022-05-31T04:19:43+01:00",
+        "imageTagMutability": "MUTABLE",
+        "imageScanningConfiguration": {
+            "scanOnPush": true
+        },
+        "encryptionConfiguration": {
+            "encryptionType": "AES256"
+        }
+    }
+}
+
+Building Docker image
+[+] Building 0.6s (11/11) FINISHED                                                                                                                       
+ => [internal] load build definition from Dockerfile                                                                                                0.0s
+ => => transferring dockerfile: 37B                                                                                                                 0.0s
+ => [internal] load .dockerignore                                                                                                                   0.0s
+ => => transferring context: 2B                                                                                                                     0.0s
+ => [internal] load metadata for public.ecr.aws/lambda/python:3.9.2022.03.23.16                                                                     0.5s
+ => [internal] load build context                                                                                                                   0.0s
+ => => transferring context: 135B                                                                                                                   0.0s
+ => [1/6] FROM public.ecr.aws/lambda/python:3.9.2022.03.23.16@sha256:30f4b8ccdd8321fb9b22f0f32e688c225044497b1a4e82b53d3554efd452bab3               0.0s
+ => CACHED [2/6] COPY main_twitter.py /var/task                                                                                                     0.0s
+ => CACHED [3/6] COPY secrets.py /var/task                                                                                                          0.0s
+ => CACHED [4/6] COPY tweets_api.py /var/task                                                                                                       0.0s
+ => CACHED [5/6] COPY requirements.txt  .                                                                                                           0.0s
+ => CACHED [6/6] RUN  pip3 install -r requirements.txt --target "/var/task"                                                                         0.0s
+ => exporting to image                                                                                                                              0.0s
+ => => exporting layers                                                                                                                             0.0s
+ => => writing image sha256:40e0215af63ea56c21fa05a4836f16901afe1c6862979ca3c94867a941a5b0ba                                                        0.0s
+ => => naming to docker.io/library/test-ecr-repo:latest                                                                                             0.0s
+
+Tagging image to match repository name, and deploying the image to Amazon ECR using the docker push command.
+The push refers to repository [376337229415.dkr.ecr.us-east-1.amazonaws.com/test-ecr-repo]
+adeb7b4ffed9: Pushed 
+89ab807769df: Pushed 
+888c565dab7f: Pushed 
+ed552c17c0fa: Pushed 
+ef6568bd8948: Pushed 
+0a2ffc791a55: Pushed 
+af2bca515e37: Pushed 
+5f96311c404e: Pushed 
+87bc6f0d5aac: Pushed 
+f2ae3f427fe6: Pushed 
+c662e800f5c9: Pushed 
+latest: digest: sha256:92c11da0a590877c354790aea322c41f1917cf9f3f1a7bb249859f4d7df56737 size: 2621
+
+
+Creating lambda image with ECR URI
+{
+    "FunctionName": "test-image",
+    "FunctionArn": "arn:aws:lambda:us-east-1:376337229415:function:test-image",
+    "Role": "arn:aws:iam::376337229415:role/ImageLambdaTwitter",
+    "CodeSize": 0,
+    "Description": "",
+    "Timeout": 300,
+    "MemorySize": 1024,
+    "LastModified": "2022-05-31T04:17:47.747+0000",
+    "CodeSha256": "92c11da0a590877c354790aea322c41f1917cf9f3f1a7bb249859f4d7df56737",
+    "Version": "$LATEST",
+    "TracingConfig": {
+        "Mode": "PassThrough"
+    },
+    "RevisionId": "ef3b5cd3-533e-4708-87af-8e0adf85beac",
+    "State": "Pending",
+    "StateReason": "The function is being created.",
+    "StateReasonCode": "Creating",
+    "PackageType": "Image",
+    "Architectures": [
+        "x86_64"
+    ],
+    "EphemeralStorage": {
+        "Size": 512
+    }
+}
+
+```
+
+If only the 4 mandatory args are passed, this will assume we already have an existing
+lambda function and ECR repo already created and we just want to update them. 
+Excluding the last two (optional) boolean arguments will use their default values (false ) 
+and skip the steps for creating lambda and ecr repo resources.  The image will then just be 
+built and pushed to existing ECR repo and existing lambda function URI updated to latest tag.
+
+```
+sh kinesis/create_lambda_container_image.sh test-ecr-repo test-lambda <AWS-ACCOUNT-ID> ImageLambdaTwitter
+```
 
 ## Kinesis stream and firehose
 
