@@ -1,0 +1,9 @@
+Resources:
+  - myLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        Name: "TestLambdaTwitter"
+        currentversion": 1
+        targetversion": 2
+Hooks:
+  - AfterAllowTraffic: "ValidateTestLambdaTwitter"

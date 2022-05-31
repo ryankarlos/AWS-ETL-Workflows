@@ -1,0 +1,6 @@
+pandas==1.4.1
+tweepy==4.8.0
+configparser==5.0.2
+boto3==1.21.36
+botocore==1.24.36
+click==8.0.4
