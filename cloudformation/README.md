@@ -1,11 +1,14 @@
 ## AWS CLoud Formation
 
+<img width="1000" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/import-changeset-eventbridge.png">
+
+
 CloudFormation allows you to create and manage Amazon Web Services infrastructure deployments predictably and repeatedly. 
 With CloudFormation, you declare all your resources and dependencies in a template file. The template defines a collection of resources as a single unit called a stack. CloudFormation creates and deletes all member resources of the stack together and manages all dependencies between the resources for you.
 https://awscli.amazonaws.com/v2/documentation/api/latest/reference/cloudformation/index.html
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html
 
-To create a stack follow the aws documentaiton below:
+To create a stack follow the aws documentation below:
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-create-stack.html#cfn-using-console-initiating-stack-creation
 
 Once stack is created from template - one can view the resources created
