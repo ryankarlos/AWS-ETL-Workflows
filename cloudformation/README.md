@@ -1,6 +1,6 @@
 ## AWS CLoud Formation
 
-<img width="1000" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/import-changeset-eventbridge.png">
+<img width="1000" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/all-cf-stacks-console.png"></img>
 
 
 CloudFormation allows you to create and manage Amazon Web Services infrastructure deployments predictably and repeatedly. 
