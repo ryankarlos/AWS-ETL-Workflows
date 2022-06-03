@@ -16,10 +16,6 @@ Resources:
         - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
         -  "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 Outputs:
-  RoleEventBridgeArn:
-    Value: !GetAtt RoleEventBridge.Arn
-    Export:
-      Name: !Sub "RoleEventBridge-Arn"
   RoleRDSArn:
     Value: !GetAtt RoleRDS.Arn
     Export:

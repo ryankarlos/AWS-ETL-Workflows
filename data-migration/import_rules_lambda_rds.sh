@@ -14,9 +14,6 @@ RESOURCE_IMPORT_CF=$REPO_ROOT/cloudformation/resources_to_import/event-bus.txt |
 RDS_CF=$REPO_ROOT/cloudformation/rds.yaml || exit
 
 
-## echo "Creating stack for EventBusSchedule"
-## aws cloudformation create-stack --stack-name EventBusSchedule --template-body file://"${EVENTBRIDGE_BUS_CF}"
-
 if [[ $? -eq 0 ]];then
   echo ""
   echo "Creating change set for EventRuleSchedule Stack"
@@ -27,7 +24,10 @@ if [[ $? -eq 0 ]];then
   --template-body file://"${EVENTBRIDGE_RULES_CF}" \
   --parameters ParameterKey=State,ParameterValue="$STATE" \
   ParameterKey=CronScheduleOn,ParameterValue="$CRON_ON" \
-  ParameterKey=CronScheduleOff,ParameterValue="$CRON_OFF"
+  ParameterKey=CronScheduleOff,ParameterValue="$CRON_OFF" \
+  ParameterKey=DBUsername,ParameterValue="${DB_USERNAME}" \
+  ParameterKey=DBPassword,ParameterValue="${DB_PASSWORD}"
+
 fi;
 
 if [[ $? -eq 0 ]];then
@@ -54,10 +54,4 @@ else
   echo ""
   echo "Change set execution not required so exiting"
   exit
-fi;
-
-if [[ $? -eq 0 ]];then
-  echo ""
-  echo "Creating RDS stack"
-  aws cloudformation create-stack --stack-name RDS --template-body file://"${RDS_CF}"
 fi;

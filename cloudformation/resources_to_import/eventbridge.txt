@@ -7,20 +7,6 @@
       }
   },
    {
-      "ResourceType":"AWS::RDS::DBInstance",
-      "LogicalResourceId":"ScheduleEventBus",
-      "ResourceIdentifier": {
-        "Name": "dev"
-      }
-  },
-   {
-      "ResourceType":"AWS::IAM::Role",
-      "LogicalResourceId":"RoleEventBridge",
-      "ResourceIdentifier": {
-        "Name": "RoleEventBridge"
-      }
-  },
-   {
       "ResourceType":"AWS::IAM::Role",
       "LogicalResourceId":"RoleRDS",
       "ResourceIdentifier": {

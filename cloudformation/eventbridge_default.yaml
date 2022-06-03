@@ -8,14 +8,29 @@ Parameters:
       - "ENABLED"
       - "DISABLED"
   CronScheduleOn:
-    Default: "cron(00 17 * 5 ? 2022)"
+    Default: "cron(00 18 * 5 ? 2022)"
     Description: s3 path to glue script
     Type: String
   CronScheduleOff:
     Default: "cron(00 19 * 5 ? 2022)"
     Description: s3 path to glue script
     Type: String
+  EventBusName:
+    Default: ''
+    Description: Name of new eventbus to create.
+    Type: String
+Conditions:
+  CreateBusResource: !Not
+    - !Equals
+        - !Ref EventBusName
+        - ''
 Resources:
+  EventBusResource:
+    Type: 'AWS::Events::EventBus'
+    Condition: CreateBusResource
+    DeletionPolicy: "Retain"
+    Properties:
+      Name: !Ref EventBusName
   ScheduleRDSResourceOn:
     Type: 'AWS::Events::Rule'
     DeletionPolicy: "Retain"
@@ -42,6 +57,25 @@ Resources:
         - Arn:
             Fn::ImportValue: LambdaRDSOnOff-Arn
           Id: 'LambdaRDSOff'
+  MyNewEventsRule:
+    Type: 'AWS::Events::Rule'
+    Properties:
+      Description: Test Events Rule
+      Name: mynewabc
+      EventPattern:
+        source:
+          - aws.ec2
+      State: ENABLED
+      Targets:
+        - Arn:
+            Fn::ImportValue: SQS-etl
+          Id: 'SQLETLQueue'
+          RetryPolicy:
+            MaximumRetryAttempts: 4
+            MaximumEventAgeInSeconds: 400
+          DeadLetterConfig:
+            Arn:
+              Fn::ImportValue: SQS-DLQ
   EventBridgeLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
