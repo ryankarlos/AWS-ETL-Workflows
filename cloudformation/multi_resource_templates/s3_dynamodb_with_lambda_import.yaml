@@ -1,13 +1,4 @@
 AWSTemplateFormatVersion: 2010-09-09
-Parameters:
-  BucketName:
-    Default: ""
-    Type: String
-Conditions:
-  CreateBucket: !Not 
-    - !Equals 
-      - !Ref BucketName
-      - ""
 Resources:
   DDBTable:
     Type: 'AWS::DynamoDB::Table'
@@ -26,32 +17,18 @@ Resources:
         ReadCapacityUnits: 10
         WriteCapacityUnits: 10
       TableName: "movies"
-  S3fordynamo:
-    Type: 'AWS::S3::Bucket'
-    Condition: CreateBucket
-    DeletionPolicy: Retain
+  SNSSubscriptionQueue:
+    Type: 'AWS::SNS::Subscription'
     Properties:
-      BucketName: !Ref BucketName
-  ddbinputtransform:
-    Type: 'AWS::Lambda::Function'
-    Properties:
-      FunctionName: "ddb_input_transform"
-      Handler: index.lambda_handler
-      Role:
-        Fn::ImportValue: S3DynamoArn
-      Architectures:
-        - x86_64
-      Runtime: python3.9
-      Timeout: 40
-      MemorySize: 1024
-      Code:
-        ZipFile: |
-          def lambda_handler(event, context):
-            print('hello from lambda')
-    DependsOn:
-      - "DDBTable"
+      TopicArn:
+        Fn::ImportValue: SNSTopics-etl
+      Endpoint:
+        Fn::ImportValue: SQS-etl
+      Protocol: sqs
+      RawMessageDelivery: 'true'
   batchwrites3dynamo:
     Type: 'AWS::Lambda::Function'
+    DeletionPolicy: "Retain"
     Properties:
       FunctionName: "batch_write_s3_dynamodb"
       Handler: index.lambda_handler
@@ -63,17 +40,26 @@ Resources:
       Timeout: 300
       MemorySize: 1024
       Code:
-        ZipFile: |
-          def lambda_handler(event, context):
-            print('hello from lambda')
+        S3Bucket: lambda-zip-for-cf
+        S3Key: batch_write_s3_dynamodb.zip
     DependsOn:
       - "DDBTable"
-  SNSSubscriptionQueue:
-    Type: 'AWS::SNS::Subscription'
+  ddbinputtransform:
+    Type: 'AWS::Lambda::Function'
+    DeletionPolicy: "Retain"
     Properties:
-      TopicArn:
-        Fn::ImportValue: SNSTopics-etl
-      Endpoint:
-        Fn::ImportValue: SQS-etl
-      Protocol: sqs
-      RawMessageDelivery: 'true'
+      FunctionName: "ddb_input_transform"
+      Handler: index.lambda_handler
+      Role:
+        Fn::ImportValue: S3DynamoArn
+      Architectures:
+        - x86_64
+      Runtime: python3.9
+      Timeout: 40
+      MemorySize: 1024
+      Code:
+        S3Bucket: lambda-zip-for-cf
+        S3Key: ddb_input_transform.zip
+    DependsOn:
+      - "DDBTable"
+

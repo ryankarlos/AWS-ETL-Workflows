@@ -51,7 +51,8 @@ Resources:
             - Type: "Lambda"
               Parameters:
               - ParameterName: "LambdaArn"
-                ParameterValue: !GetAtt FirehoseLambda.Arn
+                ParameterValue:
+                  Fn::ImportValue: LambdaFirehose-Arn
     DependsOn:
       - "KinesisStream"
       - "FirehoseLambda"
@@ -66,18 +67,3 @@ Resources:
         Fn::ImportValue: RoleLambdaImage-TwitterArn
       Timeout: 300
       MemorySize: 1024
-  FirehoseLambda:
-    Type: 'AWS::Lambda::Function'
-    Properties:
-      FunctionName: "transform-firehouse-b64-json"
-      Handler: index.lambda_handler
-      Role:
-        Fn::ImportValue: FirehoseNLPArn
-      Architectures:
-        - x86_64
-      Runtime: python3.9
-      Timeout: 300
-      MemorySize: 1024
-      Code:
-        S3Bucket: !Ref LambdaZipBucket
-        S3Key: !Ref LambdaZipS3Key

@@ -1,0 +1,26 @@
+Resources:
+  RoleRDS:
+    Type: 'AWS::IAM::Role'
+    DeletionPolicy: "Retain"
+    Properties:
+      RoleName: "RoleRDS"
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: !Sub rds.amazonaws.com
+            Action: 'sts:AssumeRole'
+      Path: /
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonRDSFullAccess"
+        -  "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+Outputs:
+  RoleEventBridgeArn:
+    Value: !GetAtt RoleEventBridge.Arn
+    Export:
+      Name: !Sub "RoleEventBridge-Arn"
+  RoleRDSArn:
+    Value: !GetAtt RoleRDS.Arn
+    Export:
+      Name: !Sub "RoleRDS-Arn"

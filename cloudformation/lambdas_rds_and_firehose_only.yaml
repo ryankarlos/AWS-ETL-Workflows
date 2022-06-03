@@ -1,0 +1,42 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  LambdaRDSOnOff:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: "rds_on_off"
+      Handler: index.lambda_handler
+      Role:
+        Fn::ImportValue: RDSScheduleArn
+      Architectures:
+        - x86_64
+      Runtime: python3.9
+      Timeout: 20
+      MemorySize: 256
+      Code:
+        S3Bucket: lambda-zip-for-cf
+        S3Key: rds_on_off.zip
+  FirehoseLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: "transform-firehouse-b64-json"
+      Handler: index.lambda_handler
+      Role:
+        Fn::ImportValue: FirehoseNLPArn
+      Architectures:
+        - x86_64
+      Runtime: python3.9
+      Timeout: 300
+      MemorySize: 1024
+      Code:
+        S3Bucket: lambda-zip-for-cf
+        S3Key:  transform-firehouse-b64-json.zip
+Outputs:
+  LambdaFirehoseArn:
+    Value: !GetAtt  FirehoseLambda.Arn
+    Export:
+      Name: "LambdaFirehose-Arn"
+  LambdaRDSOnOffArn:
+    Value: !GetAtt LambdaRDSOnOff.Arn
+    Export:
+      Name: "LambdaRDSOnOff-Arn"
+

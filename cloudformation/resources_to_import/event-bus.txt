@@ -1,0 +1,51 @@
+[
+  {
+      "ResourceType":"AWS::Events::EventBus",
+      "LogicalResourceId":"MyDBInstance",
+      "ResourceIdentifier": {
+        "Name": "schedule"
+      }
+  },
+   {
+      "ResourceType":"AWS::RDS::DBInstance",
+      "LogicalResourceId":"ScheduleEventBus",
+      "ResourceIdentifier": {
+        "Name": "dev"
+      }
+  },
+   {
+      "ResourceType":"AWS::IAM::Role",
+      "LogicalResourceId":"RoleEventBridge",
+      "ResourceIdentifier": {
+        "Name": "RoleEventBridge"
+      }
+  },
+   {
+      "ResourceType":"AWS::IAM::Role",
+      "LogicalResourceId":"RoleRDS",
+      "ResourceIdentifier": {
+        "Name": "RoleRDS"
+      }
+  },
+   {
+      "ResourceType":"AWS::Lambda::Function",
+      "LogicalResourceId":"LambdaRDSOnOff",
+      "ResourceIdentifier": {
+        "Name": "rds_on_off"
+      }
+  },
+   {
+      "ResourceType":"AWS::Events::Rule",
+      "LogicalResourceId":"ScheduleResourceOff",
+      "ResourceIdentifier": {
+        "Name": "ScheduleResourceOff"
+      }
+  },
+   {
+      "ResourceType":"AWS::Events::Rule",
+      "LogicalResourceId":"ScheduleResourceOn",
+      "ResourceIdentifier": {
+        "Name": "ScheduleResourceOn"
+      }
+  }
+]

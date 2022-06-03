@@ -91,9 +91,102 @@ Test that SNS receives messages from SNS by publishing test message in SNS topic
 <img width="1000" alt="sqs_cpnsole" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/SQS_queue_console.png">
 
 If this is working, then we should see the messages published from `lambda_packages/batch_write_s3_dynamodb/lambda_function.py` 
-into SNS appear in the queue in SQS 
+into SNS appear in the queue in SQS
+
+### Creating resource automatically with CloudFormation
+
+The DynamoDb, SNS topic and two lambda functions required in the workflow can also be created 
+automatically via cloudformation templates in the `cloudformation` folder. The templates required and 
+commands to run will depend on whether we need to create the stack from scratch with resources not 
+previosuly created or if we already have stacks created but want to move resources 
+between one and the other.
+
+#### Scenario 1 - Creating new stack with all resources
+
+If not created any resource previously, then the CloudFormation template in `cloudformation/multi_resource_templates/s3_dynamodb_with_lambda_import.yaml`
+will create the DynamoDb, SNS and two lambda functions required in the workflow using the the command below 
+
+```
+$ aws cloudformation create-stack --stack-name S3toDynamo --template-body file://cloudformation/multi_resource_templates/s3_dynamodb_with_lambda_import.yaml
+
+{
+    "StackId": "arn:aws:cloudformation:us-east-1:376337229415:stack/S3toDynamo/1ebd2a90-e2e3-11ec-996b-0ea1d13e3be1"
+}
+
+```
+
+#### Scenario 2 - Resources already exist in another stack and need to be imported
+
+Assume we have Stack A in which lambda resources have  already been created using `cloudformation/lambdas.yaml` and  
+stack B in which S3 and DynamoDB resources are created (using `cloudformation/multi_resource_templates/s3_dynamodb.yaml`) 
+We then need to follow https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/refactor-stacks.html to move 
+required lambda resources from source stack A to target stack B.
+
+* Add `DeletionPolicy: "Retain"` to lambdas resource properties in source template `cloudformation/lambdas.yaml`
+  (if not already included) and update stack 
+  
+```
+$ aws cloudformation update-stack --stack-name Lambdas --template-body file://cloudformation/lambdas.yaml
+```
+
+* Remove the lambda resources from source template `cloudformation/lambdas.yaml` which need to be imported into target 
+  stack. The final template after modification would look like `cloudformation/lambdas_rds_and_firehose_only.yaml`.
+  Update the stack again - this would remove the resources from stack but will not delete them (due to `DeletionPolicy: "Retain"`
+  added to the template) and they will still be available for import later into target stack
+
+```
+$ aws cloudformation update-stack --stack-name Lambdas --template-body file://cloudformation/lambdas_rds_and_firehose_only.yaml
+
+```
+
+* Create Change Set of type import for stack B and link to resources import template `resources_to_import/lambdas.txt`
+and modified target template with required lambda resources added `cloudformation/multi_resource_templates/s3_dynamodb_with_lambda_import.yaml.yaml`
+
+```
+$ aws cloudformation create-change-set --stack-name S3toDynamo --change-set-name StackwithLambdas --change-set-type IMPORT --resources-to-import file://cloudformation/resources_to_import/lambdas.txt --template-body file://cloudformation/multi_resource_templates/s3_dynamodb_with_lambda_import.yaml
+{
+    "Id": "arn:aws:cloudformation:us-east-1:376337229415:changeSet/ImportLambdas/2604754c-95c3-4d19-b259-58d4b4ba317d",
+    "StackId": "arn:aws:cloudformation:us-east-1:376337229415:stack/S3toDynamo/77ccdd50-ddd5-11ec-b827-0a97807fcd19"
+}
+```
+
+* Describe changeset to check changes and then execute changeset if satsifed with the changes.
+
+```
+$ aws cloudformation describe-change-set --stack-name S3toDynamo --change-set-name StackwithLambdas
+
+    "Changes": [
+        {
+            "Type": "Resource",
+            "ResourceChange": {
+                "Action": "Import",
+                "LogicalResourceId": "batchwrites3dynamo",
+                "PhysicalResourceId": "batch_write_s3_dynamodb",
+                "ResourceType": "AWS::Lambda::Function",
+                "Scope": [],
+                "Details": []
+            }
+        },
+        {
+            "Type": "Resource",
+            "ResourceChange": {
+                "Action": "Import",
+                "LogicalResourceId": "ddbinputtransform",
+                "PhysicalResourceId": "ddb_input_transform",
+                "ResourceType": "AWS::Lambda::Function",
+                "Scope": [],
+                "Details": []
+            }
+        }
+    ],
+```
+
+```
+$ aws cloudformation execute-change-set --stack-name S3toDynamo --change-set-name StackwithLambdas
+```
 
 ### Running end to end with bash script
+
 
 To run all the above and also put json object into S3 to trigger lambda function, run the 
 bash script below with the params : raw data path, lambda function name, S3 bucket name, object key

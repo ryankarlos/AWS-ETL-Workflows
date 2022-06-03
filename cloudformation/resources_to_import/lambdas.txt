@@ -1,0 +1,16 @@
+[
+  {
+      "ResourceType":"AWS::Lambda::Function",
+      "LogicalResourceId":"ddbinputtransform",
+      "ResourceIdentifier": {
+        "FunctionName": "ddb_input_transform"
+      }
+  },
+   {
+      "ResourceType":"AWS::Lambda::Function",
+      "LogicalResourceId":"batchwrites3dynamo",
+      "ResourceIdentifier": {
+        "FunctionName": "batch_write_s3_dynamodb"
+      }
+  }
+]

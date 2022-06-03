@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  ddbinputtransform:
+      Type: 'AWS::Lambda::Function'
+      DeletionPolicy: "Retain"
+      Properties:
+        FunctionName: "ddb_input_transform"
+        Handler: index.lambda_handler
+        Role:
+          Fn::ImportValue: S3DynamoArn
+        Architectures:
+          - x86_64
+        Runtime: python3.9
+        Timeout: 40
+        MemorySize: 1024
+        Code:
+          S3Bucket: lambda-zip-for-cf
+          S3Key: ddb_input_transform.zip
+  batchwrites3dynamo:
+    Type: 'AWS::Lambda::Function'
+    DeletionPolicy: "Retain"
+    Properties:
+      FunctionName: "batch_write_s3_dynamodb"
+      Handler: index.lambda_handler
+      Role:
+        Fn::ImportValue: S3DynamoArn
+      Architectures:
+        - x86_64
+      Runtime: python3.9
+      Timeout: 300
+      MemorySize: 1024
+      Code:
+        S3Bucket: lambda-zip-for-cf
+        S3Key: batch_write_s3_dynamodb.zip
+  LambdaRDSOnOff:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: "rds_on_off"
+      Handler: index.lambda_handler
+      Role:
+        Fn::ImportValue: RDSScheduleArn
+      Architectures:
+        - x86_64
+      Runtime: python3.9
+      Timeout: 20
+      MemorySize: 256
+      Code:
+        S3Bucket: lambda-zip-for-cf
+        S3Key: rds_on_off.zip
+  FirehoseLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: "transform-firehouse-b64-json"
+      Handler: index.lambda_handler
+      Role:
+        Fn::ImportValue: FirehoseNLPArn
+      Architectures:
+        - x86_64
+      Runtime: python3.9
+      Timeout: 300
+      MemorySize: 1024
+      Code:
+        S3Bucket: lambda-zip-for-cf
+        S3Key:  transform-firehouse-b64-json.zip
+Outputs:
+  LambdaFirehoseArn:
+    Value: !GetAtt  FirehoseLambda.Arn
+    Export:
+      Name: !Sub "lambdaFirehose-Arn"
+  LambdaRDSOnOffArn:
+    Value: !GetAtt LambdaRDSOnOff.Arn
+    Export:
+      Name: !Sub "LambdaRDSOnOff-Arn"

@@ -1,6 +1,6 @@
 import boto3
 
-client = boto3.client('rds')
+client = boto3.client('data-migration')
 
 
 def lambda_handler(event, context):

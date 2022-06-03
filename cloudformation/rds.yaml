@@ -1,6 +1,6 @@
 Parameters:
   DBInstanceID:
-    Default: rds-default
+    Default: data-migration-default
     Description: My database instance
     Type: String
     MinLength: '1'

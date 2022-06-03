@@ -79,6 +79,14 @@ $ aws cloudformation validate-template --template-body file://cloudformation/mul
 An error occurred (ValidationError) when calling the ValidateTemplate operation: Template format error: YAML not well-formed. (line 6, column 3)
 ```
 
+* Template missing value for ARN field in Target property of ScheduleResourceOff logical ID.
+
+```
+$ aws cloudformation validate-template --template-body file://cloudformation/multi_resource_templates/eventbridge-rules-schedule.yaml
+
+An error occurred (ValidationError) when calling the ValidateTemplate operation: [/Resources/ScheduleResourceOff/Type/Targets/0/Arn] 'null' values are not allowed in templates
+```
+
 ### Change Sets
 
 From AWS documentation:
@@ -124,7 +132,7 @@ By maintaining a history, you can always revert your stack to a certain version 
 this is by storing your cloudformation templates and storing them in version control repositories such as GitHub and 
 naming them by version and date of deployment where they can be reviewed prior deployment.
 
-### Nested Stacks vs Existing Resource Imports
+### Nested Stacks and Existing Resource Imports
 
 For nested stacks, when you specify 'AWS::CloudFormation::Stack' resource in the parent stack, it doesn't have the 
 state of the resource you specified (exists or doesn't exist), you have to manually import the resource into that 
@@ -132,13 +140,70 @@ stack so it knows that the resource already exists. Then you can nest that stack
 see the issue again.  When manually importing resource as in https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/refactor-stacks.html 
 the resource is actually not deleted from the source stack but simply moved or imported to the target stack. 
 This is why in the documentation it specified to add the `"DeletionPolicy": "Retain"` in the source template so that 
-when you remove it from the source template it doesn't get deleted.  In this case, the source template doesn't 
-know anymore about the resource that it initially had. By this time, the resource still exists but doesn't belong to 
-any stack so it can now be imported into  the target stack by using the "Import resources into stack" function in the 
-console. It is however required that you copy how it exactly was in the source template to the target template. 
+when you remove it from the source template it doesn't get deleted.  
+
+
+```
+$ aws cloudformation update-stack --stack-name "source-stack-name"
+```
+
+By this time, the resource still exists but  oesn't belong to any stack so it can now be imported into  the target stack by using the "Import resources into stack" 
+function in the console or cli. It is however required that you copy how it exactly was in the source template to the target template. 
+
+
+```
+$ aws cloudformation create-change-set --stack-name S3toDynamo --change-set-name ImportLambdas --change-set-type IMPORT --resources-to-import file://cloudformation/resources_to_import/lambdas.txt --template-body file://cloudformation/multi_resource_templates/s3_lambda_dynamodb.yaml
+{
+    "Id": "arn:aws:cloudformation:us-east-1:376337229415:changeSet/ImportLambdas/2604754c-95c3-4d19-b259-58d4b4ba317d",
+    "StackId": "arn:aws:cloudformation:us-east-1:376337229415:stack/S3toDynamo/77ccdd50-ddd5-11ec-b827-0a97807fcd19"
+}
+
+```
+
+Review the change set to make sure the correct resource is being imported into the target stack. 
+```
+aws cloudformation describe-change-set --stack-name S3toDynamo --change-set-name ImportLambdas
+
+
+    "Changes": [
+        {
+            "Type": "Resource",
+            "ResourceChange": {
+                "Action": "Import",
+                "LogicalResourceId": "batchwrites3dynamo",
+                "PhysicalResourceId": "batch_write_s3_dynamodb",
+                "ResourceType": "AWS::Lambda::Function",
+                "Scope": [],
+                "Details": []
+            }
+        },
+        {
+            "Type": "Resource",
+            "ResourceChange": {
+                "Action": "Import",
+                "LogicalResourceId": "ddbinputtransform",
+                "PhysicalResourceId": "ddb_input_transform",
+                "ResourceType": "AWS::Lambda::Function",
+                "Scope": [],
+                "Details": []
+            }
+        }
+    ],
+
+```
+
+
+Initiate the change set to import the resource into the target stack. Any stack-level tags are applied 
+to imported resources at this time. Note: Need to attach policy which allows the lambda:TagResource 
+action to IAM user performing the import, otherwise this will throw an error.
+On successful completion of the operation (IMPORT_COMPLETE), the resource is successfully imported.
+
+```
+$ aws cloudformation execute-change-set --stack-name S3toDynamo --change-set-name ImportLambdas
+```
+
 After that, then you can make changes to the resource once fully imported. By then, you can modify this resource as it 
-is in the target or new stack. You don't need to worry anymore about the source stack since it doesn't know anymore 
-]about the moved resource.
+is in the target or new stack.
 
 ### Sync resource updates done outside Cloud Formation 
 

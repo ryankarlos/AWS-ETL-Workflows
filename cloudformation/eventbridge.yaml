@@ -1,0 +1,52 @@
+Parameters:
+  State:
+    Default: "DISABLED"
+    Description: Default State when EventBridge Rule is created
+    Type: String
+    ConstraintDescription: State must have values either 'ENABLED' or 'DISABLED'
+    AllowedValues:
+      - "ENABLED"
+      - "DISABLED"
+  CronScheduleOn:
+    Default: "cron(00 17 * 5 ? 2022)"
+    Description: s3 path to glue script
+    Type: String
+  CronScheduleOff:
+    Default: "cron(00 19 * 5 ? 2022)"
+    Description: s3 path to glue script
+    Type: String
+Resources:
+  ScheduleRDSResourceOn:
+    Type: 'AWS::Events::Rule'
+    DeletionPolicy: "Retain"
+    Properties:
+      Name: ScheduleResourceOn
+      Description: Schedules Turning ON RDS DB
+      EventBusName: default
+      State: !Ref State
+      ScheduleExpression: !Ref CronScheduleOn
+      Targets:
+        - Arn:
+            Fn::ImportValue: LambdaRDSOnOff-Arn
+          Id: 'LambdaRDSOn'
+  ScheduleRDSResourceOff:
+    Type: 'AWS::Events::Rule'
+    DeletionPolicy: "Retain"
+    Properties:
+      Name: ScheduleResourceOff
+      Description: Schedules Turning Off RDS DB
+      EventBusName: default
+      State: !Ref State
+      ScheduleExpression: !Ref CronScheduleOff
+      Targets:
+        - Arn:
+            Fn::ImportValue: LambdaRDSOnOff-Arn
+          Id: 'LambdaRDSOff'
+  EventBridgeLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+         Fn::ImportValue: LambdaRDSOnOff-Arn
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !Sub "arn:aws:events:us-east-1:${AWS::AccountId}:rule/*"
