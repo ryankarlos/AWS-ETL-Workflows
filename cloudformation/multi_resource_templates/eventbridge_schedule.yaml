@@ -15,60 +15,6 @@ Parameters:
     Default: "cron(00 19 * 5 ? 2022)"
     Description: s3 path to glue script
     Type: String
-  DBInstanceID:
-    Default: rds-default
-    Description: My database instance
-    Type: String
-    MinLength: '1'
-    MaxLength: '63'
-  DBName:
-    Default: dev
-    Description: My database
-    Type: String
-    MinLength: '1'
-    MaxLength: '64'
-    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters.
-  DBInstanceClass:
-    Default: db.t4g.large
-    Description: DB instance class
-    Type: String
-    ConstraintDescription: Must select a valid DB instance type.
-  DBAllocatedStorage:
-    Default: '20'
-    Description: The size of the database (GiB)
-    Type: Number
-    MinValue: '20'
-    MaxValue: '50'
-    ConstraintDescription: Can be from 20 to 50 GiB
-  DBUsername:
-    Description: Username for database access
-    Type: String
-    MinLength: '1'
-    MaxLength: '16'
-    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
-  DBPassword:
-    Description: Password database access
-    Type: String
-    AllowedPattern: '[a-zA-Z0-9]*'
-    ConstraintDescription: must contain only alphanumeric characters.
-  DBEngine:
-    Default: postgres
-    Description: db engine e.g. postgres, mysql, mariadb, sqlserver, oracle
-    Type: String
-    AllowedValues:
-      - mariadb
-      - mysql
-      - postgres
-      - oracle-se
-      - oracle-ee
-      - sqlserver-se
-      - sqlserver-ee
-  EngineVersion:
-    Default: 13.4
-    Description: Engine version. May need to change this if selecting different engine from default (postgres).
-    Type: String
 Resources:
   ScheduleRDSResourceOn:
     Type: 'AWS::Events::Rule'

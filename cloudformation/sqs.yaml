@@ -9,6 +9,10 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: "ML"
+  DLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: "DLQ"
 Outputs:
   ETLQueueARN:
     Description: "ARN of new ETL AmazonSQS Queue"
@@ -26,3 +30,11 @@ Outputs:
         - "Arn"
     Export:
       Name: !Sub "${AWS::StackName}-ML"
+  DLQARN:
+    Description: "ARN of DLQ"
+    Value:
+      Fn::GetAtt:
+        - "DLQ"
+        - "Arn"
+    Export:
+      Name: !Sub "${AWS::StackName}-DLQ"

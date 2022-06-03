@@ -1,20 +1,12 @@
 Parameters:
   State:
-    Default: "DISABLED"
+    Default: "ENABLED"
     Description: Default State when EventBridge Rule is created
     Type: String
     ConstraintDescription: State must have values either 'ENABLED' or 'DISABLED'
     AllowedValues:
       - "ENABLED"
       - "DISABLED"
-  CronScheduleOn:
-    Default: "cron(00 18 * 5 ? 2022)"
-    Description: s3 path to glue script
-    Type: String
-  CronScheduleOff:
-    Default: "cron(00 19 * 5 ? 2022)"
-    Description: s3 path to glue script
-    Type: String
   EventBusName:
     Default: ''
     Description: Name of new eventbus to create.
@@ -28,44 +20,17 @@ Resources:
   EventBusResource:
     Type: 'AWS::Events::EventBus'
     Condition: CreateBusResource
-    DeletionPolicy: "Retain"
     Properties:
       Name: !Ref EventBusName
-  ScheduleRDSResourceOn:
-    Type: 'AWS::Events::Rule'
-    DeletionPolicy: "Retain"
-    Properties:
-      Name: ScheduleResourceOn
-      Description: Schedules Turning ON RDS DB
-      EventBusName: default
-      State: !Ref State
-      ScheduleExpression: !Ref CronScheduleOn
-      Targets:
-        - Arn:
-            Fn::ImportValue: LambdaRDSOnOff-Arn
-          Id: 'LambdaRDSOn'
-  ScheduleRDSResourceOff:
-    Type: 'AWS::Events::Rule'
-    DeletionPolicy: "Retain"
-    Properties:
-      Name: ScheduleResourceOff
-      Description: Schedules Turning Off RDS DB
-      EventBusName: default
-      State: !Ref State
-      ScheduleExpression: !Ref CronScheduleOff
-      Targets:
-        - Arn:
-            Fn::ImportValue: LambdaRDSOnOff-Arn
-          Id: 'LambdaRDSOff'
-  MyNewEventsRule:
+  EC2EventstoSQS:
     Type: 'AWS::Events::Rule'
     Properties:
-      Description: Test Events Rule
-      Name: mynewabc
+      Description:  send all EC2 events to an SQS queue and include DLQ
+      Name: EC2EventstoSQS
       EventPattern:
         source:
           - aws.ec2
-      State: ENABLED
+      State: !Ref State
       Targets:
         - Arn:
             Fn::ImportValue: SQS-etl

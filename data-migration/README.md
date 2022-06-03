@@ -25,6 +25,68 @@ https://aws.amazon.com/premiumsupport/knowledge-center/rds-stop-seven-days/#:~:t
 
 ### Creating Eventbridge scheduled rules
 
+
+#### Using Cloudformation Templates
+
+Resources required for this workflow are EventBridge Rules, lambda and RDS. Each of these can be created
+using the cloudformation templates `lambdas_rds_and_firehose_only.yaml`, `rds.yaml` and 
+`multi_resource_templates/eventbridge_schedule.yaml`  e.g. to setup the default postgres engine
+
+```
+$ aws cloudformation create-stack --stack-name RDS --template-body file://cloudformation/rds.yaml \
+--parameters ParameterKey=DBUsername,ParameterValue=<username> ParameterKey=DBPassword,ParameterValue=<password>
+```
+
+If stack needs to be created from existing resources, then run the following bash script.
+This takes in three args corresponding to the EventBridge Rule state (ENABLED or DISABLED), on schedule time and off schedule time
+which can be modified accordingly - note the example below sets the on/odd schedule to 18:00/19:00 everyday 
+in May 2022.
+This will create a change set, shoe the changes to be made and then prompt the user if wants to proceed ('y') or not ('n')
+based on the changes shown. If yes, then it will execute the changeset. If no, then the change set created
+will be deleted and script exited.
+
+```
+sh data-migration/import_rules_lambda_rds.sh ENABLED "cron(00 18 * 5 ? 2022)" "cron(00 19 * 5 ? 2022)"
+
+Creating change set for EventRuleSchedule Stack ....
+{
+    "Id": "arn:aws:cloudformation:us-east-1:376337229415:changeSet/ImportChange/840104f9-4e43-4763-a919-46d61a9585cf",
+    "StackId": "arn:aws:cloudformation:us-east-1:376337229415:stack/EventBridge-RDS-Schedule/7ac23370-e302-11ec-a6a8-0aff63d29381"
+}
+Wait 15 secs before showing changes in change set description .......
+
+Showing resources to be created in change set
+{
+    "Changes": [
+        {
+            "Type": "Resource",
+            "ResourceChange": {
+                "Action": "Import",
+                "LogicalResourceId": "ScheduleRDSResourceOff",
+                "PhysicalResourceId": "ScheduleResourceOff",
+                "ResourceType": "AWS::Events::Rule",
+                "Scope": [],
+                "Details": []
+            }
+        },
+        {
+            "Type": "Resource",
+            "ResourceChange": {
+                "Action": "Import",
+                "LogicalResourceId": "ScheduleRDSResourceOn",
+                "PhysicalResourceId": "ScheduleResourceOn",
+                "ResourceType": "AWS::Events::Rule",
+                "Scope": [],
+                "Details": []
+            }
+
+Do you wish to execute change set? y
+
+Executing change set as requested
+```
+
+#### From Console
+
 * On the Amazon EventBridge console, click Create rule. Under Rule detail, enter ScheduleResourceOn as the rule name, 
   leave Event bus as default and select the Schedule rule type. Click Next.
 

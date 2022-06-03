@@ -28,7 +28,6 @@ Resources:
   EventBusResource:
     Type: 'AWS::Events::EventBus'
     Condition: CreateBusResource
-    DeletionPolicy: "Retain"
     Properties:
       Name: !Ref EventBusName
   ScheduleRDSResourceOn:
@@ -57,15 +56,15 @@ Resources:
         - Arn:
             Fn::ImportValue: LambdaRDSOnOff-Arn
           Id: 'LambdaRDSOff'
-  MyNewEventsRule:
+  EC2EventstoSQS:
     Type: 'AWS::Events::Rule'
     Properties:
-      Description: Test Events Rule
-      Name: mynewabc
+      Description:  send all EC2 events to an SQS queue and include DLQ
+      Name: EC2EventstoSQS
       EventPattern:
         source:
           - aws.ec2
-      State: ENABLED
+      State: !Ref State
       Targets:
         - Arn:
             Fn::ImportValue: SQS-etl

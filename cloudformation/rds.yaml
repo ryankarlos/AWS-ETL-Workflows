@@ -1,6 +1,6 @@
 Parameters:
   DBInstanceID:
-    Default: data-migration-default
+    Default: rds-default
     Description: My database instance
     Type: String
     MinLength: '1'
@@ -39,20 +39,14 @@ Parameters:
     ConstraintDescription: must contain only alphanumeric characters.
   DBEngine:
     Default: postgres
-    Description: db engine e.g. postgres, mysql, mariadb, sqlserver, oracle
+    Description: db engine e.g. postgres, mysql, mariadb, sqlserver
     Type: String
     AllowedValues:
       - mariadb
       - mysql
       - postgres
-      - oracle-se
-      - oracle-ee
       - sqlserver-se
       - sqlserver-ee
-  EngineVersion:
-     Default: 13.4
-     Description: Engine version. May need to change this if selecting different engine from default (postgres).
-     Type: String
 Resources:
   MyDBInstance:
     Type: 'AWS::RDS::DBInstance'
@@ -62,7 +56,6 @@ Resources:
       DBInstanceClass: !Ref DBInstanceClass
       AllocatedStorage: !Ref DBAllocatedStorage
       Engine: !Ref DBEngine
-      EngineVersion: !Ref EngineVersion
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
       StorageType: "gp2"

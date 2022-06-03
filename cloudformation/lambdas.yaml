@@ -34,6 +34,7 @@ Resources:
         S3Key: batch_write_s3_dynamodb.zip
   LambdaRDSOnOff:
     Type: 'AWS::Lambda::Function'
+    DeletionPolicy: "Retain"
     Properties:
       FunctionName: "rds_on_off"
       Handler: index.lambda_handler
