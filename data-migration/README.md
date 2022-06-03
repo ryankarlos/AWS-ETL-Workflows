@@ -85,6 +85,9 @@ Do you wish to execute change set? y
 Executing change set as requested
 ```
 
+<img src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/import-changeset-eventbridge.png"></img>
+
+
 #### From Console
 
 * On the Amazon EventBridge console, click Create rule. Under Rule detail, enter ScheduleResourceOn as the rule name, 
