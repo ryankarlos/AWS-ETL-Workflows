@@ -32,3 +32,13 @@ Resources:
         Ref: "NodeType"
       ClusterType: "single-node"
       ClusterIdentifier: "default-cluster"
+      Port: "8192"
+      ClusterParameterGroupName:
+        Ref: "RedshiftClusterParameterGroup"
+  RedshiftClusterParameterGroup:
+    Properties:
+      Description: "Cluster parameter group"
+      ParameterGroupFamily: "redshift-1.0"
+      Parameters:
+        - { ParameterName: "enable_user_activity_logging", ParameterValue: "true"}
+    Type: "AWS::Redshift::ClusterParameterGroup"
