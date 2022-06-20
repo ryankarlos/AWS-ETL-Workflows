@@ -60,7 +60,7 @@ failed executions from the logs in S3 in the location configured in pipeline def
 
 
 
-#### s3 to s3
+### s3 to s3
 
 <img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/dp-s3-to-s3-tasks.png></img>
 
@@ -82,6 +82,6 @@ The pipeline should be activated and you can track the progress of the cli task
 <img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-s3-s3.png></img>
 
 
-#### s3 to Redshift
+### s3 to Redshift
 
 Refer to the `data-pipelines/s3_to_redshift/README.md`
