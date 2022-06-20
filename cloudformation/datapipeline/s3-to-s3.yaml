@@ -1,0 +1,83 @@
+Parameters:
+  InputPath:
+    Description: s3 input path to object to be copied
+    Type: String
+  OutputPath:
+    Description: s3 output path to bucket
+    Type: String
+Resources:
+    S3InputS3Output:
+      Type: AWS::DataPipeline::Pipeline
+      Properties:
+        Name: S3InputS3Output
+        Description: "Pipeline to copy S3 data to another S3 bucket"
+        Activate: true
+        ParameterObjects:
+          -
+            Id: "myAWSCLICmd"
+            Attributes:
+              -
+                Key: "description"
+                StringValue: "AWS CLI command"
+              -
+                Key: "type"
+                StringValue: "String"
+              -
+                Key: "watermark"
+                StringValue: "aws [options] <command> <subcommand> [parameters]"
+        ParameterValues:
+          -
+            Id: "myAWSCLICmd"
+            StringValue: !Sub "aws s3 cp ${InputPath} ${OutputPath}"
+        PipelineObjects:
+          -
+            Id: "CliActivity"
+            Name: "CliActivity"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "ShellCommandActivity"
+              -
+                Key: "runsOn"
+                RefValue: "Ec2Instance"
+              -
+                Key: "command"
+                StringValue: "(sudo yum -y update aws-cli) && (#{myAWSCLICmd})"
+          -
+            Id: "Ec2Instance"
+            Name: "Ec2Instance"
+            Fields:
+              -
+                Key: "tableName"
+                StringValue: "#{myDDBTableName}"
+              -
+                Key: "type"
+                StringValue: "Ec2Resource"
+              -
+                Key: "instanceType"
+                StringValue: "t1.micro"
+              -
+                Key: "terminateAfter"
+                StringValue: "50 minutes"
+          -
+            Id: "Default"
+            Name: "Default"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "Default"
+              -
+                Key: "failureAndRerunMode"
+                StringValue: "CASCADE"
+              -
+                Key: "resourceRole"
+                StringValue: "ec2-profile"
+              -
+                Key: "role"
+                StringValue: "DataPipelineDefaultRole"
+              -
+                Key: "pipelineLogUri"
+                StringValue: "s3://data-pipeline-logs1/logs/"
+              -
+                Key: "scheduleType"
+                StringValue: "ONDEMAND"

@@ -1,0 +1,40 @@
+{
+    "objects": [
+        {
+            "id": "CliActivity",
+            "name": "CliActivity",
+            "runsOn": {
+                "ref": "Ec2Instance"
+            },
+            "type": "ShellCommandActivity",
+            "command": "(sudo yum -y update aws-cli) && (#{myAWSCLICmd})"
+        },
+        {
+            "id": "Ec2Instance",
+            "name": "Ec2Instance",
+            "instanceType": "t1.micro",
+            "type": "Ec2Resource",
+            "terminateAfter": "50 minutes"
+        },
+        {
+            "id": "Default",
+            "name": "Default",
+            "failureAndRerunMode": "CASCADE",
+            "resourceRole": "ec2-profile",
+            "role": "DataPipelineDefaultRole",
+            "pipelineLogUri": "s3://data-pipeline-logs1/logs/",
+            "scheduleType": "ONDEMAND"
+        }
+    ],
+    "parameters": [
+        {
+            "id": "myAWSCLICmd",
+            "watermark": "aws [options] <command> <subcommand> [parameters]",
+            "description": "AWS CLI command",
+            "type": "String"
+        }
+    ],
+    "values": {
+        "myAWSCLICmd": "aws s3 cp s3://s3-eventbridge-batch/sample-data.txt s3://elasticbeanstalk-us-east-1-376337229415"
+    }
+}
