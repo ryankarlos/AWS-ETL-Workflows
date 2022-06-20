@@ -12,7 +12,8 @@ DataPipeline contains three main components
 * Pipeline for scheduling the tasks and creating EC2 instances/EMR for running the tasks
 * Task Runner automatically installed on resources created which polls and performs the tasks
 
-#### s3 to RDS
+
+### s3 to RDS
 
 <img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/dp-s3-to-rds-tasks.png></img>
 
@@ -58,6 +59,7 @@ failed executions from the logs in S3 in the location configured in pipeline def
 <img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-s3-rds-pg.png></img>
 
 
+
 #### s3 to s3
 
 <img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/dp-s3-to-s3-tasks.png></img>
@@ -78,6 +80,7 @@ Navigate to the datapipeline console and click ion datapipeline id associated wi
 The pipeline should be activated and you can track the progress of the cli task 
 
 <img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-s3-s3.png></img>
+
 
 #### s3 to Redshift
 
