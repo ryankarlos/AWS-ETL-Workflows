@@ -48,9 +48,6 @@ Resources:
             Name: "Ec2Instance"
             Fields:
               -
-                Key: "tableName"
-                StringValue: "#{myDDBTableName}"
-              -
                 Key: "type"
                 StringValue: "Ec2Resource"
               -

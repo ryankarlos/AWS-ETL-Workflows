@@ -24,10 +24,10 @@
           "id" : "RDSPostgres",
             "name": "RDSPostgres",
           "type" : "JdbcDatabase",
-          "connectionString" : "jdbc:postgresql://postgres-non-default.cg9we74vymgv.us-east-1.rds.amazonaws.com:5432/postgresdev",
+          "connectionString" : "jdbc:postgresql://#{myEndpoint}:5432/#{myDBName}",
           "jdbcDriverClass" : "org.postgresql.Driver",
           "jdbcDriverJarUri" : "s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar",
-          "username" : "#{myRDSUsername}",
+          "username" : "#{*myRDSUsername}",
           "*password" : "#{*myRDSPassword}"
         },
         {
@@ -110,7 +110,7 @@
             "type": "AWS::S3::ObjectKey"
         },
         {
-            "id": "myRDSUsername",
+            "id": "*myRDSUsername",
             "description": "RDS username",
             "type": "String"
         },
@@ -128,9 +128,13 @@
             "type": "String"
         },
         {
-            "id": "myRDSInstanceId",
-            "watermark": "DB Instance",
-            "description": "RDS Instance ID",
+            "id": "myEndpoint",
+            "description": "RDS Endpoint",
+            "type": "String"
+        },
+        {
+            "id": "myDBName",
+            "description": "DB Name",
             "type": "String"
         },
         {
@@ -143,8 +147,9 @@
         }
     ],
     "values": {
-        "myRDSInstanceId": "postgres-non-default",
-        "myRDSUsername": "<username>",
+        "myEndpoint": "<endpoint>",
+         "myDBName": "<db name>",
+        "*myRDSUsername": "<username>",
         "myRDSTableInsertSql": "INSERT INTO #{table} (id, email, billing_state, billing_postal, billing_address) VALUES (?, ?, ?, ?, ?)",
         "*myRDSPassword": "<password>",
         "myRDSCreateTableSql": "CREATE TABLE IF NOT EXISTS persons (\n  id INTEGER,\n  email VARCHAR(100),\n  billing_state VARCHAR(3),\n  billing_postal INTEGER,\n  billing_address VARCHAR(255),\n  PRIMARY KEY (id)\n);",

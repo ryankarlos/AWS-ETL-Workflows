@@ -1,0 +1,216 @@
+Parameters:
+  Endpoint:
+    Description: My database
+    Type: String
+    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters.
+  myRDSUsername:
+    Description: Username for database access
+    Type: String
+    NoEcho: true
+  myRDSPassword:
+    Description: Username for database access
+    Type: String
+    NoEcho: true
+  myRDSTableInsertSql:
+    Default: "INSERT INTO persons (id, email, billing_state, billing_postal, billing_address) VALUES (?, ?, ?, ?, ?)"
+    Description: Password database access
+    Type: String
+  myRDSCreateTableSql:
+    Default: "CREATE TABLE IF NOT EXISTS persons (\n  id INTEGER,\n  email VARCHAR(100),\n  billing_state VARCHAR(3),\n  billing_postal INTEGER,\n  billing_address VARCHAR(255),\n  PRIMARY KEY (id)\n);"
+    Description: Password database access
+    Type: String
+  myInputS3Loc:
+    Default: "s3://s3-eventbridge-batch/sample-data.txt"
+    Description: Password database access
+    Type: String
+  myRDSDBName:
+    Default: postgresdev
+    Description: DB name
+    Type: String
+  myRDSTableName:
+    Default: persons
+    Description: Password database access
+    Type: String
+  SecurityGroupID:
+    Default: sg-0afdf2d5ce4c8ed3e
+    Description: Security group id for ec2 instance
+    Type: String
+Resources:
+    S3InputRDSOutput:
+      Type: AWS::DataPipeline::Pipeline
+      Properties:
+        Name: S3InputRDSPostgresOutput
+        Description: "Pipeline to copy S3 data to RDS DB"
+        Activate: true
+        ParameterObjects:
+          -
+            Id: "*myRDSPassword"
+            Attributes:
+              -
+                Key: "description"
+                StringValue: "RDS Password"
+              -
+                Key: "type"
+                StringValue: "String"
+          -
+            Id: "*myRDSUsername"
+            Attributes:
+              -
+                Key: "description"
+                StringValue: "RDS Username"
+              -
+                Key: "type"
+                StringValue: "String"
+        ParameterValues:
+          -
+            Id: "*myRDSUsername"
+            StringValue: !Ref myRDSUsername
+          -
+            Id: "*myRDSPassword"
+            StringValue: !Ref myRDSPassword
+        PipelineObjects:
+          -
+            Id: "S3InputDataLocation"
+            Name: "S3InputDataLocation"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "S3DataNode"
+              -
+                Key: "directoryPath"
+                StringValue: !Ref myInputS3Loc
+              -
+                Key: "dataFormat"
+                RefValue: "DataFormat1"
+          -
+            Id: "DestinationRDSTable"
+            Name: "DestinationRDSTable"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "SqlDataNode"
+              -
+                Key: "database"
+                RefValue: "RDSPostgres"
+              -
+                Key: "insertQuery"
+                StringValue: !Ref myRDSTableInsertSql
+              -
+                Key: "table"
+                StringValue: !Ref myRDSTableName
+              -
+                Key: "selectQuery"
+                StringValue: !Sub "select * from #{table}"
+          -
+            Id: "RDSPostgres"
+            Name: "RDSPostgres"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "JdbcDatabase"
+              -
+                Key: "connectionString"
+                StringValue: !Sub "jdbc:postgresql://${Endpoint}:5432/${myRDSDBName}"
+              -
+                Key: "jdbcDriverClass"
+                StringValue: "org.postgresql.Driver"
+              -
+                Key: "jdbcDriverJarUri"
+                StringValue: "s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar"
+              -
+                Key: "username"
+                StringValue: "#{*myRDSUsername}"
+              -
+                Key: "*password"
+                StringValue: "#{*myRDSPassword}"
+          -
+            Id: "DataLoadActivity"
+            Name: "DataLoadActivity"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "CopyActivity"
+              -
+                Key: "output"
+                RefValue: "DestinationRDSTable"
+              -
+                Key: "input"
+                RefValue: "S3InputDataLocation"
+              -
+                Key: "runsOn"
+                RefValue: "Ec2Instance"
+              -
+                Key: "dependsOn"
+                RefValue: "RdsPostgresTableCreateActivity"
+          -
+            Id: "RdsPostgresTableCreateActivity"
+            Name: "RdsPostgresTableCreateActivity"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "SqlActivity"
+              -
+                Key: "database"
+                RefValue: "RDSPostgres"
+              -
+                Key: "runsOn"
+                RefValue: "Ec2Instance"
+              -
+                Key: "script"
+                StringValue: !Ref myRDSCreateTableSql
+          -
+            Id: "DataFormat1"
+            Name: "DataFormat1"
+            Fields:
+               -
+                Key: "type"
+                StringValue: "CSV"
+          -
+            Id: "Ec2Instance"
+            Name: "Ec2Instance"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "Ec2Resource"
+              -
+                Key: "instanceType"
+                StringValue: "t1.micro"
+              -
+                Key: "terminateAfter"
+                StringValue: "50 minutes"
+              -
+                Key: "imageId"
+                StringValue: "ami-0022f774911c1d690"
+              - Key: "actionOnTaskFailure"
+                StringValue: "terminate"
+              - Key: "associatePublicIpAddress"
+                StringValue: "true"
+              - Key: "securityGroupIds"
+                StringValue: !Ref SecurityGroupID
+              - Key: "maximumRetries"
+                StringValue: "1"
+          -
+            Id: "Default"
+            Name: "Default"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "Default"
+              -
+                Key: "failureAndRerunMode"
+                StringValue: "CASCADE"
+              -
+                Key: "resourceRole"
+                StringValue: "ec2-profile"
+              -
+                Key: "role"
+                StringValue: "DataPipelineDefaultRole"
+              -
+                Key: "pipelineLogUri"
+                StringValue: "s3://data-pipeline-logs1/logs/"
+              -
+                Key: "scheduleType"
+                StringValue: "ONDEMAND"
+              -
+                Key: "maxActiveInstances"
+                StringValue: "2"
