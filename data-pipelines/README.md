@@ -13,6 +13,10 @@ DataPipeline contains three main components
 * Task Runner automatically installed on resources created which polls and performs the tasks
 
 #### s3 to RDS
+
+<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/dp-s3-to-rds-tasks.png></img>
+
+
 The bash script  `data-pipelines/s3_to_rds/create-pipeline.sh`  will create the pipeline with the configuration and activate it
 After `cd` into datapipeline directory, run the command below. The first arg is the name of the pipeline to be created and 
 the second arg is the relative path to the defintion json.
@@ -55,6 +59,8 @@ failed executions from the logs in S3 in the location configured in pipeline def
 
 
 #### s3 to s3
+
+<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/dp-s3-to-s3-tasks.png></img>
 
 Run the cloudformation template stored in `cloudformation/datapipeline/s3-to-s3.yaml` 
 to create stack using the cli command 
