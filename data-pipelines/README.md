@@ -76,10 +76,7 @@ ParameterKey=OutputPath,ParameterValue=s3://<bucket-name>
 ```
 
 Navigate to the datapipeline console and click ion datapipeline id associated with the name used .e.g DataPipelineS3toS3
-
 The pipeline should be activated and you can track the progress of the cli task 
-
-<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-s3-s3.png></img>
 
 
 ### s3 to Redshift
