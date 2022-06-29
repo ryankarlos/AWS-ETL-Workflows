@@ -1,8 +1,7 @@
 Parameters:
-  Endpoint:
+  myRDSjdbcstring:
     Description: My database
     Type: String
-    ConstraintDescription: Must begin with a letter and contain only alphanumeric characters.
   myRDSUsername:
     Description: Username for database access
     Type: String
@@ -11,21 +10,13 @@ Parameters:
     Description: Username for database access
     Type: String
     NoEcho: true
-  myRDSTableInsertSql:
-    Default: "INSERT INTO persons (id, email, billing_state, billing_postal, billing_address) VALUES (?, ?, ?, ?, ?)"
-    Description: Password database access
-    Type: String
   myRDSCreateTableSql:
     Default: "CREATE TABLE IF NOT EXISTS persons (\n  id INTEGER,\n  email VARCHAR(100),\n  billing_state VARCHAR(3),\n  billing_postal INTEGER,\n  billing_address VARCHAR(255),\n  PRIMARY KEY (id)\n);"
     Description: Password database access
     Type: String
   myInputS3Loc:
-    Default: "s3://s3-eventbridge-batch/sample-data.txt"
-    Description: Password database access
-    Type: String
-  myRDSDBName:
-    Default: postgresdev
-    Description: DB name
+    Default: "s3://s3-eventbridge-batch"
+    Description: Path to s3 bucket
     Type: String
   myRDSTableName:
     Default: persons
@@ -61,6 +52,60 @@ Resources:
               -
                 Key: "type"
                 StringValue: "String"
+          -
+            Id: "myRDSjdbcstring"
+            Attributes:
+            -
+              Key: "description"
+              StringValue: "RDS Postgres jdbc string"
+            -
+              Key: "type"
+              StringValue: "String"
+          -
+            Id: "myRDSjdbcDriverJarUri"
+            Attributes:
+            -
+                Key: "description"
+                StringValue: "jdbc driver uri"
+            -
+                Key: "type"
+                StringValue: "String"
+          -
+            Id: "myRDSjdbcDriverClass"
+            Attributes:
+             -
+                Key: "description"
+                StringValue: "jdbc driver uri"
+             -
+                Key: "type"
+                StringValue: "String"
+          -
+            Id: "myInputS3Loc"
+            Attributes:
+            -
+                Key: "description"
+                StringValue: "Path to s3 bucket"
+            -
+                Key: "type"
+                StringValue: "String"
+          -
+            Id: "myRDSTableName"
+            Attributes:
+            -
+                Key: "description"
+                StringValue: "RDS Table name"
+            -
+                Key: "type"
+                StringValue: "String"
+          -
+            Id: "myRDSCreateTableSql"
+            Attributes:
+            -
+                Key: "description"
+                StringValue: "Create table sql query"
+            -
+                Key: "type"
+                StringValue: "String"
         ParameterValues:
           -
             Id: "*myRDSUsername"
@@ -68,39 +113,25 @@ Resources:
           -
             Id: "*myRDSPassword"
             StringValue: !Ref myRDSPassword
+          -
+            Id: "myRDSjdbcstring"
+            StringValue: !Ref myRDSjdbcstring
+          -
+            Id: "myInputS3Loc"
+            StringValue: !Ref myInputS3Loc
+          -
+            Id: "myRDSTableName"
+            StringValue: !Ref myRDSTableName
+          -
+            Id: "myRDSCreateTableSql"
+            StringValue: !Ref myRDSCreateTableSql
+          -
+            Id: "myRDSjdbcDriverJarUri"
+            StringValue: "s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar"
+          -
+            Id: "myRDSjdbcDriverClass"
+            StringValue: "org.postgresql.Driver"
         PipelineObjects:
-          -
-            Id: "S3InputDataLocation"
-            Name: "S3InputDataLocation"
-            Fields:
-              -
-                Key: "type"
-                StringValue: "S3DataNode"
-              -
-                Key: "directoryPath"
-                StringValue: !Ref myInputS3Loc
-              -
-                Key: "dataFormat"
-                RefValue: "DataFormat1"
-          -
-            Id: "DestinationRDSTable"
-            Name: "DestinationRDSTable"
-            Fields:
-              -
-                Key: "type"
-                StringValue: "SqlDataNode"
-              -
-                Key: "database"
-                RefValue: "RDSPostgres"
-              -
-                Key: "insertQuery"
-                StringValue: !Ref myRDSTableInsertSql
-              -
-                Key: "table"
-                StringValue: !Ref myRDSTableName
-              -
-                Key: "selectQuery"
-                StringValue: !Sub "select * from #{table}"
           -
             Id: "RDSPostgres"
             Name: "RDSPostgres"
@@ -110,13 +141,13 @@ Resources:
                 StringValue: "JdbcDatabase"
               -
                 Key: "connectionString"
-                StringValue: !Sub "jdbc:postgresql://${Endpoint}:5432/${myRDSDBName}"
+                StringValue:  "#{myRDSjdbcstring}"
               -
                 Key: "jdbcDriverClass"
-                StringValue: "org.postgresql.Driver"
+                StringValue: "#{myRDSjdbcDriverClass}"
               -
                 Key: "jdbcDriverJarUri"
-                StringValue: "s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar"
+                StringValue: "#{myRDSjdbcDriverJarUri}"
               -
                 Key: "username"
                 StringValue: "#{*myRDSUsername}"
@@ -124,24 +155,49 @@ Resources:
                 Key: "*password"
                 StringValue: "#{*myRDSPassword}"
           -
-            Id: "DataLoadActivity"
-            Name: "DataLoadActivity"
+            Id: "CopyS3DatatoEC2"
+            Name: "CopyS3DatatoEC2"
             Fields:
               -
                 Key: "type"
-                StringValue: "CopyActivity"
+                StringValue: "ShellCommandActivity"
               -
-                Key: "output"
-                RefValue: "DestinationRDSTable"
+                Key: "runsOn"
+                RefValue: "Ec2Instance"
               -
-                Key: "input"
-                RefValue: "S3InputDataLocation"
+                Key: "command"
+                StringValue: "(sudo yum -y update aws-cli) && (aws s3 cp #{myInputS3Loc}/ /home/ec2-user/ --recursive)"
+          -
+            Id: "CopyDatatoRDS"
+            Name: "CopyDatatoRDS"
+            Fields:
+              -
+                Key: "type"
+                StringValue: "ShellCommandActivity"
               -
                 Key: "runsOn"
                 RefValue: "Ec2Instance"
               -
                 Key: "dependsOn"
+                RefValue: "CopyS3DatatoEC2"
+              -
+                Key: "dependsOn"
                 RefValue: "RdsPostgresTableCreateActivity"
+              -
+                Key: "scriptUri"
+                StringValue: "#{myInputS3Loc}/psql-copy-s3-rds.sh"
+              -
+                Key: "scriptArgument"
+                StringValue: "--red_jdbc=#{myRDSjdbcstring}"
+              -
+                Key: "scriptArgument"
+                StringValue: "--red_usr=#{*myRDSUsername}"
+              -
+                Key: "scriptArgument"
+                StringValue: "--red_pwd=#{*myRDSPassword}"
+              -
+                Key: "scriptArgument"
+                StringValue: "--red_tbl=#{myRDSTableName}"
           -
             Id: "RdsPostgresTableCreateActivity"
             Name: "RdsPostgresTableCreateActivity"
@@ -157,14 +213,7 @@ Resources:
                 RefValue: "Ec2Instance"
               -
                 Key: "script"
-                StringValue: !Ref myRDSCreateTableSql
-          -
-            Id: "DataFormat1"
-            Name: "DataFormat1"
-            Fields:
-               -
-                Key: "type"
-                StringValue: "CSV"
+                StringValue: "#{myRDSCreateTableSql}"
           -
             Id: "Ec2Instance"
             Name: "Ec2Instance"
@@ -177,14 +226,12 @@ Resources:
                 StringValue: "t1.micro"
               -
                 Key: "terminateAfter"
-                StringValue: "50 minutes"
+                StringValue: "30 minutes"
               -
                 Key: "imageId"
                 StringValue: "ami-0022f774911c1d690"
               - Key: "actionOnTaskFailure"
                 StringValue: "terminate"
-              - Key: "associatePublicIpAddress"
-                StringValue: "true"
               - Key: "securityGroupIds"
                 StringValue: !Ref SecurityGroupID
               - Key: "maximumRetries"

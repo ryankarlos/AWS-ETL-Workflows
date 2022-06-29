@@ -1,0 +1,10 @@
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+No packages marked for update
+Completed 1.3 KiB/7.9 KiB (17.4 KiB/s) with 3 file(s) remaining
+download: s3://s3-eventbridge-batch/psql-copy-s3-rds.sh to ../../home/ec2-user/psql-copy-s3-rds.sh
+Completed 1.3 KiB/7.9 KiB (17.4 KiB/s) with 2 file(s) remaining
+Completed 4.6 KiB/7.9 KiB (52.0 KiB/s) with 2 file(s) remaining
+download: s3://s3-eventbridge-batch/sample-data.txt to ../../home/ec2-user/sample-data.txt
+Completed 4.6 KiB/7.9 KiB (52.0 KiB/s) with 1 file(s) remaining
+Completed 7.9 KiB/7.9 KiB (83.6 KiB/s) with 1 file(s) remaining
+download: s3://s3-eventbridge-batch/sample-data.csv to ../../home/ec2-user/sample-data.csv

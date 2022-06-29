@@ -15,14 +15,13 @@ DataPipeline contains three main components
 
 ### s3 to RDS
 
-<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/dp-s3-to-rds-tasks.png></img>
-
+<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/datapipeline-s3-rds.png></img>
 
 The bash script  `data-pipelines/s3_to_rds/create-pipeline.sh`  will create the pipeline with the configuration and activate it
-After `cd` into datapipeline directory, run the command below. The first arg is the name of the pipeline to be created and 
+After `cd` into root of the repo, run the command below. The first arg is the name of the pipeline to be created and 
 the second arg is the relative path to the defintion json.
 ```
-$ sh aws_vpc/data-pipeline/create_pipeline.sh S3-RDS-datapipeline s3_to_rds/postgres-definition.json
+$ sh data-pipeline/create_pipeline.sh S3-RDS-datapipeline s3_to_rds/postgres-definition.json
 
 Creating data pipeline S3-RDS-datapipeline and activating ...
 
@@ -33,17 +32,18 @@ Adding config settings from json definition for pipeline id df-0092274JVOD89B1BT
     "errored": false
 }
 
-Activating pipeline df-0092274JVOD89B1BTDB
+Activating pipeline df-04865961XZQ7LL0G3TRX
 ```
 
 Or using cloudformation template `cloudformation/datapipeline/s3-to-rds-postgres.yaml`  to create a `The AWS::DataPipeline::Pipeline resource` 
 with all the parameter and pipeline objects, such as activities, schedules, data nodes, and resources.
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-datapipeline-pipeline.html
+The jdbcstring should be in the format `jdbc:postgresql://<endpoint>.rds.amazonaws.com:<port>/<dbname>`
 
 ```
 aws cloudformation create-stack --stack-name DataPipelineS3toRDS \
 --template-body file://cloudformation/datapipeline/s3-to-rds-postgres.yaml \
---parameters ParameterKey=Endpoint,ParameterValue=<endpoint> \
+--parameters ParameterKey=myRDSjdbcstring,ParameterValue=<myRDSjdbcstrin> \
 ParameterKey=myRDSUsername,ParameterValue=<username> \
 ParameterKey=myRDSPassword,ParameterValue=<password>
 
@@ -51,13 +51,28 @@ ParameterKey=myRDSPassword,ParameterValue=<password>
 
 Once the stack is created successfully, the pipeline is automatically activated.
 
-<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/cf-stack-data-pipeline-s3-rds.png></img>
+<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/DataPipeline_s3tords_Cftemplate.png></img>
 
 Navigating to the console, we should be able to monitor the status of the data pipeline task executions and diagnose 
 failed executions from the logs in S3 in the location configured in pipeline definition `s3://data-pipeline-logs1/logs/<pipeline-id>/`
 
-<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-s3-rds-pg.png></img>
+<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/s3-rds-component-status.png></img>
 
+To check the data in Postgres RDS we can use PgAdmin and connect to the RDS server
+
+* Create new server 
+* In the General tab, choose a  server name e.g. RDSPostgres
+* In the connection tab fill out the following details (which can be found in the configuration in the AWS RDS console)
+- Endpoint/Host 
+- Port 
+- Username
+- Password
+Click save and you should see the new server created in the browser window on the left
+* Go to Tools -> Query tool. This should open up the query tool window. 
+* Run the command as in the screenshot below and you should see the data in the table if the data pipeline has run successfully
+
+
+<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/RDSPostgresDataQuery.png></img>
 
 
 ### s3 to s3
