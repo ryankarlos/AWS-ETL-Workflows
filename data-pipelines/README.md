@@ -12,6 +12,9 @@ DataPipeline contains three main components
 * Pipeline for scheduling the tasks and creating EC2 instances/EMR for running the tasks
 * Task Runner automatically installed on resources created which polls and performs the tasks
 
+In all these examples, the data pipeline scheduling has been set to `ondemand`and requires manual triggering.
+However, we could also schedule a cron job to run from specific start to end at desired frequency as shown in 
+the examples here https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-schedule.html
 
 ### s3 to RDS
 
@@ -25,6 +28,8 @@ in an EC2 resource (which is configured via data pipeline configuration) and ins
 such as postgresql13 for using the psql. The bash script takes in keyword args 
 for the jdbc string, username, password and table name as shown in the command below. These are configured via the 
 script arguments setting in the shell command activity in datapipeline task configuration.
+A special thanks to this https://github.com/awslabs/aws-support-tools/blob/master/DataPipeline/MySqlRdsToPostgreSqlRds/dbconv-mysqlRDS-to-postgresqlRDS.sh
+for helping me generate a working version of this script for my use case !
 
 ```
 $ cd data-pipelines/s3_to_rds
@@ -71,10 +76,11 @@ Once the stack is created successfully, the pipeline is automatically activated.
 <img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/DataPipeline_s3tords_Cftemplate.png></img>
 
 We can check the design of the pipeline and the task dependencies if we click on the pipeline id in the console and select
-edit pipeline. We can see that in this configuration, we have a `RDSPOstgresTableCreateActivity` (Sql Activity) and 
-`CopyS3DatatoEC2` (ShellCommand Activity) which run on an EC2 resource (t1.micro. Amazon Linux AMI). The TableCreateActivity
-requires a database reference (RDSPostgres JDBC Database type) which contains the parameters such as connection string, 
-DB username, password, table name etc required to connect to the database and run the sql query for creating the `persons`
+edit pipeline. We can see that in this configuration, we have a `RDSPOstgresTableCreateActivity` (Sql Activity https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-sqlactivity.html) and 
+`CopyS3DatatoEC2` (ShellCommand Activity https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-shellcommandactivity.html) which run on an EC2 resource (t1.micro. Amazon Linux AMI) 
+https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-ec2resource.html. The TableCreateActivity
+requires a database reference (RDSPostgres JDBC Database type https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-jdbcdatabase.html) 
+which contains the parameters such as connection string, DB username, password, table name etc required to connect to the database and run the sql query for creating the `persons`
 table with the required schema. Note that this only creates a table if it does not already exist. So in subsequent commands
 it will not do so unless the table is manually deleted. The bash script which runs in the subsequent task to truncate 
 data in any existing table from previous data pipeline runs so the table will only have the latest copy of 
@@ -132,8 +138,8 @@ ParameterKey=OutputPath,ParameterValue=s3://<bucket-name>
 ```
 
 Navigate to the datapipeline console and click ion datapipeline id associated with the name used .e.g DataPipelineS3toS3
-The pipeline should be activated and you can track the progress of the cli task 
-
+The pipeline should be activated and you can track the progress of the cli task
+Compared to the previous example, this is a lot more simplistic and just runs a shellcommand activity on the EC2 resource
 
 ### s3 to Redshift
 
