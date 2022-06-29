@@ -1,0 +1,170 @@
+Description: "Simple Detector resource containing inline Rule, EventType, Variable, EntityType and Label resource definitions"
+Parameters:
+  Bucket:
+    Default: "fraud-sample-data"
+    Description: "S3 Bucket containing fraud data"
+    Type: "String"
+  Prefix:
+    Default: "input"
+    Description: "folder containing data in S3 for glue crawler"
+    Type: "String"
+Resources:
+  GlueJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        PythonVersion: "3"
+        ScriptLocation: !Sub "s3://aws-glue-assets-${AWS::AccountId}-${AWS::Region}/scripts/fraud-etl-glue.py"
+      DefaultArguments:
+        "--enable-continuous-cloudwatch-log": "true"
+        "--enable-glue-datacatalog": "true"
+        "--enable-job-insights": "true"
+        "--enable-metrics": "true"
+        "--job-bookmark-option": "job-bookmark-disable"
+        "--job-language": "python"
+        "--catalog_db": "default"
+        "--catalog_table": "fraud-raw-input"
+        "--bucket": !Ref Bucket
+        "--entity_type": "customer"
+        "--train_source_key": "input/fraudTrain.csv"
+        "--test_source_key": "input/fraudTest.csv"
+        "--train_dest_key": "glue_transformed/train/fraudTrain.csv"
+        "--test_dest_key": "glue_transformed/test/fraudTest.csv"
+        "--train_max_cut_off": "2020-04-30 00:00:00"
+        "--test_min_cut_off": "2020-08-30 00:00:00"
+        "--fraud_samples": "12"
+        "--legit_samples": "130"
+      ExecutionProperty:
+        MaxConcurrentRuns: 2
+      MaxRetries: 0
+      GlueVersion: 3.0
+      WorkerType: Standard
+      NumberOfWorkers: 2
+      Timeout: 10
+      Name: glue-etl-fraud
+      Role: !ImportValue RoleGlue-Arn
+  GlueClassifier:
+    Type: AWS::Glue::Classifier
+    Properties:
+      CsvClassifier:
+        ContainsHeader: PRESENT
+        Delimiter: ','
+        Header:
+          - index
+          - trans_date_trans_time
+          - cc_num
+          - merchant
+          - category
+          - amt
+          - first
+          - last
+          - gender
+          - street
+          - city
+          - state
+          - zip
+          - lat
+          - long
+          - city_pop
+          - job
+          - dob
+          - trans_num
+          - unix_time
+          - merch_lat
+          - merch_long
+          - is_fraud
+        Name: "FraudClassifier"
+  FraudDataCrawler:
+      Type: AWS::Glue::Crawler
+      Properties:
+        Name: "crawler-fraud-train-test"
+        DatabaseName: "default"
+        Classifiers:
+          - !Ref GlueClassifier
+        Targets:
+          S3Targets:
+            - Path: !Sub "s3://${Bucket}/{Prefix}"
+        SchemaChangePolicy:
+          UpdateBehavior: "UPDATE_IN_DATABASE"
+          DeleteBehavior: "DELETE_FROM_DATABASE"
+        RecrawlPolicy:
+          RecrawlBehavior: CRAWL_EVERYTHING
+        Role: !ImportValue RoleGlue-Arn
+        TablePrefix : "fraud-raw-"
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2008-10-17'
+        Statement:
+          - Sid: ''
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      RoleName: LambdaRoleforGlue
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        - arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
+        - arn:aws:iam::aws:policy/AmazonSQSFullAccess
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole
+  GlueLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ZipFile: |
+          import json
+          import os
+          import logging
+          import boto3
+          logger = logging.getLogger()
+          logger.setLevel(logging.INFO)
+          client = boto3.client('glue')
+          glueJobName = "glue-etl-fraud"
+
+          def handler(event, context):
+            logger.info('## INITIATED BY S3 EVENT: ')
+            response = client.start_job_run(JobName = glueJobName)
+            logger.info('## STARTED GLUE JOB: ' + glueJobName)
+            logger.info('## GLUE JOB RUN ID: ' + response['JobRunId'])
+            return response
+      Handler: index.handler
+      FunctionName: TriggerGLue
+      Role:
+        Fn::GetAtt: [ LambdaRole , "Arn" ]
+      Runtime: python3.9
+      MemorySize: 256
+      Timeout: 60
+  EventRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: Trigger lambda function to execute glue job after crawler completes
+      Name: CrawlerSourceLambdaTarget
+      EventPattern:
+        source:
+          - "aws.glue"
+        detail-type:
+          - "Glue Crawler State Change"
+        detail:
+          crawlerName: [!Ref FraudDataCrawler]
+          state: ["Succeeded"]
+      State: ENABLED
+      Targets:
+        - Arn:
+            Fn::GetAtt:
+              - "GlueLambdaFunction"
+              - "Arn"
+          Id: "TargetFunctionV1"
+  PermissionForEventsToInvokeLambda:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName:
+          Ref: "GlueLambdaFunction"
+        Action: "lambda:InvokeFunction"
+        Principal: "events.amazonaws.com"
+        SourceArn:
+          Fn::GetAtt:
+            - "EventRule"
+            - "Arn"
+

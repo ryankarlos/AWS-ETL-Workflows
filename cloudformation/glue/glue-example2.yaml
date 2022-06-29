@@ -1,0 +1,19 @@
+Parameters:
+  GlueScriptName:
+    Default: "manning_prep_for_forecast job.py"
+    Description: "Name of pyspark glue script."
+    Type: "String"
+Resources:
+  GlueJob:
+    Type: AWS::Glue::Job
+    Properties:
+      Command:
+        Name: glueetl
+        ScriptLocation: !Sub "aws-glue-assets-${AWS::Account}-${AWS::Region}/scripts/${GlueScriptName}"
+      DefaultArguments:
+        "--job-bookmark-option": "job-bookmark-enable"
+      ExecutionProperty:
+        MaxConcurrentRuns: 2
+      MaxRetries: 0
+      Name: glue-etl-fraud
+      Role: !ImportValue RoleGlue-Arn

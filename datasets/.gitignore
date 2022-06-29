@@ -1,0 +1,10 @@
+__pycache__
+.DS_Store
+.idea/
+.ipynb_checkpoints
+*.zip
+*.tar.gz
+*.jpeg
+train/
+aws_cli_commands.sh
+datasets/fraud-sample-data/dataset1/fraud*.csv
