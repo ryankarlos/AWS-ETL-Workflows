@@ -61,6 +61,14 @@ Parameters:
     ConstraintDescription: "It must be a valid IP CIDR range of the form x.x.x.x/x. Suggest to enable access to your IP address only. Pls get your address using checkip.amazonaws.com or whatsmyip.org."
     Description: "The IP address range that can be used to connect to the RDS instances from your local machine.It must be a valid IP CIDR range of the form x.x.x.x/x.Pls get your address using checkip.amazonaws.com or whatsmyip.org"
     Type: "String"
+  SubnetGroupName:
+    Default:  "rds subnet group name"
+    Description: "Subnet group name containing subnets which the RDS could be created in the VPC. The group can be created on the console"
+    Type: "String"
+  SecurityGroup:
+    Default: "sg-0afdf2d5ce4c8ed3e"
+    Description: "VPC Security Group ID to be associated with the RDS subnet"
+    Type: "String"
 Conditions:
   CreatePostgres: !Equals
     - !Ref DBEngine
@@ -89,6 +97,9 @@ Resources:
       MasterUserPassword: !Ref DBPassword
       StorageType: "gp2"
       PubliclyAccessible: "true"
+      DBSubnetGroupName: !Ref SubnetGroupName
+      VPCSecurityGroups:
+        - !Ref SecurityGroup
   RDSOracleInstance:
     Type: 'AWS::RDS::DBInstance'
     Condition: CreateOracle
@@ -107,6 +118,9 @@ Resources:
       StorageType: "gp2"
       PubliclyAccessible: "true"
       LicenseModel: "bring-your-own-license"
+      DBSubnetGroupName: !Ref SubnetGroupName
+      VPCSecurityGroups:
+        - !Ref SecurityGroup
   RDSMySQLInstance:
     Type: 'AWS::RDS::DBInstance'
     Condition: CreateMySQL
@@ -124,3 +138,6 @@ Resources:
       MasterUserPassword: !Ref DBPassword
       StorageType: "gp2"
       PubliclyAccessible: "true"
+      DBSubnetGroupName: !Ref SubnetGroupName
+      VPCSecurityGroups:
+        - !Ref SecurityGroup
