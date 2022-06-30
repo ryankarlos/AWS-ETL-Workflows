@@ -39,5 +39,5 @@ after crawling csv file from S3, using the custom classifier for header names an
 The glue job can then be manually triggered by the user, which would fetch the data from the catalog and run a number of
 transforms and finally write the data back to S3.
 
-<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/Glue-etl-architecture-example-2.png">
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-etl-architecture-example-2.png">
 
