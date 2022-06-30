@@ -58,9 +58,9 @@ In the driver logs we can see the logs associated with initialisation of the Glu
 by the Context after an action is performed on the RDD) into a set of stages that are submitted for execution. It communicates with the task scheduler
 which tracks the availability of resources (executors) for running these stages. 
 
-<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-logs-example2-driver-logs.png">
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-etl-example2-driver-logs.png">
 
 
 In the executor logs, we can see the logs associated with the application script.
 
-<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-logs-example-2-logs1-manning.png">
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-example-2-logs1-manning.png">
