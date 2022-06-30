@@ -34,6 +34,14 @@ filter the existing dataset to only include historical data for one year (2015) 
 to have columns ("timestamp", "target_value","item_id") and values. 
 The outputs of the different transforms can be seen in the notebook `example2.ipynb` in the notebooks folder.
 
+The glue job configuration can be checked on the console as shown in screenshot below. We have configured a max of 5 nodes including 
+the driver node and set the job to timeout automatically after 7 mins. The script path as set in the cloudformation is shown 
+in the script path folder.  We can also check the logs for the spark jobs in cloudwatch in realtime by enabling continuous logging in the glue config
+https://docs.aws.amazon.com/glue/latest/dg/monitor-continuous-logging.html
+
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-etl-example2-job-config.png">
+
+
 The intended workflow is as depicted in the diagram below. The user triggers the glue crawler which populates the data catalog
 after crawling csv file from S3, using the custom classifier for header names and delimiter. 
 The glue job can then be manually triggered by the user, which would fetch the data from the catalog and run a number of
@@ -41,3 +49,18 @@ transforms and finally write the data back to S3.
 
 <img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-etl-architecture-example-2.png">
 
+
+Checking the glue logs, we can see a separate log stream for each worker node, including the driver.
+
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-logs-example2-logstreams-workers.png">
+
+In the driver logs we can see the logs associated with initialisation of the GlueContext and the DAG scheduler which translates the job (submitted to it
+by the Context after an action is performed on the RDD) into a set of stages that are submitted for execution. It communicates with the task scheduler
+which tracks the availability of resources (executors) for running these stages. 
+
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-logs-example2-driver-logs.png">
+
+
+In the executor logs, we can see the logs associated with the application script.
+
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-logs-example-2-logs1-manning.png">
