@@ -28,9 +28,9 @@ class MyStreamListener(tweepy.Stream):
         else:
             if tweet:
                 try:
-                    if tweet['truncated']:
+                    if tweet["truncated"]:
                         # if tweet is truncated, then Status object will contain an extended_tweet attribute
-                        text = tweet['extended_tweet']['full_text']
+                        text = tweet["extended_tweet"]["full_text"]
                     else:
                         text = tweet["text"]
                     if not text.startswith("RT"):

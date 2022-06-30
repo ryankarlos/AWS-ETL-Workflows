@@ -15,7 +15,7 @@ amt - Amount of Transaction
 first - First Name of Credit Card Holder
 last - Last Name of Credit Card Holder
 gender - Gender of Credit Card Holder
-street - Street Address of Credit Card Holder
+street - Street Address of Credit Card Holde
 city - City of Credit Card Holder
 state - State of Credit Card Holder
 zip - Zip of Credit Card Holder
@@ -55,4 +55,43 @@ $ python s3/transfer_data_s3.py --bucket_name fraud-sample-data --local_dir data
 2022-05-15 01:21:57,163 __main__ INFO:Successfully uploaded all files in datasets/fraud-sample-data/dataset1 to S3  bucket fraud-sample-data
 ```
 
+### Upload glue script to S3 
 
+If glue jobs have been run previously, there should be a bucket in S3 of the format - `aws-glue-assets-${AWS::AccountId}-${AWS::Region}`
+Inside this bucket there will be a scripts folder where glue references all the scripts generated if glue job etl workflow is 
+created from the console.
+Upload the glue script fraud-etl-glue.py into the bucket in the scripts folder via console or cli.
+
+If this bucket does not exist, then create your own. However, the ScriptLocation property of the GlueJOb resource in the 
+cloudformation template used to create the scripts will need to be modified accordingly so it creates the glue job created can reference
+the script in the correct location.
+
+### Setting up resources and running etl pipeline
+
+We can create the necessary resources for the glue etl pipeline via cloudformation template in cloudformation/glue/glue-example3.yaml
+either via the cloudformation console or cli https://docs.aws.amazon.com/cli/latest/reference/cloudformation/create-stack.html
+Note: that when creating from the cli, the `--capabilities CAPABILITY_NAMED_IAM` arg would need to be set. If done via the console, 
+this box would require to be ticked before creating the stack or else it will throw an error.
+This will create a glue job, classifer, custom crawler, eventbridge rule, lambda function and associated role.
+We intend to build the architecture depicted below with the resources created.
+A user triggers the crawler which crawls data from the S3 bucket and updates tbe glue catalog. Eventbridge rule is configured to 
+detect when the glue crawler stops and triggers the target (lambda function), which starts the glue job to fetch the data 
+from the data catalog, apply the pyspark and glue transforms and write the transformed dynamic dataframe back to S3. 
+
+<img width="1000" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/glue-etl-architecture-example-3.png">
+
+The outputs of the different steps in the glue spark script can be seen in the `example3.ipynb` notebook  in the notebooks folder.
+
+Note: the classifier is configured to read both csvs files  (train and test data) into a single table in the glue data catalog, by specifying the input 
+to the parent folder of both test and train csvs. If we needed to crawl these csvs separately, then we would need two separate classifiers
+and have an exclusion rule for each one .e.g ignore the `fraudTrain.csv` if only requiring to crawl test csv and ignore the `fraudTest.csv` if
+only crawling the train csv.
+The pyspark script applies the necessary transformation logic and then splits the data into train and test dataframes based on the
+timestamp limit settings chosen by the user. This can be overriden in the default arguments properties in the cloudformation template for the 
+glue job resource. The arguments are  "--train_max_cut_off" which sets the timestamp for the last data point in the training set and "--test_min_cut_off" 
+which sets the timestamp for the first data point in the test set. 
+
+#### Deleting resources
+
+
+To delete the resources, delete the cloudformation stack.
