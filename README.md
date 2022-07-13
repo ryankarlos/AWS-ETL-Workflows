@@ -2,9 +2,12 @@
 
 Examples of architecture using AWS ETL and DB services:
 
-* [Data Pipelines (S3 to Redshift/RDS/S3)](data-pipelines)
+* [Data Pipelines (S3 to S3 and S3 to RDS)](data-pipelines)
+* [Data Pipeline (S3 to Redshift)](data-pipelines/s3_to_redshift)
 * [S3 to DynamoDB](s3_to_dynamodb)
-* [Glue and Athena/Redshift](glue_etl)
+* [Glue Example 1](glue_etl/example1)
+* [Glue Example 2](glue_etl/example2)
+* [Glue Example 3](glue_etl/example3)
 * [Kinesis (Streams and Firehose)](kinesis)
 * [Step-functions](step_functions)
 * [EventBridge](eventbridge-schedule-rds)
