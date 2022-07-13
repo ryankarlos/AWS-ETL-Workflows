@@ -2,8 +2,7 @@
 # Data Pipeline S3 to Redshift
 
 
-<img width="900" alt="flights_glue_job" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-redshift.png">
-
+![](../screenshots/data-pipeline-redshift.png) 
 
 We have the datasets/delays.csv loaded in S3 bucket and we will use data pipeline to automate copying of this data into table in redshift cluster.
 To do this we first need to create and activate a redshift cluster 
@@ -71,7 +70,8 @@ aws datapipeline put-pipeline-definition --pipeline-id df-002827213FORRFRNA4AT \
 }
 ```
 
-<img width="1000" alt="data-pipeline-nodes" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-nodes.png">
+
+![](../screenshots/data-pipeline-nodes.png) 
 
 
 ## Activating pipeline and monitoring 
@@ -87,5 +87,4 @@ aws datapipeline activate-pipeline --pipeline-id df-002827213FORRFRNA4AT
 Monitor the pipeline run on the console or from the data pipeline logs folder in S3. These are partitioned by
 pipeline-id --> Activity_Type ----> Runtime ---> Attempt_number e.g≥
 
-
-<img width="1000" alt="redshift_pipelines_console" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/redshift_pipelines_console.png">
+![](../screenshots/redshift_pipelines_console.png) 

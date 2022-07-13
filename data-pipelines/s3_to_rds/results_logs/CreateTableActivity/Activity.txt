@@ -1,0 +1,20 @@
+29 Jun 2022 06:30:00,103 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.taskrunner.TaskPoller: Executing: amazonaws.datapipeline.activity.SqlActivity@78b15cbb
+29 Jun 2022 06:30:00,106 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX private.com.amazonaws.services.datapipeline.factory.S3ClientFactory: Returning cached AmazonS3Client for the region [us-east-1]
+29 Jun 2022 06:30:00,136 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.database.JdbcDriverInitializer: Already downloaded the jar file : /tmp/d80b1e09fd, deleting...
+29 Jun 2022 06:30:00,136 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.connector.staging.S3Helper: Begin Downloading S3 file s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar to /tmp/188d9b5806
+29 Jun 2022 06:30:00,217 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX private.com.amazonaws.services.datapipeline.factory.S3ClientFactory: Returning cached AmazonS3Client for the region [us-east-1]
+29 Jun 2022 06:30:00,323 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.connector.staging.S3Helper: Downloaded S3 file s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar to /tmp/188d9b5806
+29 Jun 2022 06:30:00,323 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.database.JdbcDriverInitializer: Downloaded jar s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar to /tmp/188d9b5806
+29 Jun 2022 06:30:00,334 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.database.JdbcDriverInitializer: Loaded org.postgresql.Driver from s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar
+29 Jun 2022 06:30:00,335 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.database.ConnectionFactory: Connecting using driver from s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar
+29 Jun 2022 06:30:00,416 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.database.ConnectionFactory: Created connection jdbc:postgresql://postgres-default.cg9we74vymgv.us-east-1.rds.amazonaws.com:5432/postgres
+29 Jun 2022 06:30:00,421 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX private.com.amazonaws.services.datapipeline.redshift.JdbcQueryStatement: sql: CREATE TABLE IF NOT EXISTS persons (
+  id INTEGER,
+  email VARCHAR(100),
+  billing_state VARCHAR(3),
+  billing_postal INTEGER,
+  billing_address VARCHAR(255),
+  PRIMARY KEY (id)
+);
+29 Jun 2022 06:30:00,452 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.taskrunner.HeartBeatService: Finished waiting for heartbeat thread @CreateTable_2022-06-29T06:27:53_Attempt=1
+29 Jun 2022 06:30:00,453 [INFO] (TaskRunnerService-resource:df-04865961XZQ7LL0G3TRX_@EC2Resource_2022-06-29T06:27:53-1) df-04865961XZQ7LL0G3TRX amazonaws.datapipeline.taskrunner.TaskPoller: Work SqlActivity took 0:0 to complete

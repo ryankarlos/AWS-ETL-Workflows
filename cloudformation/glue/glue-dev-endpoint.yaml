@@ -1,0 +1,61 @@
+Parameters:
+  Nodes:
+    Default: 3
+    Description: "Number of DPU units"
+    Type: "Number"
+Resources:
+    GlueDevEndpoint:
+        Type: AWS::Glue::DevEndpoint
+        Properties:
+          Arguments: {"GLUE_PYTHON_VERSION": "3", "--enable-glue-datacatalog": ""}
+          EndpointName: GlueTestEndpoint
+          GlueVersion: "1.0"
+          NumberOfNodes: !Ref Nodes
+          RoleArn: !GetAtt [GlueNotebookRole,Arn]
+    GlueNotebookRole:
+      Type: 'AWS::IAM::Role'
+      Properties:
+        RoleName: "AWSGlueServiceNotebookRoleDefault"
+        AssumeRolePolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - glue.amazonaws.com
+              Action:
+                - 'sts:AssumeRole'
+        Path: /
+        ManagedPolicyArns: [ "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+                              "arn:aws:iam::aws:policy/service-role/AWSGlueServiceNotebookRole",
+                             "arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess",
+                              "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess" ,
+                              "arn:aws:iam::aws:policy/AmazonEC2FullAccess"]
+    SagemakerNotebookRole:
+      Type: 'AWS::IAM::Role'
+      Properties:
+        RoleName: "AWSGlueSagemakerNotebookRoleDefault"
+        AssumeRolePolicyDocument:
+          Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - sagemaker.amazonaws.com
+              Action:
+                - 'sts:AssumeRole'
+        Path: /
+        Policies:
+          - PolicyName: PolicyforGlueSagemakerNotebook
+            PolicyDocument:
+              Version: 2012-10-17
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - 'kms:*'
+                    - 'glue:*'
+                  Resource: '*'
+        ManagedPolicyArns:
+              - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+              - "arn:aws:iam::aws:policy/AmazonSageMakerFullAccess"
+              - "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"

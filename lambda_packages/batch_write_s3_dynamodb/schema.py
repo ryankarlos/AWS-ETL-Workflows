@@ -28,14 +28,8 @@ class Movies:
             response = self.dyn_resource.create_table(
                 TableName=table_name,
                 KeySchema=[
-                    {
-                        "AttributeName": "year",
-                        "KeyType": "HASH",
-                    },  # Partition key
-                    {
-                        "AttributeName": "title",
-                        "KeyType": "RANGE",
-                    },  # SORT key
+                    {"AttributeName": "year", "KeyType": "HASH",},  # Partition key
+                    {"AttributeName": "title", "KeyType": "RANGE",},  # SORT key
                 ],
                 AttributeDefinitions=[
                     {"AttributeName": "title", "AttributeType": "S"},

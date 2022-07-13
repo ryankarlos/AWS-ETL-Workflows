@@ -1,107 +1,87 @@
 {
     "objects": [
         {
-            "id": "S3InputDataLocation",
-            "name": "S3InputDataLocation",
-            "directoryPath": "#{myInputS3Loc}",
-            "dataFormat": {
-                "ref": "DataFormat1"
-            },
-            "type": "S3DataNode"
-        },
-        {
-            "id": "DestinationRDSTable",
-            "name": "DestinationRDSTable",
+            "id": "CreateTable",
+            "name": "CreateTable",
             "database": {
                 "ref": "RDSPostgres"
             },
-            "insertQuery": "#{myRDSTableInsertSql}",
-            "type": "SqlDataNode",
-            "table": "#{myRDSTableName}",
-            "selectQuery": "select * from #{table}"
+            "runsOn": {
+                "ref": "EC2Resource"
+            },
+            "type": "SqlActivity",
+            "script": "#{myRDSCreateTableSql}"
+        },
+        {
+            "id": "ShellCommandActivityId_NisXF",
+            "name": "CopyDatatoRDS",
+            "dependsOn": [
+                {
+                    "ref": "CopyS3DatatoEC2"
+                },
+                {
+                    "ref": "CreateTable"
+                }
+            ],
+            "scriptUri": "#{myInputS3Loc}/psql-copy-s3-rds.sh",
+            "runsOn": {
+                "ref": "EC2Resource"
+            },
+            "scriptArgument": [
+                "--red_jdbc=#{myRDSjdbcstring}",
+                "--red_usr=#{*myRDSUsername}",
+                "--red_pwd=#{*myRDSPassword}",
+                "--red_tbl=#{myRDSTableName}"
+            ],
+            "type": "ShellCommandActivity"
+        },
+        {
+            "id": "EC2Resource",
+            "name": "EC2Resource",
+            "resourceRole": "ec2-profile",
+            "role": "DataPipelineDefaultRole",
+            "imageId": "ami-0022f774911c1d690",
+            "maximumRetries": "1",
+            "securityGroupIds": "sg-0afdf2d5ce4c8ed3e",
+            "instanceType": "t1.micro",
+            "actionOnTaskFailure": "terminate",
+            "keyPair": "aws-eb",
+            "type": "Ec2Resource",
+            "terminateAfter": "30 Minutes"
+        },
+        {
+            "id": "CopyS3DatatoEC2",
+            "name": "CopyS3DatatoEC2",
+            "runsOn": {
+                "ref": "EC2Resource"
+            },
+            "type": "ShellCommandActivity",
+            "command": "(sudo yum -y update aws-cli) && (aws s3 cp #{myInputS3Loc}/ /home/ec2-user/ --recursive)\n"
         },
         {
           "id" : "RDSPostgres",
             "name": "RDSPostgres",
           "type" : "JdbcDatabase",
-          "connectionString" : "jdbc:postgresql://#{myEndpoint}:5432/#{myDBName}",
+          "connectionString" : "#{myRDSjdbcstring}",
           "jdbcDriverClass" : "org.postgresql.Driver",
           "jdbcDriverJarUri" : "s3://datapipeline-us-east-1/us-east-1/software/latest/TaskRunner/Postgres-jdbc.jar",
           "username" : "#{*myRDSUsername}",
           "*password" : "#{*myRDSPassword}"
         },
         {
-            "id": "DataLoadActivity",
-            "name": "DataLoadActivity",
-            "output": {
-                "ref": "DestinationRDSTable"
-            },
-            "input": {
-                "ref": "S3InputDataLocation"
-            },
-            "dependsOn": {
-                "ref": "RdsPostgresTableCreateActivity"
-            },
-            "runsOn": {
-                "ref": "Ec2Instance"
-            },
-            "type": "CopyActivity"
-        },
-        {
-            "id": "RdsPostgresTableCreateActivity",
-            "name": "RdsPostgresTableCreateActivity",
-            "database": {
-                "ref": "RDSPostgres"
-            },
-            "runsOn": {
-                "ref": "Ec2Instance"
-            },
-            "type": "SqlActivity",
-            "script": "#{myRDSCreateTableSql}"
-        },
-        {
-            "id": "DataFormat1",
-            "name": "DataFormat1",
-            "type": "CSV"
-        },
-        {
             "id": "Default",
             "name": "Default",
-            "maxActiveInstances": "2",
             "failureAndRerunMode": "CASCADE",
             "resourceRole": "ec2-profile",
             "role": "DataPipelineDefaultRole",
             "pipelineLogUri": "s3://data-pipeline-logs1/logs/",
             "scheduleType": "ONDEMAND"
-        },
-        {
-            "id": "Ec2Instance",
-            "name": "Ec2Instance",
-            "maximumRetries" : "1",
-            "securityGroupIds" : "sg-0afdf2d5ce4c8ed3e",
-            "instanceType": "t1.micro",
-            "actionOnTaskFailure": "terminate",
-            "securityGroups": "#{myEc2RdsSecurityGrps}",
-            "associatePublicIpAddress": "true",
-            "type": "Ec2Resource",
-            "terminateAfter": "1 Hours",
-            "keyPair" : "aws-eb",
-            "imageId": "ami-0022f774911c1d690"
         }
     ],
-    "parameters": [
+     "parameters": [
         {
             "id": "*myRDSPassword",
             "description": "RDS password",
-            "type": "String"
-        },
-        {
-            "id": "myEc2RdsSecurityGrps",
-            "watermark": "security group name",
-            "helpText": "The names of one or more EC2 security groups that have access to the RDS MySQL cluster.",
-            "description": "RDS MySQL security group(s)",
-            "isArray": "true",
-            "optional": "true",
             "type": "String"
         },
         {
@@ -115,26 +95,14 @@
             "type": "String"
         },
         {
-            "id": "myRDSTableInsertSql",
-            "helpText": "The SQL statement to insert data into the RDS MySQL table.",
-            "watermark": "INSERT INTO #{table} (col1, col2, col3) VALUES(?, ?, ?) ;",
-            "description": "Insert SQL query",
-            "type": "String"
-        },
-        {
             "id": "myRDSTableName",
             "helpText": "The name of an existing table or a new table that will be created based on the create table SQL query parameter below.",
             "description": "RDS MySQL table name",
             "type": "String"
         },
         {
-            "id": "myEndpoint",
+            "id": "myRDSjdbcstring",
             "description": "RDS Endpoint",
-            "type": "String"
-        },
-        {
-            "id": "myDBName",
-            "description": "DB Name",
             "type": "String"
         },
         {
@@ -147,13 +115,11 @@
         }
     ],
     "values": {
-        "myEndpoint": "<endpoint>",
-         "myDBName": "<db name>",
+        "myRDSjdbcstring": "<myRDSjdbcstring>",
         "*myRDSUsername": "<username>",
-        "myRDSTableInsertSql": "INSERT INTO #{table} (id, email, billing_state, billing_postal, billing_address) VALUES (?, ?, ?, ?, ?)",
         "*myRDSPassword": "<password>",
         "myRDSCreateTableSql": "CREATE TABLE IF NOT EXISTS persons (\n  id INTEGER,\n  email VARCHAR(100),\n  billing_state VARCHAR(3),\n  billing_postal INTEGER,\n  billing_address VARCHAR(255),\n  PRIMARY KEY (id)\n);",
-        "myInputS3Loc": "s3://s3-eventbridge-batch/sample-data.txt",
+        "myInputS3Loc": "s3://s3-eventbridge-batch",
         "myRDSTableName": "persons"
     }
 }
