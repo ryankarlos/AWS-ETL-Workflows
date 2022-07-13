@@ -83,21 +83,23 @@ Once the stack is created successfully, the pipeline is automatically activated.
 
 
 We can check the design of the pipeline and the task dependencies if we click on the pipeline id in the console and select
-edit pipeline. We can see that in this configuration, we have a `RDSPOstgresTableCreateActivity` (Sql Activity https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-sqlactivity.html) and 
-`CopyS3DatatoEC2` (ShellCommand Activity https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-shellcommandactivity.html) which run on an EC2 resource (t1.micro. Amazon Linux AMI) 
-https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-ec2resource.html. The TableCreateActivity
-requires a database reference (RDSPostgres JDBC Database type https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-jdbcdatabase.html) 
+edit pipeline. We can see that in this configuration, we have a **RDSPOstgresTableCreateActivity** ([Sql Activity](https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-sqlactivity.html)) and 
+**CopyS3DatatoEC2** ([ShellCommandActivity](https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-shellcommandactivity.html)) which run on an EC2 resource (t1.micro. Amazon Linux AMI) 
+
+The **TableCreateActivity** requires a database reference (RDSPostgres [JDBC Database type](https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/dp-object-jdbcdatabase.html))
 which contains the parameters such as connection string, DB username, password, table name etc required to connect to the database and run the sql query for creating the `persons`
 table with the required schema. Note that this only creates a table if it does not already exist. So in subsequent commands
 it will not do so unless the table is manually deleted. The bash script which runs in the subsequent task to truncate 
 data in any existing table from previous data pipeline runs so the table will only have the latest copy of 
 data from the csv file in S3.
-The `CopyS3DatatoEC2` script installs aws-cli and runs the aws s3 cp command via the cli 
+
+The **CopyS3DatatoEC2** script installs aws-cli and runs the aws s3 cp command via the cli 
 to copy the csv file from the S3 bucket into path in EC2 resource so it can be later copied into RDS postgres in a subsequent 
 task. This is done - as I am not sure RDS postgres supports copying data directly from S3 to db so needs to be staged into
 EC2 location first and then copy command run afterwards.
-The final activity is the `CopyDatatoRDS` (ShellCommandActivity) which has parameters for `ScriptURi` and `ScriptArguments` 
-configured to run the script `psql-copy-s3-rds.sh` copied to S3 previously with the required arguments. 
+
+The final activity is the **CopyDatatoRDS** (ShellCommandActivity) which has parameters for _ScriptURi_ and _ScriptArguments_ 
+configured to run the script _psql-copy-s3-rds.sh_ copied to S3 previously with the required arguments. 
 This installs the necessary dependencies and first truncates the table (in case there is existing data in it) and then 
 runs the copy command to copy data from csv file which was copied to the folder in EC2 resource into RDS Postgres.
 
