@@ -2,9 +2,9 @@
 
 We will create different data pipelines for automating the movement and transformation of data between 
 different AWS services.  In each pipeline, you define pipeline objects, such as activities, schedules, 
-data nodes, and resources.
+data nodes, and resources. This is described in [AWS docs](https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/what-is-datapipeline.html
+)
 
-https://docs.aws.amazon.com/datapipeline/latest/DeveloperGuide/what-is-datapipeline.html
 
 DataPipeline contains three main components 
 
@@ -12,11 +12,12 @@ DataPipeline contains three main components
 * Pipeline for scheduling the tasks and creating EC2 instances/EMR for running the tasks
 * Task Runner automatically installed on resources created which polls and performs the tasks
 
+For the next few sections, all references to the script paths will be relative to the following [repository root](https://github.com/ryankarlos/AWS-ETL-Workflows)
+
 
 ### s3 to RDS
 
-<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/dp-s3-to-rds-tasks.png></img>
-
+![](../screenshots/dp-s3-to-rds-tasks.png) 
 
 The bash script  `data-pipelines/s3_to_rds/create-pipeline.sh`  will create the pipeline with the configuration and activate it
 After `cd` into datapipeline directory, run the command below. The first arg is the name of the pipeline to be created and 
@@ -51,18 +52,18 @@ ParameterKey=myRDSPassword,ParameterValue=<password>
 
 Once the stack is created successfully, the pipeline is automatically activated.
 
-<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/cf-stack-data-pipeline-s3-rds.png></img>
+![](../screenshots/cf-stack-data-pipeline-s3-rds.png) 
+
 
 Navigating to the console, we should be able to monitor the status of the data pipeline task executions and diagnose 
 failed executions from the logs in S3 in the location configured in pipeline definition `s3://data-pipeline-logs1/logs/<pipeline-id>/`
 
-<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/data-pipeline-s3-rds-pg.png></img>
-
+![](../screenshots/data-pipeline-s3-rds-pg.png) 
 
 
 ### s3 to s3
 
-<img src=https://github.com/ryankarlos/aws_etl/blob/master/screenshots/dp-s3-to-s3-tasks.png></img>
+![](../screenshots/dp-s3-to-s3-tasks.png) 
 
 Run the cloudformation template stored in `cloudformation/datapipeline/s3-to-s3.yaml` 
 to create stack using the cli command 
@@ -81,4 +82,4 @@ The pipeline should be activated and you can track the progress of the cli task
 
 ### s3 to Redshift
 
-Refer to the `data-pipelines/s3_to_redshift/README.md`
+Refer to these [instructions](s3_to_redshift)

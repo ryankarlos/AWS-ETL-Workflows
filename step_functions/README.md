@@ -1,25 +1,26 @@
-# Step Functions for ETL tasks
+# Step Function for Running Glue Job
 
-This directory contains state machine definitions used to execute tasks for the following
-use cases:
+Before running this example, we have to create a glue job based on the following [script](https://github.com/ryankarlos/AWS-ETL-Workflows/blob/master/glue_etl/example1/script.py)
+and following the instructions [here](https://docs.aws.amazon.com/glue/latest/dg/console-custom-created.html).
+For the worker type choose 'Standard' and we will use 4 workers.
 
-### AWS Glue ETL
+You will also need to create an IAM role and attach the following policies:
+- arn:aws:iam::aws:policy/AmazonS3FullAccess 
+- arn:aws:iam::aws:policy/AWSGlueConsoleFullAccess
+- arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
 
-This example uses the definition `definitions/glue_etl.json` to start the glue job (created from glue_etl/script.py), 
+This example uses the [definition](https://github.com/ryankarlos/AWS-ETL-Workflows/blob/master/step_functions/definitions/glue_etl.json) to start the glue job, 
 wait for job to complete, then query athena table and finally publish number of rows to SNS
 
-<img width="1000" alt="glue_step_function" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/stepfunction_glue_etl.png">
+![](../screenshots/stepfunction_glue_etl.png) 
 
-
-An example definition json is in step_functions/definitions/glue_etl.json. Create state machine
-based on this definition by running commmand in 
-https://docs.aws.amazon.com/cli/latest/reference/stepfunctions/create-state-machine.html
+Once we have created the glue job, we can create the state machine based on this definition by running commmand listed [here](https://docs.aws.amazon.com/cli/latest/reference/stepfunctions/create-state-machine.html)
 and supplying definition value as json
 
+Get the step function arn, by running the following [command](https://docs.aws.amazon.com/cli/latest/reference/stepfunctions/start-execution.html
+) to list the step functions arn.
 
-To execute statemachine, execute following command and pass arn for state machine created.
-To get arn - you can use the `aws stepfunctions list-state-machines` command
-https://docs.aws.amazon.com/cli/latest/reference/stepfunctions/start-execution.html
+Then execute statemachine using the following command and pass arn retrieved earlier for state machine created.
 
 ```
 $ aws stepfunctions start-execution --state-machine-arn <arn>
@@ -29,7 +30,7 @@ $ aws stepfunctions start-execution --state-machine-arn <arn>
 }
 ```
 
-We can check status of the execution https://docs.aws.amazon.com/cli/latest/reference/stepfunctions/describe-execution.html
+We can check status of the execution
 
 
 ```

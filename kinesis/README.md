@@ -1,16 +1,18 @@
 
 # Streaming tweets using AWS kinesis data streams and firehose
 
-<img width="1000" alt="kinesis_workflow" src="https://github.com/ryankarlos/aws_etl/blob/master/screenshots/kinesis_workflow.png">
+![](../screenshots/kinesis_workflow.png)
 
 In this workflow, we will create a lambda container image `lambda_packages/tweets-image` which contains twitter 
 streaming application code. When invoked, it will publish records into kinesis stream. Kinesis Firehose 
 will acts as a consumer to read the records from shards, transform the records (including call AWS Comprehend api to 
 retrieve sentiment results) and ingest them into S3 bucket. 
 
+For the next few sections, all references to the script paths will be relative to the following [repository root](https://github.com/ryankarlos/AWS-ETL-Workflows)
+
 ## Create or Updating the Lambda Container Image
 
-This AWS doc https://docs.aws.amazon.com/lambda/latest/dg/images-create.html provides good instructions
+This [AWS doc](https://docs.aws.amazon.com/lambda/latest/dg/images-create.html) provides good instructions
 on building a container image for a new Lambda function, tagging the image and 
 pushing to AWS ECR Registry. 
 
@@ -115,15 +117,33 @@ Excluding the last two (optional) boolean arguments will use their default value
 and skip the steps for creating lambda and ecr repo resources.  The image will then just be 
 built and pushed to existing ECR repo and existing lambda function URI updated to latest tag.
 
-```
+```Shell
 sh kinesis/create_lambda_container_image.sh test-ecr-repo test-lambda <AWS-ACCOUNT-ID> ImageLambdaTwitter
+```
+
+
+If we already have an image built and pushed to ECR, we can just deploy the lambda container via the cli.
+For this case, Ive increased the memory size from default 128MB to 1024MB as was running into memory issues 
+when streaming causing execution to error. Also default timeout is 3 secs, which has been overriden to 5 mins. 
+Execution may finish before depending on what the duration parameter is set to payload
+
+```
+aws lambda create-function --region us-east-1 --function-name my-function --package-type Image --code ImageUri=<ECR Image URI> --role <arn-role> ----memory-size 1024 --timeout 300
+```
+
+For subsequent builds, the existing function config would need to be updated to using
+the latest docker image
+
+
+```Shell
+$ aws lambda update-function-code --function-name LambdaTwitter --image-uri <image-uri>
 ```
 
 ## Kinesis stream and firehose
 
 Creating new kinesis source stream and delivery stream. The script fetches the 
-parameters based on the config settings in kinesis/config/firehose_description.json and 
-kinesis/config/kinesis_stream.json. 
+parameters based on the config settings in `kinesis/config/firehose_description.json` and 
+`kinesis/config/kinesis_stream.json`. 
 
 ```
 python kinesis/create_kinesis_streams.py 
@@ -168,7 +188,7 @@ creating new delivery stream Firehose-S3-twitter
 Make sure configuration contain the right firehose role arn. 
 To get existing roles and then get role-arn for role name
 
-```
+```Shell
 aws iam list-roles --query 'Roles[*].RoleName'
 aws iam get-role --role-name <arn>
 ```
@@ -186,11 +206,11 @@ The function carries out the following tasks:
 * base64 encode the records
 * return the data in the format required by Firehose
 
-The lambda_packages/transform-firehouse-b64-json package with the modules then need to be added in a 
+The `lambda_packages/transform-firehouse-b64-json` package with the modules then need to be added in a 
 zip. No additional dependencies need to be installed before deployment as the modules use basic python packages,
 so we can run the following command to create a new zip and add all modules to it
 
-```
+```Shell
 $ cd lambda_packages/transform-firehouse-b64-json
 $ zip ../transform-firehouse-b64-json.zip *
 ```
@@ -199,7 +219,7 @@ Create the lambda function using the following command passing in the path to
 the newly created zip, lambda role arn and adapt configurations (timeout, memory etc)
 as required
 
-```
+```Shell
 $ aws lambda create-function --function-name transform-firehouse-b64-json --runtime python3.9 \ 
 --zip-file fileb://../transform-firehouse-b64-json.zip \
 --role <lambda-role-arn> --timeout 40 --memory-size 1024 --handler lambda_function.lambda_handler
@@ -208,14 +228,14 @@ $ aws lambda create-function --function-name transform-firehouse-b64-json --runt
 
 or if the lambda function is already created, then update it with the following:
 
-```
+```Shell
 $ aws lambda update-function-code --function-name transform-firehose --zip-file fileb://../transform-firehouse-b64-json.zip
 ```
 
-## Run entire pipeline end to end. 
+## Create kinesis and lambda resources automatically
 
-The example below executes a bash script to run most of the steps described above; create new kinesis and firehose resources 
-and update the lambda transform function used in  firehose. If the `--create_kinesis` arg is excluded, then existing kinesis resources
+The example below executes a bash script to run most of the steps described above to create new kinesis and firehose resources 
+and update the lambda transform function used in firehose. If the `--create_kinesis` arg is excluded, then existing kinesis resources
 are used. If the lambda container image used by the lambda function producing the tweets
 needs to be updated, then pass `--image_uri` with the new docker image uri to update
 the function with.
@@ -314,14 +334,12 @@ h          Print this Help.
 
 ```
 
+#### Starting the Twitter Stream to Kinesis
 
-## Producer 
-
-We can now start streaming tweets using the application code in a lambda which is 
-described in more detail in https://github.com/ryankarlos/codepipeline. 
-
-
-We can invoke the function using the command below to produce tweets which can be 
+We can now start streaming tweets using the deployed application code in the lambda.
+To invoke lambda, you can either run test with the following payload  or similar 
+`{ "keyword": "CNN+", "delivery": "realtime", "duration": 200 , "kinesis_stream_name":"kinesis-twitter-stream"}`
+from the console or via the cli.If doing via the cli, we can invoke the function using the command below to produce tweets which can be 
 streamed into kinesis data stream created above and then subsequently ingested by firehose
 
 ```
@@ -335,10 +353,12 @@ $ aws lambda invoke --function-name LambdaTwitter --payload '{ "keyword": "CNN+"
 
 ```
 
-If the source code in https://github.com/ryankarlos/codepipeline is rebuilt again and published to ECR, 
-the existing lambda function would need to be updated with the URI of the latest image tag.
 
+Note that, ive set the --cli-binary-format parameter to raw-in-base64-out. Otherwise, i got the following error below.
+On google searching, i found this useful blog diagnosing the error https://bobbyhadz.com/blog/aws-cli-invalid-base64-lambda-error
+Seems by setting the --cli-binary-format parameter to raw-in-base64-out  a raw JSON string can be passed to the --payload parameter, 
+otherwise it expects a base-64-encoded input
 
 ```
-$ aws lambda update-function-code --function-name LambdaTwitter --image-uri <image-uri>
+Invalid base64: "{"keyword": "machine learning", "delivery": "search", "duration": 15}"
 ```
