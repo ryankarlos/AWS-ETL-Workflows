@@ -20,7 +20,7 @@ The bash script `kinesis/create_lambda_container_image.sh` takes in IMAGE_REPO_N
 AWS_ACCOUNT_ID and ROLE_NAME as required positional args, with the option of also creating a new ECR repo and 
 function by setting an extra two final args to true (see below)
 
-```
+```shell
 $ sh kinesis/create_lambda_container_image.sh test-ecr-repo test-lambda <AWS-ACCOUNT-ID> ImageLambdaTwitter true true 
 
 Docker build path set as /Users/rk1103/Documents/AWS-ETL-Workflows/lambda_packages/tweets-image
@@ -127,7 +127,7 @@ For this case, Ive increased the memory size from default 128MB to 1024MB as was
 when streaming causing execution to error. Also default timeout is 3 secs, which has been overriden to 5 mins. 
 Execution may finish before depending on what the duration parameter is set to payload
 
-```
+```shell
 aws lambda create-function --region us-east-1 --function-name my-function --package-type Image --code ImageUri=<ECR Image URI> --role <arn-role> ----memory-size 1024 --timeout 300
 ```
 
@@ -135,7 +135,7 @@ For subsequent builds, the existing function config would need to be updated to 
 the latest docker image
 
 
-```Shell
+```shell
 $ aws lambda update-function-code --function-name LambdaTwitter --image-uri <image-uri>
 ```
 
@@ -145,7 +145,7 @@ Creating new kinesis source stream and delivery stream. The script fetches the
 parameters based on the config settings in `kinesis/config/firehose_description.json` and 
 `kinesis/config/kinesis_stream.json`. 
 
-```
+```shell
 python kinesis/create_kinesis_streams.py 
 
 Creating new stream kinesis-twitter-stream: 
@@ -188,7 +188,7 @@ creating new delivery stream Firehose-S3-twitter
 Make sure configuration contain the right firehose role arn. 
 To get existing roles and then get role-arn for role name
 
-```Shell
+```shell
 aws iam list-roles --query 'Roles[*].RoleName'
 aws iam get-role --role-name <arn>
 ```
@@ -219,7 +219,7 @@ Create the lambda function using the following command passing in the path to
 the newly created zip, lambda role arn and adapt configurations (timeout, memory etc)
 as required
 
-```Shell
+```shell
 $ aws lambda create-function --function-name transform-firehouse-b64-json --runtime python3.9 \ 
 --zip-file fileb://../transform-firehouse-b64-json.zip \
 --role <lambda-role-arn> --timeout 40 --memory-size 1024 --handler lambda_function.lambda_handler
@@ -228,7 +228,7 @@ $ aws lambda create-function --function-name transform-firehouse-b64-json --runt
 
 or if the lambda function is already created, then update it with the following:
 
-```Shell
+```shell
 $ aws lambda update-function-code --function-name transform-firehose --zip-file fileb://../transform-firehouse-b64-json.zip
 ```
 
@@ -240,10 +240,7 @@ are used. If the lambda container image used by the lambda function producing th
 needs to be updated, then pass `--image_uri` with the new docker image uri to update
 the function with.
 
-```
-$ poetry shell                                                   
-Virtual environment already activated: /Users/rk1103/Library/Caches/pypoetry/virtualenvs/aws-etl-fV9WWBi4-py3.9
-
+```shell
 $ export LAMBDA_ROLE=<lambda-arn>
 $ sh kinesis/run_stream_workflow.sh --role $LAMBDA_ROLE --create_kinesis
 
@@ -320,7 +317,7 @@ updating: lambda-function.py (deflated 54%)
 
 to get description of parameters for script use the -h argument
 
-```
+```shell
 sh kinesis/run_stream_workflow.sh -h                           
 
 Description: script for running twitter stream pipeline with kinesis streams    and firehose. 

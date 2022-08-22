@@ -9,7 +9,7 @@ Zip the lambda function script and required modules into package by running the 
 First cd into the `batch_write_s3_dynamodb` directory where all the modules are stored. Then run the following command to
 add the modules to zip outside the current directory
 
-```Shell
+```shell
 $ zip -r ../batch_write_dynamodb.zip .
  
   adding: lambda_function.py (deflated 54%)
@@ -37,7 +37,7 @@ The policy json example can be viewed in the respective folders [here](https://g
 
 if you update the source code, you will need to update the lambda function with new zip 
 
-```
+```shell
 $ aws lambda update-function-code --function-name batch_write_s3_dynamodb --zip-file fileb://batch_write_dynamodb.zip
 
 
@@ -118,7 +118,7 @@ required lambda resources from source stack A to target stack B.
 * Add `DeletionPolicy: "Retain"` to lambdas resource properties in source template `cloudformation/lambdas.yaml`
   (if not already included) and update stack 
   
-```Shell
+```shell
 $ aws cloudformation update-stack --stack-name Lambdas --template-body file://cloudformation/lambdas.yaml
 ```
 
@@ -127,7 +127,7 @@ $ aws cloudformation update-stack --stack-name Lambdas --template-body file://cl
   Update the stack again - this would remove the resources from stack but will not delete them (due to `DeletionPolicy: "Retain"`
   added to the template) and they will still be available for import later into target stack
 
-```Shell
+```shell
 $ aws cloudformation update-stack --stack-name Lambdas --template-body file://cloudformation/lambdas_rds_and_firehose_only.yaml
 
 ```
@@ -135,13 +135,13 @@ $ aws cloudformation update-stack --stack-name Lambdas --template-body file://cl
 * Create Change Set of type import for stack B and link to resources import template `resources_to_import/lambdas.txt`
 and modified target template with required lambda resources added `cloudformation/multi_resource_templates/s3_dynamodb_with_lambda_import.yaml.yaml`
 
-```Shell
+```shell
 $ aws cloudformation create-change-set --stack-name S3toDynamo --change-set-name StackwithLambdas --change-set-type IMPORT --resources-to-import file://cloudformation/resources_to_import/lambdas.txt --template-body file://cloudformation/multi_resource_templates/s3_dynamodb_with_lambda_import.yaml
 ```
 
 * Describe changeset to check changes and then execute changeset if satsifed with the changes.
 
-```
+```shell
 $ aws cloudformation describe-change-set --stack-name S3toDynamo --change-set-name StackwithLambdas
 
     "Changes": [
@@ -170,7 +170,7 @@ $ aws cloudformation describe-change-set --stack-name S3toDynamo --change-set-na
     ],
 ```
 
-```
+```shell
 $ aws cloudformation execute-change-set --stack-name S3toDynamo --change-set-name StackwithLambdas
 ```
 
@@ -195,7 +195,7 @@ ddb_input_transform batch_write_s3_dynamodb datasets/moviedata.json
 
 or without any params defaults to the param values above
 
-```
+```shell
 $ sh s3_to_dynamodb/bash_scripts/update_lambda_and_trigger.sh 
 
  Running s3 to dynamo batch write script
@@ -283,9 +283,10 @@ Second lambda function triggered by S3 put event and batch writing data to Dynam
 
 Polls one or more messages (up to 10), from the specified queue.[Reference](https://docs.aws.amazon.com/cli/latest/reference/sqs/receive-message.html)
 
-```
+```shell
 $aws sqs receive-message --queue-url <sqs-queue-url> --attribute-names All --message-attribute-names All --max-number-of-messages 10
-{
+
+~~~~{
     "Messages": [
         {
             "MessageId": "4be01ca7-888e-461f-9500-4fc1ae4337b6",

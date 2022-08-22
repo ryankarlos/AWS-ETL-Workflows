@@ -31,7 +31,7 @@ Resources required for this workflow are EventBridge Rules, lambda and RDS. Each
 using the cloudformation templates `lambdas_rds_and_firehose_only.yaml`, `rds.yaml` and 
 `multi_resource_templates/eventbridge_schedule.yaml`  e.g. to setup the default postgres engine
 
-```
+```shell
 $ aws cloudformation create-stack --stack-name RDS --template-body file://cloudformation/rds.yaml \
 --parameters ParameterKey=DBUsername,ParameterValue=<username> ParameterKey=DBPassword,ParameterValue=<password>
 ```
@@ -44,7 +44,7 @@ This will create a change set, shoe the changes to be made and then prompt the u
 based on the changes shown. If yes, then it will execute the changeset. If no, then the change set created
 will be deleted and script exited.
 
-```
+```shell
 sh data-migration/import_rules_lambda_rds.sh ENABLED "cron(00 18 * 5 ? 2022)" "cron(00 19 * 5 ? 2022)"
 
 Creating change set for EventRuleSchedule Stack ....

@@ -24,7 +24,7 @@ run `pip install diagrams` inside your virtual env.
 
 We can then run the script from the command line e.g.
 
-``
+``shell
 $ python screenshots/aws_diagrams/glue-etl-example-2 .py 
 ``
 

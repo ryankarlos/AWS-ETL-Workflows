@@ -13,7 +13,7 @@ We can create a cluster 'redshift-cluster' with 2 nodes and default db 'dev'
 Also need to pass a list IAM roles that can be used by the cluster to access other Amazon Web Services services. Optionally can also pass
 vpc security groups to be associated with the cluster 
 
-```
+```shell
 aws redshift create-cluster --node-type dc2.large \
 --number-of-nodes 1 \
 --master-username user \
@@ -29,7 +29,7 @@ aws redshift create-cluster --node-type dc2.large \
 
 To create your pipeline definition and activate your pipeline, use the following create-pipeline command. 
 
-```
+```shell
 aws datapipeline create-pipeline --name flights_s3_to_redshift --unique-id token
 {
     "pipelineId": "df-002827213FORRFRNA4AT"
@@ -38,7 +38,7 @@ aws datapipeline create-pipeline --name flights_s3_to_redshift --unique-id token
 
 You can verify that your pipeline appears in the pipeline list using the following list-pipelines command.
 
-```
+```shell
 $ aws datapipeline list-pipelines
 {
     "pipelineIdList": [
@@ -59,7 +59,7 @@ To upload your pipeline definition, use the following put-pipeline-definition co
 The pipeline definition config json file is stored in data-pipelines/config/s3_to_redshift.json (this can also be generated once pipeline is created, 
 using the get-pipeline-definition command
 
-```
+```shell
 aws datapipeline put-pipeline-definition --pipeline-id df-002827213FORRFRNA4AT \
 --pipeline-definition file://data-pipelines/config/s3_to_redshift.json
 
@@ -80,7 +80,7 @@ aws datapipeline put-pipeline-definition --pipeline-id df-002827213FORRFRNA4AT \
 To activate your pipeline, use the following activate-pipeline command.
 
 
-```
+```shell
 aws datapipeline activate-pipeline --pipeline-id df-002827213FORRFRNA4AT
 ```
 

@@ -22,8 +22,9 @@ Get the step function arn, by running the following [command](https://docs.aws.a
 
 Then execute statemachine using the following command and pass arn retrieved earlier for state machine created.
 
-```
+```shell
 $ aws stepfunctions start-execution --state-machine-arn <arn>
+
 {
     "executionArn": "arn:aws:states:us-east-1:376337229415:execution:ETLDemo:905b2d8e-e659-4e18-ba1f-714882100324",
     "startDate": "2022-04-21T02:37:21.064000+01:00"
@@ -33,7 +34,7 @@ $ aws stepfunctions start-execution --state-machine-arn <arn>
 We can check status of the execution
 
 
-```
+```shell
 $ aws stepfunctions describe-execution --execution-arn "arn:aws:states:us-east-1:376337229415:execution:ETLDemo:905b2d8e-e659-4e18-ba1f-714882100324"
 
 
@@ -55,9 +56,9 @@ $ aws stepfunctions describe-execution --execution-arn "arn:aws:states:us-east-1
 If failed, we can retrieve execution history. Command below does this in reverse order and only
 prints out two items (so we get the latest event that failed) and the cause for failure.
 
-```
-
+```shell
 $ aws stepfunctions get-execution-history  --execution-arn <enter-arn> --no-include-execution-data --reverse-order --max-items 2
+
 {
     "events": [
         {

@@ -84,7 +84,7 @@ An error occurred (ValidationError) when calling the ValidateTemplate operation:
 
 * Template missing value for ARN field in Target property of ScheduleResourceOff logical ID.
 
-```
+```shell
 $ aws cloudformation validate-template --template-body file://cloudformation/multi_resource_templates/eventbridge-rules-schedule.yaml
 
 An error occurred (ValidationError) when calling the ValidateTemplate operation: [/Resources/ScheduleResourceOff/Type/Targets/0/Arn] 'null' values are not allowed in templates
@@ -146,7 +146,7 @@ This is why in the documentation it specified to add the `"DeletionPolicy": "Ret
 when you remove it from the source template it doesn't get deleted.  
 
 
-```
+```shell
 $ aws cloudformation update-stack --stack-name "source-stack-name"
 ```
 
@@ -154,8 +154,9 @@ By this time, the resource still exists but  oesn't belong to any stack so it ca
 function in the console or cli. It is however required that you copy how it exactly was in the source template to the target template. 
 
 
-```
+```shell
 $ aws cloudformation create-change-set --stack-name S3toDynamo --change-set-name ImportLambdas --change-set-type IMPORT --resources-to-import file://cloudformation/resources_to_import/lambdas.txt --template-body file://cloudformation/multi_resource_templates/s3_lambda_dynamodb.yaml
+
 {
     "Id": "arn:aws:cloudformation:us-east-1:376337229415:changeSet/ImportLambdas/2604754c-95c3-4d19-b259-58d4b4ba317d",
     "StackId": "arn:aws:cloudformation:us-east-1:376337229415:stack/S3toDynamo/77ccdd50-ddd5-11ec-b827-0a97807fcd19"
@@ -164,7 +165,8 @@ $ aws cloudformation create-change-set --stack-name S3toDynamo --change-set-name
 ```
 
 Review the change set to make sure the correct resource is being imported into the target stack. 
-```
+
+```shell
 aws cloudformation describe-change-set --stack-name S3toDynamo --change-set-name ImportLambdas
 
 
@@ -201,7 +203,7 @@ to imported resources at this time. Note: Need to attach policy which allows the
 action to IAM user performing the import, otherwise this will throw an error.
 On successful completion of the operation (IMPORT_COMPLETE), the resource is successfully imported.
 
-```
+```shell
 $ aws cloudformation execute-change-set --stack-name S3toDynamo --change-set-name ImportLambdas
 ```
 

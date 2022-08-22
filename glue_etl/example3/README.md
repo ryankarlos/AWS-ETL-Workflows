@@ -53,8 +53,9 @@ Run the following command specifying the local path to fraud test and train raw 
 and bucket name.  This creates a bucket (if it does not already exists) and then 
 proceeds to the upload step. 
 
-```
+```shell
 $ python s3/transfer_data_s3.py --bucket_name fraud-sample-data --local_dir datasets/fraud-sample-data/dataset1
+
 2022-05-15 01:21:55,390 botocore.credentials INFO:Found credentials in shared credentials file: ~/.aws/credentials
 2022-05-15 01:21:55,982 __main__ INFO:Creating new bucket with name:fraud-sample-data
 0it [00:00, ?it/s]2022-05-15 01:21:56,733 __main__ INFO:Starting upload ....
