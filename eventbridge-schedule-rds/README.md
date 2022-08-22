@@ -126,11 +126,11 @@ the cloudwatch logs.
 
 * Navigate to the logstreams for the lambda function. 
 
-![](../screenshots/screenshots/screenshots/rds_on_off_logstream.png)
+![](../screenshots/rds_on_off_logstream.png)
 
 * investigate the logstream corresponding to the event time 
 
-![](../screenshots/screenshots/screenshots/rds_lambda_logs_off_event.png)
+![](../screenshots/rds_lambda_logs_off_event.png)
 
 
 * we can also check the SQS dead queue (if event bridge was configured to send any unprocessed events) in cases
@@ -139,6 +139,6 @@ the cloudwatch logs.
   if DLQ is set. 
 
 ### References
-https://tutorialsdojo.com/automatically-stop-non-production-rds-databases-with-aws-lambda-and-amazon-eventbridge/
-https://aws.amazon.com/blogs/database/schedule-amazon-rds-stop-and-start-using-aws-lambda/
-https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-dlq.html
+* https://tutorialsdojo.com/automatically-stop-non-production-rds-databases-with-aws-lambda-and-amazon-eventbridge/
+* https://aws.amazon.com/blogs/database/schedule-amazon-rds-stop-and-start-using-aws-lambda/
+* https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-dlq.html
