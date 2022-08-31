@@ -2,10 +2,7 @@
 
 ![](../screenshots/stop-start-db-instance-workflow.png)
 
-This implements an automated solution for stopping/starting a RDS Postgres DB instance in a single AZ, on schedule using the 
-combination of Amazon EventBridge and AWS Lambda. This could also be extended to multiple instances but beyond the 
-scope of this example. We will assume the db instance needs to be made available from 1-5pm 
-from 25-31 May 2022.
+I found this [Tutorial Dojo article](https://tutorialsdojo.com/automatically-stop-non-production-rds-databases-with-aws-lambda-and-amazon-eventbridge/) and [AWS blog](https://aws.amazon.com/blogs/database/schedule-amazon-rds-stop-and-start-using-aws-lambda/) on automated solutions for stopping/starting RDS instances with EventBridge and Lambda very interesting so I thought I will use a more programmatic approach to implelment this which may benefit others (via aws cli and cloudformation templates) instead of configuring via the console [1][2]. In this demo, we will schedule an RDS Postgres DB instance in a single AZ. This could also be extended to multiple instances but beyond the scope of this example. We will assume the db instance needs to be made available from 1-5pm from 25-31 May 2022.
 Furthermore, this example could also be modified to tackle this [issue](https://aws.amazon.com/premiumsupport/knowledge-center/rds-stop-seven-days/#:~:text=If%20you%20don't%20manually,system%2C%20or%20database%20engine%20version.
 ) of rds restarting automatically 7 days after it was last stopped (for maintenance jobs)
 
@@ -134,11 +131,11 @@ the cloudwatch logs.
 
 
 * we can also check the SQS dead queue (if event bridge was configured to send any unprocessed events) in cases
-  where the lamdba function was not invoked. EventBridge publishes an event to Amazon CloudWatch metrics 
+  where the lamdba function was not invoked [3]. EventBridge publishes an event to Amazon CloudWatch metrics 
   indicating that a target invocation failed.  Additional metrics are sent to CloudWatch including InvocationsSentToDLQ
   if DLQ is set. 
 
 ### References
-* https://tutorialsdojo.com/automatically-stop-non-production-rds-databases-with-aws-lambda-and-amazon-eventbridge/
-* https://aws.amazon.com/blogs/database/schedule-amazon-rds-stop-and-start-using-aws-lambda/
-* https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-dlq.html
+1. Tutorials Dojo Article on AWS Lambda and Amazon EventBridge to automatically stop/start RDS instances https://tutorialsdojo.com/automatically-stop-non-production-rds-databases-with-aws-lambda-and-amazon-eventbridge/
+2. AWS Blog on workflow for automatically stopping/starting RDS instances https://aws.amazon.com/blogs/database/schedule-amazon-rds-stop-and-start-using-aws-lambda/
+3. Eventbridge dead letter queues https://docs.aws.amazon.com/eventbridge/latest/userguide/eb-rule-dlq.html
